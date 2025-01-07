@@ -9,7 +9,10 @@ public class SwerveConstants {
     public static final double kMaxSpeedMetersPerSecond = 4.77; //kSpeedAt12Volts desired top speed (was 10.64)
     public static final double kMaxAngularRate = 0.75; //3/4 of rotation per second max angular velocity
     public static final double kWheelDiamInches = 4.0; //Wheel diameter in inches
+    public static final int kPigeonId = 0; 
     public static final String kCANbus = "drivetrain"; //canbus name for drivetrain systems
+    public static final boolean kInvertLeftSide = false;
+    public static final boolean kInvertRightSide = true;
     public class steer {
         public static final double kP = 21.739;
         public static final double kI = 0.0;
@@ -37,6 +40,7 @@ public class SwerveConstants {
             public static final int kEncoderId = 3;
             public static final Angle kEncoderOffset = Rotations.of(0.176513671875);
             public static final boolean kSteerMotorInverted = true;
+            public static final boolean kEncoderInverted = true;
             public static final Distance kXPos = Inches.of(11.5); //forward+ from center
             public static final Distance kYPos = Inches.of(11.5); //left+ from center
         }
@@ -46,6 +50,7 @@ public class SwerveConstants {
             public static final int kEncoderId = 4;
             public static final Angle kEncoderOffset = Rotations.of(0.02783203125);
             public static final boolean kSteerMotorInverted = true;
+            public static final boolean kEncoderInverted = true;
             public static final Distance kXPos = Inches.of(11.5); //forward+ from center
             public static final Distance kYPos = Inches.of(-11.5); //left+ from center
         }
@@ -55,6 +60,7 @@ public class SwerveConstants {
             public static final int kEncoderId = 2;
             public static final Angle kEncoderOffset = Rotations.of(-0.241943359375);
             public static final boolean kSteerMotorInverted = true;
+            public static final boolean kEncoderInverted = true;
             public static final Distance kXPos = Inches.of(-11.5); //forward+ from center
             public static final Distance kYPos = Inches.of(11.5); //left+ from center
         }
@@ -64,6 +70,7 @@ public class SwerveConstants {
             public static final int kEncoderId = 1;
             public static final Angle kEncoderOffset = Rotations.of(0.4580078125);
             public static final boolean kSteerMotorInverted = true;
+            public static final boolean kEncoderInverted = true;
             public static final Distance kXPos = Inches.of(-11.5); //forward+ from center
             public static final Distance kYPos = Inches.of(-11.5); //left+ from center
         }

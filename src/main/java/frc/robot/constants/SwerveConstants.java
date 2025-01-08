@@ -4,9 +4,10 @@ import static edu.wpi.first.units.Units.*;
 
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.LinearVelocity;
 
 public class SwerveConstants {
-    public static final double kMaxSpeedMetersPerSecond = 4.77; //kSpeedAt12Volts desired top speed (was 10.64)
+    public static final LinearVelocity kMaxSpeedMetersPerSecond = MetersPerSecond.of(4.77); //kSpeedAt12Volts desired top speed (was 10.64)
     public static final double kMaxAngularRate = 0.75; //3/4 of rotation per second max angular velocity
     public static final double kWheelDiamInches = 4.0; //Wheel diameter in inches
     public static final int kPigeonId = 0; 

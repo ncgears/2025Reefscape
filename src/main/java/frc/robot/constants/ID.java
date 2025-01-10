@@ -37,21 +37,27 @@ public class ID {
      * IDs of Talons
      */
     public static final class Talon {
-        public static int swerve_fl_turn = 1;
-        public static int swerve_fr_turn = 4;
-        public static int swerve_bl_turn = 2;
-        public static int swerve_br_turn = 3;
         public static int intake = 10;
         public static int indexer = 11;
+    }
+    /**
+     * IDs of Gyros
+     */
+    public static final class Pigeon2 {
+        public static int gyro = 0;
     }
     /**
      * IDs of Krakens/Falcons
      */
     public static final class TalonFX {
-        public static int swerve_fl_drive = 5;
+        public static int swerve_fl_drive = 7;
         public static int swerve_fr_drive = 8;
-        public static int swerve_br_drive = 7;
         public static int swerve_bl_drive = 6;
+        public static int swerve_br_drive = 5;
+        public static int swerve_fl_turn = 3;
+        public static int swerve_fr_turn = 4;
+        public static int swerve_bl_turn = 2;
+        public static int swerve_br_turn = 1;
         public static int shootertop = 12;
         public static int shooterbottom = 13;
         public static int aimer = 14;
@@ -69,6 +75,10 @@ public class ID {
      * IDs of CANcoders
      */
     public static final class CANcoder {
+        public static int swerve_fl_cc = 3;
+        public static int swerve_fr_cc = 4;
+        public static int swerve_bl_cc = 2;
+        public static int swerve_br_cc = 1;
         public static int aimer = 20;
         public static int climber = 21;
         public static int arm = 22;

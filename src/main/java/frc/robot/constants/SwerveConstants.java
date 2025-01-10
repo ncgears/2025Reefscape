@@ -10,10 +10,11 @@ public class SwerveConstants {
     public static final LinearVelocity kMaxSpeedMetersPerSecond = MetersPerSecond.of(4.77); //kSpeedAt12Volts desired top speed (was 10.64)
     public static final double kMaxAngularRate = 0.75; //3/4 of rotation per second max angular velocity
     public static final double kWheelDiamInches = 4.0; //Wheel diameter in inches
-    public static final int kPigeonId = 0; 
+    public static final int kPigeonId = ID.Pigeon2.gyro; 
     public static final String kCANbus = "drivetrain"; //canbus name for drivetrain systems
     public static final boolean kInvertLeftSide = false;
     public static final boolean kInvertRightSide = true;
+    public static final boolean debugDashboard = false;
     public class steer {
         public static final double kP = 21.739;
         public static final double kI = 0.0;
@@ -36,9 +37,9 @@ public class SwerveConstants {
     }
     public class modules {
         public class FrontLeft {
-            public static final int kDriveMotorId = 7;
-            public static final int kSteerMotorId = 3;
-            public static final int kEncoderId = 3;
+            public static final int kDriveMotorId = ID.TalonFX.swerve_fl_drive;
+            public static final int kSteerMotorId = ID.TalonFX.swerve_fl_turn;
+            public static final int kEncoderId = ID.CANcoder.swerve_fl_cc;
             public static final Angle kEncoderOffset = Rotations.of(-0.265869140625);
             public static final boolean kSteerMotorInverted = true;
             public static final boolean kEncoderInverted = true;
@@ -46,9 +47,9 @@ public class SwerveConstants {
             public static final Distance kYPos = Inches.of(11.5); //left+ from center
         }
         public class FrontRight {
-            public static final int kDriveMotorId = 8;
-            public static final int kSteerMotorId = 4;
-            public static final int kEncoderId = 4;
+            public static final int kDriveMotorId = ID.TalonFX.swerve_fr_drive;
+            public static final int kSteerMotorId = ID.TalonFX.swerve_fr_turn;
+            public static final int kEncoderId = ID.CANcoder.swerve_fr_cc;
             public static final Angle kEncoderOffset = Rotations.of(-0.0087890625);
             public static final boolean kSteerMotorInverted = true;
             public static final boolean kEncoderInverted = true;
@@ -56,9 +57,9 @@ public class SwerveConstants {
             public static final Distance kYPos = Inches.of(-11.5); //left+ from center
         }
         public class BackLeft {
-            public static final int kDriveMotorId = 6;
-            public static final int kSteerMotorId = 2;
-            public static final int kEncoderId = 2;
+            public static final int kDriveMotorId = ID.TalonFX.swerve_bl_drive;
+            public static final int kSteerMotorId = ID.TalonFX.swerve_bl_turn;
+            public static final int kEncoderId = ID.CANcoder.swerve_bl_cc;
             public static final Angle kEncoderOffset = Rotations.of(0.24462890625);
             public static final boolean kSteerMotorInverted = true;
             public static final boolean kEncoderInverted = true;
@@ -66,9 +67,9 @@ public class SwerveConstants {
             public static final Distance kYPos = Inches.of(11.5); //left+ from center
         }
         public class BackRight {
-            public static final int kDriveMotorId = 5;
-            public static final int kSteerMotorId = 1;
-            public static final int kEncoderId = 1;
+            public static final int kDriveMotorId = ID.TalonFX.swerve_br_drive;
+            public static final int kSteerMotorId = ID.TalonFX.swerve_br_turn;
+            public static final int kEncoderId = ID.CANcoder.swerve_br_cc;
             public static final Angle kEncoderOffset = Rotations.of(0.410888671875);
             public static final boolean kSteerMotorInverted = true;
             public static final boolean kEncoderInverted = true;

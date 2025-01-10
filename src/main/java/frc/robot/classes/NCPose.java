@@ -1,6 +1,7 @@
 package frc.robot.classes;
 
 import java.util.Map;
+import java.util.function.Supplier;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
@@ -30,7 +31,6 @@ import frc.robot.RobotContainer;
  */
 public class NCPose {
 	private static NCPose instance;
-	private SwerveDrivePoseEstimator poseEstimator;
 
 /**
  * April tag positions, in inches
@@ -119,23 +119,6 @@ public class NCPose {
 	public final Trigger isReady = new Trigger(() -> { return (m_trackingState==State.READY); });
   
     public NCPose() {
-		//Initialize the pose estimator
-		poseEstimator = new SwerveDrivePoseEstimator(
-			SwerveConstants.kDriveKinematics,
-			RobotContainer.gyro.getYaw(),
-			RobotContainer.drive.getSwerveModulePositions(),
-			new Pose2d(),
-			/** stateStdDevs 
-			 * Standard deviations of the pose estimate (x position in meters, y position in meters, and heading in radians). 
-			 * Increase these numbers to trust your state estimate less.
-			 */
-			VecBuilder.fill(0.2, 0.2, 0.1),
-			/** visionMeasurementStdDevs 
-			 * Standard deviations of the vision pose measurement (x position in meters, y position in meters, and heading in radians). 
-			 * Increase these numbers to trust the vision pose measurement less.
-			 */
-			VecBuilder.fill(0.5, 0.5, 0.9)
-		);
 		init();
 		createDashboards();
     }
@@ -166,8 +149,8 @@ public class NCPose {
 	 * Returns the currently-estimated pose of the robot.
 	 * @return The pose.
 	 */
-	public Pose2d getPose() {
-		return poseEstimator.getEstimatedPosition();
+	public Supplier<Pose2d> getPose() {
+		return () -> RobotContainer.drivetrain.getState().Pose;
 	}
 
 	// /**
@@ -177,54 +160,47 @@ public class NCPose {
     //  * @param pose New robot pose.
     //  */
 	// public void resetPose(double heading, Pose2d pose) {
-	// 	poseEstimator.resetPosition(RobotContainer.gyro.getYaw(), RobotContainer.drive.getSwerveModulePositions(), pose);
+	// 	poseEstimator.resetPosition(RobotContainer.gyro.getYaw(), RobotContainer.drivetrain.getSwerveModulePositions(), pose);
 	// }
 	/**
      * Reset the estimated pose of the swerve drive on the field.
      *
-	 * @param heading Heading to reset robot to (for configuring a yaw offset)
      * @param pose New robot pose.
      */
 	public void resetPose(Pose2d pose) {
-		poseEstimator.resetPosition(RobotContainer.gyro.getYaw(), RobotContainer.drive.getSwerveModulePositions(), pose);
-	}
-
-	/**
-	 * Updates the bot pose based on feedback from the drivetrain. This should be done in every periodic loop.
-	 */
-	public void updatePose() {
-		poseEstimator.update(
-			RobotContainer.gyro.getYaw(),
-			RobotContainer.drive.getSwerveModulePositions()
-		);
+		RobotContainer.drivetrain.resetPose(pose);
 	}
 
 	/**
 	 * Corrects the bot pose based on information from the vision system
 	 */
 	public void correctPoseWithVision() {
-		var visionEstFront = RobotContainer.vision.getEstimatedGlobalPose("front");
-		visionEstFront.ifPresent(
-			est -> {
-				var estPose = est.estimatedPose.toPose2d();
-				//workaround for remove camera to robot center
-				estPose = estPose.transformBy(new Transform2d(new Translation2d(-0.44,0.0), new Rotation2d())); 
-				// Change our trust in the measurement based on the tags we can see
-				var estStdDevs = RobotContainer.vision.getEstimationStdDevs(estPose, "front");
-				if(VisionConstants.Front.kUseForPose) RobotContainer.pose.addVisionMeasurement(estPose, est.timestampSeconds, estStdDevs);
-			}
-		);
-		var visionEstBack = RobotContainer.vision.getEstimatedGlobalPose("back");
-		visionEstBack.ifPresent(
-			est -> {
-				var estPose = est.estimatedPose.toPose2d();
-				//workaround for remove camera to robot center
-				estPose = estPose.transformBy(new Transform2d(new Translation2d(0.44,0.0), new Rotation2d())); 
-				// Change our trust in the measurement based on the tags we can see
-				var estStdDevs = RobotContainer.vision.getEstimationStdDevs(estPose, "back");
-				if(VisionConstants.Back.kUseForPose) RobotContainer.pose.addVisionMeasurement(estPose, est.timestampSeconds, estStdDevs);
-			}
-		);
+		if(VisionConstants.Front.kUseForPose) {
+			var visionEstFront = RobotContainer.vision.getFrontEstimatedGlobalPose();
+			visionEstFront.ifPresent(
+				est -> {
+					var estPose = est.estimatedPose.toPose2d();
+					//workaround for remove camera to robot center
+					estPose = estPose.transformBy(new Transform2d(new Translation2d(-0.44,0.0), new Rotation2d())); 
+					// Change our trust in the measurement based on the tags we can see
+					var estStdDevs = RobotContainer.vision.getFrontEstimationStdDevs(estPose);
+					RobotContainer.drivetrain.addVisionMeasurement(estPose, est.timestampSeconds, estStdDevs);
+				}
+			);
+		}
+		if(VisionConstants.Back.kUseForPose) {
+			var visionEstBack = RobotContainer.vision.getBackEstimatedGlobalPose();
+			visionEstBack.ifPresent(
+				est -> {
+					var estPose = est.estimatedPose.toPose2d();
+					//workaround for remove camera to robot center
+					estPose = estPose.transformBy(new Transform2d(new Translation2d(0.44,0.0), new Rotation2d())); 
+					// Change our trust in the measurement based on the tags we can see
+					var estStdDevs = RobotContainer.vision.getBackEstimationStdDevs(estPose);
+					RobotContainer.drivetrain.addVisionMeasurement(estPose, est.timestampSeconds, estStdDevs);
+				}
+			);
+		}
 	}
 
     /**
@@ -233,14 +209,14 @@ public class NCPose {
      * @param timestampSeconds
      */
 	public void addVisionMeasurement(Pose2d visionMeasurement, double timestampSeconds) {
-		poseEstimator.addVisionMeasurement(visionMeasurement, timestampSeconds);
+		RobotContainer.drivetrain.addVisionMeasurement(visionMeasurement, timestampSeconds);
 	}
 	public void addVisionMeasurement(Pose2d visionMeasurement, double timestampSeconds, Matrix<N3, N1> stdDevs) {
-		poseEstimator.addVisionMeasurement(visionMeasurement, timestampSeconds, stdDevs);
+		RobotContainer.drivetrain.addVisionMeasurement(visionMeasurement, timestampSeconds, stdDevs);
 	}
 
 	public Pose3d updateShooterPose() {
-		m_shooterPose = new Pose3d(poseEstimator.getEstimatedPosition())
+		m_shooterPose = new Pose3d(getPose().get())
 			.transformBy(ShooterConstants.kRobotToShooter);
 		return m_shooterPose;
 	}
@@ -330,10 +306,10 @@ public class NCPose {
 	public void createDashboards() {
 		if(true) { //false to disable tracking dashboard
 			ShuffleboardTab systemTab = Shuffleboard.getTab("System");
-			systemTab.addNumber("Bot Pose Hdg", () -> NCDebug.General.roundDouble(getPose().getRotation().getDegrees(),2))
+			systemTab.addNumber("Bot Pose Hdg", () -> NCDebug.General.roundDouble(getPose().get().getRotation().getDegrees(),2))
 				.withSize(4,2)
 				.withPosition(0,2);
-			systemTab.addNumber("Shooter Hdg", () -> NCDebug.General.roundDouble(getPose().rotateBy(new Rotation2d(Math.PI)).getRotation().getDegrees(),2))
+			systemTab.addNumber("Shooter Hdg", () -> NCDebug.General.roundDouble(getPose().get().rotateBy(new Rotation2d(Math.PI)).getRotation().getDegrees(),2))
 				.withSize(4,2)
 				.withPosition(4,2);
 			ShuffleboardLayout trackingList = systemTab.getLayout("Target Tracking", BuiltInLayouts.kList)
@@ -381,7 +357,7 @@ public class NCPose {
 	/** Disables target tracking */
     public void trackingStop() {
         m_trackingState = State.STOP;
-		RobotContainer.drive.lockHeading();
+		RobotContainer.drivetrain.lockHeading();
 		NCDebug.Debug.debug("Tracking: Stop Tracking");
 	}
 	/** Sets the requested tracking target

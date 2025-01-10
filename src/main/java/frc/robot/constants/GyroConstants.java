@@ -7,6 +7,8 @@ package frc.robot.constants;
  * Constants let us quickly define the characteristics of our robot without having to search through code
  */
 public class GyroConstants {
+    public static final int kPigeonID = ID.Pigeon2.gyro;
+    public static final String kCANbus = "drivetrain"; 
     public static final boolean debugDashboard = true; //enable debugging dashboard
-    public static final boolean kGyroReversed = true;
+    public static final boolean kGyroReversed = false; //true for NAVx
 }

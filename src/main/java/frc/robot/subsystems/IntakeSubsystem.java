@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.constants.*; 
 import frc.robot.utils.NCDebug;
-import frc.robot.utils.NCDebug.Debug;
 import frc.robot.RobotContainer;
 
 /**

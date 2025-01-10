@@ -2,18 +2,13 @@ package frc.robot.classes;
 
 import java.util.Map;
 
-import com.kauailabs.navx.frc.AHRS;
+import com.ctre.phoenix6.hardware.Pigeon2;
 
-import edu.wpi.first.hal.SimDouble;
-import edu.wpi.first.hal.simulation.SimDeviceDataJNI;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.constants.*; 
 import frc.robot.utils.NCDebug;
 import frc.robot.RobotContainer;
@@ -22,11 +17,7 @@ public class Gyro implements Sendable {
 	private static Gyro instance;
 	private static double m_yawOffset = 0.0;
 
-	private static AHRS m_gyro = new AHRS(SPI.Port.kMXP);
-
-    int m_simgyro = SimDeviceDataJNI.getSimDeviceHandle("navX-Sensor[0]");
-    SimDouble angle = new SimDouble(SimDeviceDataJNI.getSimValueHandle(m_simgyro,"Yaw"));
-    SimDouble pitch = new SimDouble(SimDeviceDataJNI.getSimValueHandle(m_simgyro,"Pitch"));
+	private static Pigeon2 m_gyro = new Pigeon2(GyroConstants.kPigeonID,GyroConstants.kCANbus);
 
 	/**
 	 * Returns the instance of the Gyro subsystem.
@@ -68,24 +59,19 @@ public class Gyro implements Sendable {
 
     public void zeroYaw() {
 		// m_gyro.reset();
-		m_gyro.zeroYaw();
+		m_gyro.setYaw(0,0.1);
+		m_gyro.getYaw().waitForUpdate(0.1);
 		m_yawOffset = 0.0;
-		Helpers.Debug.debug("Gyro: Reset Gyro");
+		NCDebug.Debug.debug("Gyro: Reset Gyro");
 	}
     public void zeroYaw(double offset) {
 		zeroYaw();
 		setYawOffset(offset);
 	}
 
-	public Command zeroYawFromPoseCommand() {
-		var angle = RobotContainer.pose.getPose().getRotation().getDegrees();
-		return new InstantCommand(() -> zeroYaw(angle)).ignoringDisable(true);
-	}
-
-
 	public void setYawOffset(double offset) {
 		m_yawOffset = offset;
-		Helpers.Debug.debug("Gyro: Yaw offset set to "+offset+" degrees");
+		NCDebug.Debug.debug("Gyro: Yaw offset set to "+offset+" degrees");
 	}
 
    	/**
@@ -93,7 +79,8 @@ public class Gyro implements Sendable {
      * @return the robot's yaw as a Rotation2d
      */
 	public Rotation2d getYaw() {
-		double yaw = m_gyro.getYaw() - m_yawOffset; //subtract the offset
+		// return Rotation2d.fromDegrees(m_gyro.getYaw().getValueAsDouble());
+		double yaw = m_gyro.getYaw().getValueAsDouble() - m_yawOffset; //subtract the offset
 		yaw += (yaw < 0) ? 360.0 : 0; //make it positive
 		yaw *= (GyroConstants.kGyroReversed) ? -1.0 : 1.0; //invert to CCW Positive
 		return Rotation2d.fromDegrees(yaw);
@@ -104,7 +91,7 @@ public class Gyro implements Sendable {
      * @return the robot's pitch as a double in degrees
      */
 	public double getPitch() {
-		return m_gyro.getPitch();
+		return m_gyro.getPitch().getValueAsDouble();
 	}
 
    	/**
@@ -112,6 +99,6 @@ public class Gyro implements Sendable {
      * @return the robot's roll as a double in degrees
      */
 	public double getRoll() {
-		return m_gyro.getRoll();
+		return m_gyro.getRoll().getValueAsDouble();
 	}
 }

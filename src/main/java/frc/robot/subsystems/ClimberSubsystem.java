@@ -14,6 +14,9 @@ import com.ctre.phoenix6.signals.ForwardLimitValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.ReverseLimitValue;
 
+import edu.wpi.first.units.Units;
+import edu.wpi.first.units.AngleUnit;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -97,7 +100,6 @@ public class ClimberSubsystem extends SubsystemBase {
     RobotContainer.ctreConfigs.retryConfigApply(()->m_encoder.getConfigurator().apply(RobotContainer.ctreConfigs.climberCCConfig));
 
     m_motor1 = new TalonFX(ClimberConstants.kMotorID, ClimberConstants.canBus);
-    m_motor1.setInverted(ClimberConstants.kIsInverted);
     RobotContainer.ctreConfigs.retryConfigApply(()->m_motor1.getConfigurator().apply(RobotContainer.ctreConfigs.climberFXConfig));
 
     init();
@@ -145,8 +147,8 @@ public class ClimberSubsystem extends SubsystemBase {
     climberList.addString("State", this::getStateName);
     climberList.addString("Target", this::getTargetPositionName);
     climberList.addNumber("Target Pos", this::getTargetPosition);
-    climberList.addNumber("Position", () -> NCDebug.General.roundDouble(getPosition(),7));
-    climberList.addNumber("Absolute", () -> NCDebug.General.roundDouble(getPositionAbsolute(),7));
+    climberList.addNumber("Position", () -> NCDebug.General.roundDouble(getPosition().in(Units.Rotations),7));
+    climberList.addNumber("Absolute", () -> NCDebug.General.roundDouble(getPositionAbsolute().in(Units.Rotations),7));
     climberList.addNumber("Error", () -> NCDebug.General.roundDouble(getPositionError(),7));
     climberList.addBoolean("Ratchet Locked", this::getRatchet);
 
@@ -170,8 +172,10 @@ public class ClimberSubsystem extends SubsystemBase {
         .withWidget("Single Color View");
       dbgClimberList.addString("State", this::getStateName);
       dbgClimberList.addNumber("Target", this::getTargetPosition);
-      dbgClimberList.addNumber("Position", this::getPosition);
-      dbgClimberList.addNumber("Absolute", this::getPositionAbsolute);
+      // dbgClimberList.addNumber("Position", this::getPosition);
+      // dbgClimberList.addNumber("Absolute", this::getPositionAbsolute);
+      dbgClimberList.addNumber("Position", () -> { return getPosition().in(Units.Rotations); });
+      dbgClimberList.addNumber("Absolute", () -> { return getPositionAbsolute().in(Units.Rotations); });
       dbgClimberList.addNumber("Error", this::getPositionError);
       dbgClimberList.addBoolean("Ratchet Engaged", this::getRatchet);
       dbgClimberList.add("Climber Up", new InstantCommand(this::climberUp))
@@ -239,11 +243,11 @@ public class ClimberSubsystem extends SubsystemBase {
   public double getPositionError() { return m_motor1.getClosedLoopError().getValue(); }
   // public double atSetpoint() { return m_motor1.getClosedLoopError().getValue() <= Constants.Aimer.kPositionThreshold; }
 
-  public double getPosition() {
+  public Angle getPosition() {
     return m_motor1.getPosition().getValue();
   }
 
-  public double getPositionAbsolute() {
+  public Angle getPositionAbsolute() {
     return m_encoder.getPosition().getValue();
   }
 

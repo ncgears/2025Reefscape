@@ -32,12 +32,16 @@ public final class CTREConfigs {
     public final TalonFXConfiguration aimerFXConfig = new TalonFXConfiguration();
     public final TalonFXConfiguration armFXConfig = new TalonFXConfiguration();
     public final TalonFXConfiguration climberFXConfig = new TalonFXConfiguration();
+    //TalonFXS
+    // public final TalonFXSConfiguration intakeFXSConfig = new TalonFXSConfiguration();
     //CANcoder
     public final CANcoderConfiguration aimerCCConfig = new CANcoderConfiguration();
     public final CANcoderConfiguration armCCConfig = new CANcoderConfiguration();
     public final CANcoderConfiguration climberCCConfig = new CANcoderConfiguration();
 
     public CTREConfigs() {
+        //Intake Configuration
+
         //Shooter Configuration
         Slot0Configs shooterSlot0Configs = new Slot0Configs()
             .withKP(ShooterConstants.kP)

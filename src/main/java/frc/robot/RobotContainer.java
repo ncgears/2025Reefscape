@@ -10,17 +10,40 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 import static edu.wpi.first.units.Units.*;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandStadiaController;
+import frc.robot.classes.Gyro;
+import frc.robot.classes.Lighting;
+import frc.robot.classes.NCOrchestra;
+import frc.robot.classes.Vision;
 import frc.robot.constants.*;
 import frc.robot.utils.CTREConfigs;
 import frc.robot.utils.InputAxis;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import frc.robot.subsystems.AimerSubsystem;
+import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.IndexerSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 
 public class RobotContainer {
     public static final CTREConfigs ctreConfigs = new CTREConfigs();
+    public static final Lighting lighting = Lighting.getInstance();
+    public static final Gyro gyro = Gyro.getInstance();
+    public static final Vision vision = Vision.getInstance();
+    // public static final DriveSubsystem drive = DriveSubsystem.getInstance(); //must be after gyro
+    // public static final NCPose pose = NCPose.getInstance(); //must be after drive
+    public static final NCOrchestra orchestra = NCOrchestra.getInstance();
+    public static final PowerDistribution power = new PowerDistribution(1,ModuleType.kRev);
+    public static final IntakeSubsystem intake = IntakeSubsystem.getInstance();
+    public static final IndexerSubsystem indexer = IndexerSubsystem.getInstance();
+    public static final ClimberSubsystem climber = ClimberSubsystem.getInstance();
+    public static final AimerSubsystem aimer = AimerSubsystem.getInstance();
+    public static final ArmSubsystem arm = ArmSubsystem.getInstance();
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(SwerveConstants.kMaxAngularRate).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
 

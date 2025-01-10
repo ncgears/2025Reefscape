@@ -9,6 +9,8 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.networktables.DoubleSubscriber;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.units.Units;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
@@ -105,8 +107,8 @@ public class AimerSubsystem extends SubsystemBase {
       .withWidget("Single Color View");
     aimerList.addString("State", this::getStateName);
     aimerList.addNumber("Target", this::getTargetPosition);
-    aimerList.addNumber("Position", () -> NCDebug.General.roundDouble(getPosition(),7));
-    aimerList.addNumber("Absolute", () -> NCDebug.General.roundDouble(getPositionAbsolute(),7));
+    aimerList.addNumber("Position", () -> NCDebug.General.roundDouble(getPosition().in(Units.Rotations),7));
+    aimerList.addNumber("Absolute", () -> NCDebug.General.roundDouble(getPositionAbsolute().in(Units.Rotations),7));
     aimerList.addNumber("Error", () -> NCDebug.General.roundDouble(getPositionError(),7));
 
 		if(AimerConstants.debugDashboard) {
@@ -161,11 +163,11 @@ public class AimerSubsystem extends SubsystemBase {
   public double getPositionError() { return m_motor1.getClosedLoopError().getValue(); }
   public boolean atSetpoint() { return (Math.abs(m_motor1.getClosedLoopError().getValue()) <= AimerConstants.kPositionThreshold); }
 
-  public double getPosition() {
+  public Angle getPosition() {
     return m_motor1.getPosition().getValue();
   }
 
-  public double getPositionAbsolute() {
+  public Angle getPositionAbsolute() {
     return m_encoder.getPosition().getValue();
   }
 

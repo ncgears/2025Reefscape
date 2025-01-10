@@ -3,6 +3,9 @@ package frc.robot.subsystems;
 
 import java.util.Map;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
@@ -31,7 +34,7 @@ public class IntakeSubsystem extends SubsystemBase {
     Direction(String color) { this.color = color; }
     public String getColor() { return this.color; }
   }
-  private TalonFXS m_motor1;
+  private WPI_TalonSRX m_motor1;
   private Direction m_curDirection = Direction.STOP;
  
   public final Trigger isRunning = new Trigger(() -> { return (m_curDirection == Direction.IN);});
@@ -48,6 +51,12 @@ public class IntakeSubsystem extends SubsystemBase {
 	}
   
   public IntakeSubsystem() {
+    // m_motor1 = new TalonFXS(IntakeConstants.kMotorID,IntakeConstants.kCANBus);
+    // TalonFXSConfigurator m_config = m_motor1.getConfigurator();
+    // TalonFXSConfiguration m_fxsConfigs = new TalonFXSConfiguration();
+    // m_fxsConfigs.Commutation.MotorArrangement = MotorArrangementValue.Minion_JST;
+    // m_config.apply(m_fxsConfigs);
+
     //initialize values for private and public variables, etc.
     m_motor1 = new WPI_TalonSRX(IntakeConstants.kMotorID);
     m_motor1.configFactoryDefault(); //Reset controller to factory defaults to avoid wierd stuff from carrying over

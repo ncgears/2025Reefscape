@@ -9,6 +9,8 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.units.Units;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
@@ -123,8 +125,8 @@ public class ArmSubsystem extends SubsystemBase {
     armList.addBoolean("Status", this::atSetpoint);
     // armList.addString("State", this::getStateName);
     armList.addString("Target", this::getTargetPositionName);
-    armList.addNumber("Position", () -> NCDebug.General.roundDouble(getPosition(),7));
-    armList.addNumber("Absolute", () -> NCDebug.General.roundDouble(getPositionAbsolute(),7));
+    armList.addNumber("Position", () -> NCDebug.General.roundDouble(getPosition().in(Units.Rotations),7));
+    armList.addNumber("Absolute", () -> NCDebug.General.roundDouble(getPositionAbsolute().in(Units.Rotations),7));
     armList.addNumber("Error", () -> NCDebug.General.roundDouble(getPositionError(),7));
 
     if(ArmConstants.debugDashboard) {
@@ -143,11 +145,11 @@ public class ArmSubsystem extends SubsystemBase {
   public boolean atAmp() { return m_targetPosition==Position.AMP && atSetpoint(); }
   public boolean atTrap() { return m_targetPosition==Position.TRAP && atSetpoint(); }
 
-  public double getPosition() {
+  public Angle getPosition() {
     return m_motor1.getPosition().getValue();
   }
 
-  public double getPositionAbsolute() {
+  public Angle getPositionAbsolute() {
     return m_encoder.getPosition().getValue();
   }
 

@@ -53,6 +53,9 @@ public class RobotContainer {
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
         .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
         .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
+    private final SwerveRequest.RobotCentric robotdrive = new SwerveRequest.RobotCentric()
+        .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
+        .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
 
@@ -70,8 +73,6 @@ public class RobotContainer {
         final InputAxis m_rotate = new InputAxis("Rotate", dj::getRightX)
             .withDeadband(OIConstants.kMinDeadband)
             .withInvert(true);
-        // final InputAxis m_angleX = new InputAxis("Angle X", dj::getRightX);
-        // final InputAxis m_angleY = new InputAxis("Angle Y", dj::getRightY);
 
         configureBindings();
 
@@ -86,6 +87,13 @@ public class RobotContainer {
     }
 
     private void configureBindings() {
+        dj.pov(90).whileTrue(drivetrain.applyRequest(() -> 
+            robotdrive.withVelocityX(0).withVelocityY(SwerveConstants.kAlignStrafeSpeed)
+        ));
+        dj.pov(270).whileTrue(drivetrain.applyRequest(() -> 
+            robotdrive.withVelocityX(0).withVelocityY(-SwerveConstants.kAlignStrafeSpeed)
+        ));
+
         // dj.frame().onTrue((Commands.runOnce(drivetrain::zeroGyro)));
         // dj.stadia().onTrue(Commands.runOnce(drivetrain::addFakeVisionReading));
 
@@ -103,8 +111,8 @@ public class RobotContainer {
         dj.google().and(dj.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
         dj.google().and(dj.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
-        // reset the field-centric heading on frame button press
-        dj.frame().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+        // reset the field-centric heading on hamburger button press
+        dj.hamburger().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }

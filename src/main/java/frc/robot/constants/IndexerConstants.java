@@ -17,5 +17,5 @@ public class IndexerConstants {
     public static final boolean kIsInverted = false;
     public static final NeutralMode kNeutralMode = NeutralMode.Brake;
     public static final double kSpeed = 0.9;
-    public static final int kBeamBreakID = ID.DIO.indexer_beambreak;
+    public static final int kBeamBreakID = ID.DIO.climber_cageSwitch;
 }

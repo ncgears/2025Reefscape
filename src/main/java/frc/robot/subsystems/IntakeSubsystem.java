@@ -126,11 +126,11 @@ public class IntakeSubsystem extends SubsystemBase {
   public String getColor() { return m_curDirection.getColor(); }
 
   public void intakeAuto() {
-    if(RobotContainer.indexer.hasNote()) {
-      intakeOut();
-    } else {
-      intakeIn();
-    }
+    // if(RobotContainer.indexer.hasNote()) {
+    //   intakeOut();
+    // } else {
+    //   intakeIn();
+    // }
   }
 
   public void intakeIn() {

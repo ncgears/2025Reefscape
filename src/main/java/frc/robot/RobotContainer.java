@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandStadiaController;
 import frc.robot.classes.Gyro;
 import frc.robot.classes.Lighting;
@@ -36,6 +37,7 @@ import frc.robot.classes.Vision;
 import frc.robot.constants.*;
 import frc.robot.utils.CTREConfigs;
 import frc.robot.utils.InputAxis;
+import frc.robot.utils.NCDebug;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.subsystems.AimerSubsystem;
 import frc.robot.subsystems.ArmSubsystem;
@@ -50,14 +52,15 @@ public class RobotContainer {
     public static final Gyro gyro = Gyro.getInstance();
     public static final Vision vision = Vision.getInstance();
     // public static final DriveSubsystem drive = DriveSubsystem.getInstance(); //must be after gyro
+    public static final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     public static final NCPose pose = NCPose.getInstance(); //must be after drive
-    public static final NCOrchestra orchestra = NCOrchestra.getInstance();
+    // public static final NCOrchestra orchestra = NCOrchestra.getInstance();
     public static final PowerDistribution power = new PowerDistribution(1,ModuleType.kRev);
-    public static final IntakeSubsystem intake = IntakeSubsystem.getInstance();
-    public static final IndexerSubsystem indexer = IndexerSubsystem.getInstance();
+    // public static final IntakeSubsystem intake = IntakeSubsystem.getInstance();
+    // public static final IndexerSubsystem indexer = IndexerSubsystem.getInstance();
     public static final ClimberSubsystem climber = ClimberSubsystem.getInstance();
-    public static final AimerSubsystem aimer = AimerSubsystem.getInstance();
-    public static final ArmSubsystem arm = ArmSubsystem.getInstance();
+    // public static final AimerSubsystem aimer = AimerSubsystem.getInstance();
+    // public static final ArmSubsystem arm = ArmSubsystem.getInstance();
     
     public static Optional<Alliance> m_alliance;
 
@@ -72,13 +75,13 @@ public class RobotContainer {
         private double MaxAngularRate = RotationsPerSecond.of(SwerveConstants.kMaxAngularRate).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
     
         private final Telemetry logger = new Telemetry(MaxSpeed);
-        public static final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+        // public static final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
         /* Setting up bindings for necessary control of the swerve drive platform */
         private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
             .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
         private final SwerveRequest.RobotCentric robotdrive = new SwerveRequest.RobotCentric()
-            .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
+            // .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
         private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
         private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
@@ -124,12 +127,12 @@ public class RobotContainer {
         private void resetRobot() {
             lighting.init();
             pose.init();
-            // drive.init();
-            aimer.init();
+            drivetrain.init();
+            // aimer.init();
             climber.init();
-            indexer.init();
-            intake.init();
-            arm.init();
+            // indexer.init();
+            // intake.init();
+            // arm.init();
         }
     
         // Returns true if the alliance is red, otherwise false (blue)
@@ -138,12 +141,18 @@ public class RobotContainer {
         }
     
         private void configureBindings() {
-            dj.pov(90).whileTrue(drivetrain.applyRequest(() -> 
-                robotdrive.withVelocityX(0).withVelocityY(SwerveConstants.kAlignStrafeSpeed)
-            ));
-            dj.pov(270).whileTrue(drivetrain.applyRequest(() -> 
+            dj.povLeft().whileTrue(drivetrain.applyRequest(() -> 
+                    robotdrive.withVelocityX(0).withVelocityY(SwerveConstants.kAlignStrafeSpeed)
+                ).alongWith(
+                    new InstantCommand(() -> { NCDebug.Debug.debug("Debug: StrafeLeft"); })
+                )
+            );
+            dj.povRight().whileTrue(drivetrain.applyRequest(() -> 
                 robotdrive.withVelocityX(0).withVelocityY(-SwerveConstants.kAlignStrafeSpeed)
-            ));
+                ).alongWith(
+                    new InstantCommand(() -> { NCDebug.Debug.debug("Debug: StrafeRight"); })
+                )
+            );
     
             // dj.frame().onTrue((Commands.runOnce(drivetrain::zeroGyro)));
             // dj.stadia().onTrue(Commands.runOnce(drivetrain::addFakeVisionReading));

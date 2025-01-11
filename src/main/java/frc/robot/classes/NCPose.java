@@ -128,8 +128,8 @@ public class NCPose {
 		m_trackingTarget = Targets.SPEAKER;
 		resetPose(
 			(RobotContainer.isAllianceRed()) //more realistic starting position
-				? new Pose2d(m_fieldLength - 1.5,5.547868,new Rotation2d(Math.PI)) 
-				: new Pose2d(1.5,5.547868,new Rotation2d())
+				? new Pose2d(m_fieldLength - 7.2439,4.0082,new Rotation2d(Math.PI)) 
+				: new Pose2d(7.2439,4.0082,new Rotation2d(Math.PI))
 		);
 		NCDebug.Debug.debug("Pose: Initialized");
 	}

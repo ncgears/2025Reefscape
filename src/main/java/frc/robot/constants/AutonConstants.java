@@ -8,7 +8,6 @@ package frc.robot.constants;
  */
 public class AutonConstants {
     public static final boolean isDisabled = false; //Disable autonomous
-    public static final boolean kUsePathPlanner = false; //true uses path planner
     public static final boolean kUseChoreo = true; //true uses choreo
     public static final boolean kUseTracking = true; //enable target tracking during auton pathing
     public static final double kMaxSpeedMetersPerSecond = 4.77;

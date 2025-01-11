@@ -6,7 +6,6 @@ package frc.robot;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
-import com.pathplanner.lib.auto.AutoBuilder;
 
 import choreo.auto.AutoChooser;
 import choreo.auto.AutoFactory;
@@ -24,6 +23,7 @@ import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -110,7 +110,8 @@ public class RobotContainer {
             autoRoutines = new AutoRoutines(autoFactory);
             
             configureBindings();
-    
+            buildDashboards();
+
             drivetrain.setDefaultCommand(
                 // Drivetrain will execute this command periodically
                 drivetrain.applyRequest(() ->
@@ -182,15 +183,20 @@ public class RobotContainer {
          * @return command
          */
         public Command getAutonomousCommand() {
-            System.out.println("Robot: Selected auton routine is "+m_auto_chooser.getSelected().getName());
-            return m_auto_chooser.getSelected();
+            if(AutonConstants.isDisabled) {
+                NCDebug.Debug.debug("Robot: Selected auton routine is "+m_auto_chooser.getSelected().getName());
+                return m_auto_chooser.getSelected();
+            } else {
+                NCDebug.Debug.debug("Robot: Selected auton routine is "+autoChooser.selectedCommand().getName());
+                return autoChooser.selectedCommand();
+            }
         }
     
         //From here down is all used for building the shuffleboard
         public void buildDashboards(){
             //List of Widgets: https://github.com/Gold872/elastic-dashboard/wiki/Widgets-List-&-Properties-Reference
             buildAutonChooser();
-            // buildDriverTab();
+            buildDriverTab();
             // buildTab("Swerve");
             // buildTab("System");
             // buildPowerTab();
@@ -204,13 +210,12 @@ public class RobotContainer {
                 m_auto_chooser.setDefaultOption("None (Auto Disabled)", Commands.none());
             } else {
                 // m_auto_chooser.setDefaultOption("Do Nothing", new cg_autonDoNothing(drive));
-                if(AutonConstants.kUsePathPlanner) m_auto_chooser = AutoBuilder.buildAutoChooser();
                 if(AutonConstants.kUseChoreo) {
                     autoFactory = drivetrain.createAutoFactory();
                     autoRoutines = new AutoRoutines(autoFactory);
-                autoChooser.addRoutine("None (Do Nothing)", autoRoutines::doNothingAuto);
-                autoChooser.addRoutine("Simple Path", autoRoutines::simplePathAuto);
-
+                    // autoChooser.addRoutine("None (Do Nothing)", autoRoutines::doNothingAuto);
+                    autoChooser.addRoutine("Simple Forward", autoRoutines::simpleForwardAuto);
+                    // SmartDashboard.putData("Autonomous Chooser", autoChooser);
                 // m_auto_chooser = autoChooser;
             }
         }
@@ -225,13 +230,14 @@ public class RobotContainer {
             .withProperties(Map.of("time_display_mode","Minutes and Seconds","red_start_time",15,"yellow_start_time",30)) //mode: "Seconds Only" or "Minutes and Seconds"
             .withWidget("Match Time");
         // Auton Chooser
-        if(AutonConstants.isDisabled || AutonConstants.kUsePathPlanner) {
+        if(AutonConstants.isDisabled) {
             driverTab.add("Autonomous Chooser", m_auto_chooser)
                 .withPosition(0, 5)
                 .withSize(8, 2)
                 .withProperties(Map.of("sort_options",true))
                 .withWidget("ComboBox Chooser");
-        } else if(AutonConstants.kUseChoreo) {
+        } else {
+            // SmartDashboard.putData("Autonomous Chooser", autoChooser);
             driverTab.add("Autonomous Chooser", autoChooser)
                 .withPosition(0, 5)
                 .withSize(8, 2)

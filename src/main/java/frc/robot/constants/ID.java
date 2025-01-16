@@ -58,6 +58,7 @@ public class ID {
         public static int swerve_fr_turn = 4;
         public static int swerve_bl_turn = 2;
         public static int swerve_br_turn = 1;
+        public static int coral = 9;
         public static int shootertop = 12;
         public static int shooterbottom = 13;
         public static int aimer = 14;
@@ -79,8 +80,11 @@ public class ID {
         public static int swerve_fr_cc = 4;
         public static int swerve_bl_cc = 2;
         public static int swerve_br_cc = 1;
-        public static int aimer = 20;
-        public static int climber = 21;
-        public static int arm = 22;
+        public static int coral = 20;
+        public static int algae = 21;
+        public static int climber = 22;
+        //remove
+        public static int aimer = 30;
+        public static int arm = 31;
     }
 }

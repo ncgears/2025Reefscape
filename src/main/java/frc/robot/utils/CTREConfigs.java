@@ -10,11 +10,11 @@ import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.configs.TalonFXSConfiguration;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 
-import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import frc.robot.constants.*; 
 
 public final class CTREConfigs {
@@ -27,20 +27,80 @@ public final class CTREConfigs {
     }
 
     //TalonFX
-    public final TalonFXConfiguration swerveDriveFXConfig = new TalonFXConfiguration();
-    public final TalonFXConfiguration shooterFXConfig = new TalonFXConfiguration();
-    public final TalonFXConfiguration aimerFXConfig = new TalonFXConfiguration();
-    public final TalonFXConfiguration armFXConfig = new TalonFXConfiguration();
-    public final TalonFXConfiguration climberFXConfig = new TalonFXConfiguration();
+        public final TalonFXConfiguration swerveDriveFXConfig = new TalonFXConfiguration();
+        public final TalonFXConfiguration coralFXConfig = new TalonFXConfiguration();
+        public final TalonFXConfiguration climberFXConfig = new TalonFXConfiguration();
+        //remove below
+        public final TalonFXConfiguration shooterFXConfig = new TalonFXConfiguration();
+        public final TalonFXConfiguration aimerFXConfig = new TalonFXConfiguration();
+        public final TalonFXConfiguration armFXConfig = new TalonFXConfiguration();
     //TalonFXS
-    // public final TalonFXSConfiguration intakeFXSConfig = new TalonFXSConfiguration();
+        public final TalonFXSConfiguration intakeFXSConfig = new TalonFXSConfiguration();
     //CANcoder
-    public final CANcoderConfiguration aimerCCConfig = new CANcoderConfiguration();
-    public final CANcoderConfiguration armCCConfig = new CANcoderConfiguration();
-    public final CANcoderConfiguration climberCCConfig = new CANcoderConfiguration();
+        public final CANcoderConfiguration coralCCConfig = new CANcoderConfiguration();
+        public final CANcoderConfiguration climberCCConfig = new CANcoderConfiguration();
+        //remove below
+        public final CANcoderConfiguration aimerCCConfig = new CANcoderConfiguration();
+        public final CANcoderConfiguration armCCConfig = new CANcoderConfiguration();
 
     public CTREConfigs() {
         //Intake Configuration
+        //CANcoder
+        coralCCConfig.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 0.5;
+        coralCCConfig.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
+        coralCCConfig.MagnetSensor.MagnetOffset = CoralConstants.kMagnetOffset;
+
+        Slot0Configs coralSlot0Configs = new Slot0Configs()
+            .withKP(CoralConstants.kP)
+            .withKI(CoralConstants.kI)
+            .withKD(CoralConstants.kD)
+            .withKS(CoralConstants.kS)
+            .withKV(CoralConstants.kV)
+            .withKA(CoralConstants.kA);
+        coralFXConfig.Slot0 = coralSlot0Configs;
+        //Current Limits
+        CurrentLimitsConfigs coralCurrentLimitsConfigs = new CurrentLimitsConfigs()
+            .withSupplyCurrentLimit(CoralConstants.kCurrentLimitAmps)
+            // .withSupplyCurrentLowerLimit(CoralConstants.kCurrentLimitThresholdAmps)
+            // .withSupplyCurrentLowerTime(CoralConstants.kCurrentLimitThresholdSecs)
+            .withSupplyCurrentLimitEnable(CoralConstants.kCurrentLimitEnable);
+        coralFXConfig.CurrentLimits = coralCurrentLimitsConfigs;
+        //Motion Magic
+        MotionMagicConfigs coralMotionMagicConfigs = new MotionMagicConfigs()
+            .withMotionMagicCruiseVelocity(CoralConstants.kMotionMagicCruise)
+            .withMotionMagicAcceleration(CoralConstants.kMotionMagicAccel)
+            .withMotionMagicJerk(CoralConstants.kMotionMagicJerk);
+        coralFXConfig.MotionMagic = coralMotionMagicConfigs;
+        //Mechanical Limits
+        SoftwareLimitSwitchConfigs coralSoftwareLimitSwitchConfigs = new SoftwareLimitSwitchConfigs()
+            .withReverseSoftLimitEnable(CoralConstants.kSoftReverseLimitEnable)
+            .withReverseSoftLimitThreshold(CoralConstants.kSoftReverseLimit)
+            .withForwardSoftLimitEnable(CoralConstants.kSoftForwardLimitEnable)
+            .withForwardSoftLimitThreshold(CoralConstants.kSoftForwardLimit);
+        coralFXConfig.SoftwareLimitSwitch = coralSoftwareLimitSwitchConfigs;
+        // HardwareLimitSwitchConfigs coralHardwareLimitsConfigs = new HardwareLimitSwitchConfigs()
+        //     .withReverseLimitEnable(false)
+        //     .withReverseLimitType(ReverseLimitTypeValue.NormallyOpen)
+        //     .withReverseLimitAutosetPositionEnable(true)
+        //     .withReverseLimitAutosetPositionValue(0.0)
+        //     .withForwardLimitEnable(false)
+        //     .withForwardLimitType(ForwardLimitTypeValue.NormallyOpen); //Add autoset position on forward limit to appropriate number also.
+        // coralFXConfig.HardwareLimitSwitch = coralHardwareLimitsConfigs;
+        //Encoder
+        if(CoralConstants.kUseCANcoder) {
+            coralFXConfig.Feedback.FeedbackRemoteSensorID = CoralConstants.kCANcoderID;
+            coralFXConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.FusedCANcoder;
+            coralFXConfig.Feedback.RotorToSensorRatio = CoralConstants.kGearRatio;
+            coralFXConfig.Feedback.SensorToMechanismRatio = CoralConstants.kSensorGearRatio; //CANcoder is the same as mechanism
+        } else {
+            coralFXConfig.Feedback.SensorToMechanismRatio = CoralConstants.kGearRatio;
+        }
+        //Neutral and Direction
+        coralFXConfig.MotorOutput.NeutralMode = CoralConstants.kNeutralMode;
+        coralFXConfig.MotorOutput.Inverted = (CoralConstants.kIsInverted) ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
+        //Audio
+        coralFXConfig.Audio = new AudioConfigs().withAllowMusicDurDisable(true);
+
 
         //Shooter Configuration
         Slot0Configs shooterSlot0Configs = new Slot0Configs()
@@ -198,7 +258,7 @@ public final class CTREConfigs {
 
         //Climber
         //CANcoder
-        climberCCConfig.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 0.5;;
+        climberCCConfig.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 0.5;
         climberCCConfig.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
         climberCCConfig.MagnetSensor.MagnetOffset = ClimberConstants.kMagnetOffset;
 
@@ -239,7 +299,7 @@ public final class CTREConfigs {
         //     .withForwardLimitType(ForwardLimitTypeValue.NormallyOpen); //Add autoset position on forward limit to appropriate number also.
         // climberFXConfig.HardwareLimitSwitch = climberHardwareLimitsConfigs;
         //Encoder
-        if(AimerConstants.kUseCANcoder) {
+        if(ClimberConstants.kUseCANcoder) {
             climberFXConfig.Feedback.FeedbackRemoteSensorID = ClimberConstants.kCANcoderID;
             climberFXConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.FusedCANcoder;
             climberFXConfig.Feedback.RotorToSensorRatio = ClimberConstants.kGearRatio;

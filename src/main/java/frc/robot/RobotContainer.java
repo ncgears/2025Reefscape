@@ -134,15 +134,14 @@ public class RobotContainer {
          * It is recommended there is at least 6-8 TalonFX devices in the orchestra.
          * Falcon500 are much louder than Krakens
          * 
-         * This depends on each subsystem having a getMotors() method that returns the TalonFX devices
+         * This depends on each subsystem having a getMotors() method that returns an array of the TalonFX devices
          */
         if(AudioConstants.isEnabled) {
-            // Drivetrain is unique, in that it returns an ArrayList<TalonFX>, containing 8 Krakens
             ArrayList<TalonFX> instrumentsAll = new ArrayList<>();
+            // The following subsystems return an array of motors (TalonFX[])
             for (TalonFX motor: drivetrain.getMotors()) {
                 instrumentsAll.add(motor);
             }
-            // The following subsystems return multiple motors (TalonFX[])
             // for (TalonFX motor: shooter.getMotors()) {
             //   instrumentsAll.add(motor);
             // }

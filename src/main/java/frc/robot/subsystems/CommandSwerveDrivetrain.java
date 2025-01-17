@@ -418,14 +418,14 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     }    
 
     /**
-     * Returns an array list of TalonFX motors available for the orchestra
-     * @return ArrayList<TalonFX>
+     * Returns an array of TalonFX motors available for the orchestra
+     * @return Array TalonFX[] of TalonFX devices
      */
     public TalonFX[] getMotors() {
 	    ArrayList<TalonFX> motors = new ArrayList<>();
-		for (SwerveModule module: getModules()) {
-			motors.add((TalonFX) module.getDriveMotor());
-            motors.add((TalonFX) module.getSteerMotor());
+		for (var module: getModules()) {
+			motors.add(module.getDriveMotor());
+            motors.add(module.getSteerMotor());
 		}
 		return motors.toArray(new TalonFX[motors.size()]);
 	}

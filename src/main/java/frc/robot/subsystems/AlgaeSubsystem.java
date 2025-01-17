@@ -9,6 +9,7 @@ import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.StaticBrake;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.hardware.TalonFXS;
 
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
@@ -22,11 +23,11 @@ import frc.robot.utils.NCDebug;
 import frc.robot.RobotContainer;
 
 /**
- * This subsystem handles managing the Coral.
- * It is responsible for running the Coral using information from the indexer about whether we have a note.
+ * This subsystem handles managing the Algae.
+ * It is responsible for running the Algae using information from the indexer about whether we have a note.
  */
-public class CoralSubsystem extends SubsystemBase {
-	private static CoralSubsystem instance;
+public class AlgaeSubsystem extends SubsystemBase {
+	private static AlgaeSubsystem instance;
   //private and public variables defined here
   public enum Direction {
     OUT(DashboardConstants.Colors.GREEN),
@@ -38,6 +39,15 @@ public class CoralSubsystem extends SubsystemBase {
     public String getColor() { return this.color; }
   }
   private Direction m_curDirection = Direction.STOP;
+  public enum Position {
+    DOWN(DashboardConstants.Colors.GREEN),
+    UP(DashboardConstants.Colors.RED),
+    STOW(DashboardConstants.Colors.ORANGE);
+    private final String color;
+    Position(String color) { this.color = color; }
+    public String getColor() { return this.color; }
+  }
+  private Position m_curPosition = Position.STOW;
 
   private final MotionMagicVoltage m_mmVoltage = new MotionMagicVoltage(0);
   private final DutyCycleOut m_DutyCycle = new DutyCycleOut(0);
@@ -45,37 +55,40 @@ public class CoralSubsystem extends SubsystemBase {
   private final StaticBrake m_brake = new StaticBrake();
 
   private final CANcoder m_encoder;
-  private final TalonFX m_motor1;
-  private final LinearFilter curSpikeFilter = LinearFilter.highPass(0.1, 0.02);
-  private static final double curSpikeLimit = CoralConstants.kCurrentSpikeLimit;
+  private final TalonFX m_wristmotor1;
+  private final TalonFXS m_swizmotor_left, m_swizmotor_right; 
 
-  private final Trigger curSpikeTrigger = new Trigger(() -> curSpikeFilter.calculate(getStatorCurrent()) > curSpikeLimit).debounce(0.15);
   public final Trigger isRunning = new Trigger(() -> { return (m_curDirection != Direction.STOP);});
 
   /**
-	 * Returns the instance of the CoralSubsystem subsystem.
+	 * Returns the instance of the AlgaeSubsystem subsystem.
 	 * The purpose of this is to only create an instance if one does not already exist.
-	 * @return CoralSubsystem instance
+	 * @return AlgaeSubsystem instance
 	 */
-  public static CoralSubsystem getInstance() {
+  public static AlgaeSubsystem getInstance() {
 		if (instance == null)
-			instance = new CoralSubsystem();
+			instance = new AlgaeSubsystem();
 		return instance;
 	}
   
-  public CoralSubsystem() {
-    // m_motor1 = new TalonFXS(CoralConstants.kMotorID,CoralConstants.kCANBus);
+  public AlgaeSubsystem() {
+    // m_motor1 = new TalonFXS(AlgaeConstants.kMotorID,AlgaeConstants.kCANBus);
     // TalonFXSConfigurator m_config = m_motor1.getConfigurator();
     // TalonFXSConfiguration m_fxsConfigs = new TalonFXSConfiguration();
     // m_fxsConfigs.Commutation.MotorArrangement = MotorArrangementValue.Minion_JST;
     // m_config.apply(m_fxsConfigs);
 
     //initialize values for private and public variables, etc.
-    m_encoder = new CANcoder(CoralConstants.kCANcoderID, CoralConstants.canBus);
-    RobotContainer.ctreConfigs.retryConfigApply(()->m_encoder.getConfigurator().apply(RobotContainer.ctreConfigs.coralCCConfig));
+    m_encoder = new CANcoder(AlgaeConstants.kCANcoderID, AlgaeConstants.canBus);
+    RobotContainer.ctreConfigs.retryConfigApply(()->m_encoder.getConfigurator().apply(RobotContainer.ctreConfigs.algaeCCConfig));
 
-    m_motor1 = new TalonFX(CoralConstants.kMotorID, CoralConstants.canBus);
-    RobotContainer.ctreConfigs.retryConfigApply(()->m_motor1.getConfigurator().apply(RobotContainer.ctreConfigs.coralFXConfig));
+    m_wristmotor1 = new TalonFX(AlgaeConstants.wrist.kMotorID, AlgaeConstants.canBus);
+    RobotContainer.ctreConfigs.retryConfigApply(()->m_wristmotor1.getConfigurator().apply(RobotContainer.ctreConfigs.algaewristFXConfig));
+
+    m_swizmotor_left = new TalonFXS(AlgaeConstants.left.kMotorID, AlgaeConstants.canBus);
+    RobotContainer.ctreConfigs.retryConfigApply(()->m_swizmotor_left.getConfigurator().apply(RobotContainer.ctreConfigs.algaeleftFXSConfig));
+    m_swizmotor_right = new TalonFXS(AlgaeConstants.right.kMotorID, AlgaeConstants.canBus);
+    RobotContainer.ctreConfigs.retryConfigApply(()->m_swizmotor_right.getConfigurator().apply(RobotContainer.ctreConfigs.algaerightFXSConfig));
 
     init();
     createDashboards();
@@ -85,9 +98,9 @@ public class CoralSubsystem extends SubsystemBase {
    * The init function resets and operational state of the subsystem
    */
   public void init() {
-    coralStop();
+    AlgaeStop();
     m_curDirection = Direction.STOP;
-    NCDebug.Debug.debug("Coral: Initialized");
+    NCDebug.Debug.debug("Algae: Initialized");
   }
 
   @Override
@@ -96,42 +109,42 @@ public class CoralSubsystem extends SubsystemBase {
 
   public void createDashboards() {
     ShuffleboardTab driverTab = Shuffleboard.getTab("Driver");
-    driverTab.addString("Coral", this::getColor)
+    driverTab.addString("Algae", this::getColor)
       .withSize(2, 2)
       .withWidget("Single Color View")
       .withPosition(8, 7);  
       ShuffleboardTab systemTab = Shuffleboard.getTab("System");
-			ShuffleboardLayout CoralList = systemTab.getLayout("Coral", BuiltInLayouts.kList)
+			ShuffleboardLayout AlgaeList = systemTab.getLayout("Algae", BuiltInLayouts.kList)
 				.withSize(4,2)
 				.withPosition(4,0)
 				.withProperties(Map.of("Label position","LEFT"));
-			CoralList.addString("Status", this::getColor)
+			AlgaeList.addString("Status", this::getColor)
 				.withWidget("Single Color View");
-			CoralList.addString("Direction", this::getDirectionName);
+			AlgaeList.addString("Direction", this::getDirectionName);
 
-      if(CoralConstants.debugDashboard) {
+      if(AlgaeConstants.debugDashboard) {
       ShuffleboardTab debugTab = Shuffleboard.getTab("Debug");
-			ShuffleboardLayout dbgCoralList = debugTab.getLayout("Coral", BuiltInLayouts.kList)
+			ShuffleboardLayout dbgAlgaeList = debugTab.getLayout("Algae", BuiltInLayouts.kList)
 				.withSize(4,6)
 				.withPosition(8,4)
 				.withProperties(Map.of("Label position","LEFT"));
-			dbgCoralList.addString("Status", this::getColor)
+			dbgAlgaeList.addString("Status", this::getColor)
 				.withWidget("Single Color View");
-			dbgCoralList.addString("Direction", this::getDirectionName);
-      // dbgCoralList.add("Coral In", new InstantCommand(this::CoralIn))
+			dbgAlgaeList.addString("Direction", this::getDirectionName);
+      // dbgAlgaeList.add("Algae In", new InstantCommand(this::AlgaeIn))
       //   .withProperties(Map.of("show_type",false));  
-      // dbgCoralList.add("Coral Out", new InstantCommand(this::CoralOut))
+      // dbgAlgaeList.add("Algae Out", new InstantCommand(this::AlgaeOut))
       //   .withProperties(Map.of("show_type",false));  
-      // dbgCoralList.add("Coral Stop", new InstantCommand(this::CoralStop))
+      // dbgAlgaeList.add("Algae Stop", new InstantCommand(this::AlgaeStop))
       //   .withProperties(Map.of("show_type",false));  
     }
   }
 
-  public void coralStop() {
-    m_motor1.setControl(m_neutral);
+  public void AlgaeStop() {
+    m_wristmotor1.setControl(m_neutral);
     if(m_curDirection != Direction.HOLD) {
       m_curDirection = Direction.STOP;
-      NCDebug.Debug.debug("Coral: Stop");
+      NCDebug.Debug.debug("Algae: Stop");
     }
   }
 
@@ -140,11 +153,11 @@ public class CoralSubsystem extends SubsystemBase {
   public String getColor() { return m_curDirection.getColor(); }
 
   private double getStatorCurrent() {
-    return m_motor1.getStatorCurrent().getValueAsDouble();
+    return m_wristmotor1.getStatorCurrent().getValueAsDouble();
   }
 
   public TalonFX[] getMotors() {
-    TalonFX[] motors = {m_motor1};
+    TalonFX[] motors = {m_wristmotor1};
     return motors;
   }
 }

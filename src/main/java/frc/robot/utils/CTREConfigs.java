@@ -29,6 +29,7 @@ public final class CTREConfigs {
     //TalonFX
         public final TalonFXConfiguration swerveDriveFXConfig = new TalonFXConfiguration();
         public final TalonFXConfiguration coralFXConfig = new TalonFXConfiguration();
+        public final TalonFXConfiguration algaewristFXConfig = new TalonFXConfiguration();
         public final TalonFXConfiguration climberFXConfig = new TalonFXConfiguration();
         //remove below
         public final TalonFXConfiguration shooterFXConfig = new TalonFXConfiguration();
@@ -36,8 +37,11 @@ public final class CTREConfigs {
         public final TalonFXConfiguration armFXConfig = new TalonFXConfiguration();
     //TalonFXS
         public final TalonFXSConfiguration intakeFXSConfig = new TalonFXSConfiguration();
+        public final TalonFXSConfiguration algaeleftFXSConfig = new TalonFXSConfiguration();
+        public final TalonFXSConfiguration algaerightFXSConfig = new TalonFXSConfiguration();
     //CANcoder
         public final CANcoderConfiguration coralCCConfig = new CANcoderConfiguration();
+        public final CANcoderConfiguration algaeCCConfig = new CANcoderConfiguration();
         public final CANcoderConfiguration climberCCConfig = new CANcoderConfiguration();
         //remove below
         public final CANcoderConfiguration aimerCCConfig = new CANcoderConfiguration();

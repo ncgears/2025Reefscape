@@ -58,12 +58,21 @@ public class ID {
         public static int swerve_fr_turn = 4;
         public static int swerve_bl_turn = 2;
         public static int swerve_br_turn = 1;
-        public static int coral = 9;
+        public static int climber = 9;
+        public static int coral = 10;
+        public static int algae_wrist = 11;
+        //remove
         public static int shootertop = 12;
         public static int shooterbottom = 13;
         public static int aimer = 14;
         public static int arm = 15;
-        public static int climber = 16;
+    }
+    /**
+     * IDs of TalonFXS
+     */
+    public static final class TalonFXS {
+        public static int algae_left = 12;
+        public static int algae_right = 13;
     }
     /**
      * IDs of CANdles

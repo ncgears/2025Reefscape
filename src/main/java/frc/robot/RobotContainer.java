@@ -28,9 +28,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RepeatCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandStadiaController;
+import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import frc.robot.classes.Gyro;
 import frc.robot.classes.Lighting;
+import frc.robot.classes.Lighting.Colors;
 import frc.robot.classes.NCOrchestra;
 import frc.robot.classes.NCPose;
 import frc.robot.classes.Vision;
@@ -43,6 +47,7 @@ import frc.robot.subsystems.AimerSubsystem;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.CoralSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 
@@ -61,162 +66,190 @@ public class RobotContainer {
     public static final ClimberSubsystem climber = ClimberSubsystem.getInstance();
     // public static final AimerSubsystem aimer = AimerSubsystem.getInstance();
     // public static final ArmSubsystem arm = ArmSubsystem.getInstance();
+    public static final CoralSubsystem coral = CoralSubsystem.getInstance();
     
     public static Optional<Alliance> m_alliance;
 
     private AutoFactory autoFactory;
     private AutoRoutines autoRoutines;
         
-        private final AutoChooser autoChooser = new AutoChooser();
-        //Sendables definitions
-        private SendableChooser<Command> m_auto_chooser = new SendableChooser<>();
-    
-        private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
-        private double MaxAngularRate = RotationsPerSecond.of(SwerveConstants.kMaxAngularRate).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
-    
-        private final Telemetry logger = new Telemetry(MaxSpeed);
-        // public static final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
-        /* Setting up bindings for necessary control of the swerve drive platform */
-        private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
-            .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
-            .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
-        private final SwerveRequest.RobotCentric robotdrive = new SwerveRequest.RobotCentric()
-            // .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
-            .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
-        private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
-        private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
-    
-        private final CommandStadiaController dj = new CommandStadiaController(OIConstants.JoyDriverID);
-    
-        public RobotContainer() {
-            final InputAxis m_fieldX = new InputAxis("Forward", dj::getLeftY)
-                .withDeadband(OIConstants.kMinDeadband)
-                .withInvert(true)
-                .withSquaring(false);
-            final InputAxis m_fieldY = new InputAxis("Strafe", dj::getLeftX)
-                .withDeadband(OIConstants.kMinDeadband)
-                .withInvert(true)
-                .withSquaring(false);
-            final InputAxis m_rotate = new InputAxis("Rotate", dj::getRightX)
-                .withDeadband(OIConstants.kMinDeadband)
-                .withInvert(true);
-            autoFactory = new AutoFactory(
-                () -> drivetrain.getState().Pose,
-                drivetrain::resetPose,
-                drivetrain::followPath,
-                true,
-                drivetrain
-            );
-            autoRoutines = new AutoRoutines(autoFactory);
-            
-            configureBindings();
-            buildDashboards();
+    private final AutoChooser autoChooser = new AutoChooser();
+    //Sendables definitions
+    private SendableChooser<Command> m_auto_chooser = new SendableChooser<>();
 
-            drivetrain.setDefaultCommand(
-                // Drivetrain will execute this command periodically
-                drivetrain.applyRequest(() ->
-                    drive.withVelocityX(m_fieldX.getAsDouble() * MaxSpeed) // Drive forward with negative Y (forward)
-                        .withVelocityY(m_fieldY.getAsDouble() * MaxSpeed) // Drive left with negative X (left)
-                        .withRotationalRate(m_rotate.getAsDouble() * MaxAngularRate) // Drive counterclockwise with negative X (left)
-                )
-            );
+    private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
+    private double MaxAngularRate = RotationsPerSecond.of(SwerveConstants.kMaxAngularRate).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
+
+    private final Telemetry logger = new Telemetry(MaxSpeed);
+    // public static final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+    /* Setting up bindings for necessary control of the swerve drive platform */
+    private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
+        .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
+        .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
+    private final SwerveRequest.RobotCentric robotdrive = new SwerveRequest.RobotCentric()
+        // .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
+        .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
+    private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
+    private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
+
+    private final CommandStadiaController dj = new CommandStadiaController(OIConstants.JoyDriverID);
+    private final CommandStadiaController oj = new CommandStadiaController(OIConstants.JoyOperID);
+
+    public RobotContainer() {
+        final InputAxis m_fieldX = new InputAxis("Forward", dj::getLeftY)
+            .withDeadband(OIConstants.kMinDeadband)
+            .withInvert(true)
+            .withSquaring(false);
+        final InputAxis m_fieldY = new InputAxis("Strafe", dj::getLeftX)
+            .withDeadband(OIConstants.kMinDeadband)
+            .withInvert(true)
+            .withSquaring(false);
+        final InputAxis m_rotate = new InputAxis("Rotate", dj::getRightX)
+            .withDeadband(OIConstants.kMinDeadband)
+            .withInvert(true);
+        autoFactory = new AutoFactory(
+            () -> drivetrain.getState().Pose,
+            drivetrain::resetPose,
+            drivetrain::followPath,
+            true,
+            drivetrain
+        );
+        autoRoutines = new AutoRoutines(autoFactory);
+        
+        configureBindings();
+        buildDashboards();
+
+        drivetrain.setDefaultCommand(
+            // Drivetrain will execute this command periodically
+            drivetrain.applyRequest(() ->
+                drive.withVelocityX(m_fieldX.getAsDouble() * MaxSpeed) // Drive forward with negative Y (forward)
+                    .withVelocityY(m_fieldY.getAsDouble() * MaxSpeed) // Drive left with negative X (left)
+                    .withRotationalRate(m_rotate.getAsDouble() * MaxAngularRate) // Drive counterclockwise with negative X (left)
+            )
+        );
+    }
+    
+    /**
+     * This performs robot reset initializations when the disabled() trigger fires.
+     */
+    private void resetRobot() {
+        lighting.init();
+        pose.init();
+        drivetrain.init();
+        // aimer.init();
+        climber.init();
+        // indexer.init();
+        // intake.init();
+        // arm.init();
+    }
+    
+    // Returns true if the alliance is red, otherwise false (blue)
+    public static boolean isAllianceRed() {
+        return DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red;
+    }
+    
+    private void configureBindings() {
+        // bind to the disabled() trigger which happens any time the robot is disabled
+        RobotModeTriggers.disabled().onTrue(
+            new InstantCommand(this::resetRobot).ignoringDisable(true)
+            .alongWith(
+                new RepeatCommand(  //Lighting Disco Party!
+                    lighting.setColorCommand(Colors.NCBLUE)
+                    .andThen(new WaitCommand(0.5))
+                    .andThen(lighting.setColorCommand(Colors.NCGREEN))
+                    .andThen(new WaitCommand(0.5))
+                    .andThen(lighting.setColorCommand(Colors.NCBLUE))
+                    .andThen(new WaitCommand(0.15))
+                    .andThen(lighting.setColorCommand(Colors.OFF))
+                    .andThen(new WaitCommand(0.15))
+                    .andThen(lighting.setColorCommand(Colors.NCBLUE))
+                    .andThen(new WaitCommand(0.15))
+                    .andThen(lighting.setColorCommand(Colors.NCGREEN))
+                    .andThen(new WaitCommand(0.25))
+                ).until(RobotModeTriggers.disabled().negate())
+            )
+        );
+        // bind to the autonomous() and teleop() trigger which happens any time the robot is enabled in either of those modes
+        RobotModeTriggers.autonomous().or(RobotModeTriggers.teleop()).onTrue(
+            new InstantCommand(() -> lighting.setColorCommand(Colors.OFF))
+                // .andThen(climber.runOnce(climber::ratchetLock)).andThen(new WaitCommand(0.5)).andThen(climber.runOnce(climber::ratchetFree))
+        );
+
+        dj.povLeft().whileTrue(drivetrain.applyRequest(() -> 
+                robotdrive.withVelocityX(0).withVelocityY(SwerveConstants.kAlignStrafeSpeed)
+            ).alongWith(
+                new InstantCommand(() -> { NCDebug.Debug.debug("Debug: StrafeLeft"); })
+            )
+        );
+        dj.povRight().whileTrue(drivetrain.applyRequest(() -> 
+            robotdrive.withVelocityX(0).withVelocityY(-SwerveConstants.kAlignStrafeSpeed)
+            ).alongWith(
+                new InstantCommand(() -> { NCDebug.Debug.debug("Debug: StrafeRight"); })
+            )
+        );
+
+        // dj.frame().onTrue((Commands.runOnce(drivetrain::zeroGyro)));
+        // dj.stadia().onTrue(Commands.runOnce(drivetrain::addFakeVisionReading));
+
+        //hold A to apply brake
+        dj.a().whileTrue(drivetrain.applyRequest(() -> brake));
+        //hold B to point the wheels forward
+        dj.b().whileTrue(drivetrain.applyRequest(() ->
+            point.withModuleDirection(new Rotation2d(-dj.getLeftY(),-dj.getLeftX()))
+        ));
+
+        // Run SysId routines when holding ellipses/google and X/Y.
+        // Note that each routine should be run exactly once in a single log.
+        dj.ellipses().and(dj.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
+        dj.ellipses().and(dj.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
+        dj.google().and(dj.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
+        dj.google().and(dj.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
+
+        // reset the field-centric heading on hamburger button press
+        dj.hamburger().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+
+        drivetrain.registerTelemetry(logger::telemeterize);
+    }
+    
+    /**
+     * Use this to pass the named command to the main Robot class.
+     * @return command
+     */
+    public Command getAutonomousCommand() {
+        if(AutonConstants.isDisabled) {
+            NCDebug.Debug.debug("Robot: Selected auton routine is "+m_auto_chooser.getSelected().getName());
+            return m_auto_chooser.getSelected();
+        } else {
+            NCDebug.Debug.debug("Robot: Selected auton routine is "+autoChooser.selectedCommand().getName());
+            return autoChooser.selectedCommand();
         }
+    }
+
+    //From here down is all used for building the shuffleboard
+    public void buildDashboards(){
+        //List of Widgets: https://github.com/Gold872/elastic-dashboard/wiki/Widgets-List-&-Properties-Reference
+        buildAutonChooser();
+        buildDriverTab();
+        // buildTab("Swerve");
+        // buildTab("System");
+        // buildPowerTab();
+        // buildDebugTab();
+        gyro.buildDashboards();
+    }    
     
-        /**
-         * This performs robot reset initializations when the disabled() trigger fires.
-         */
-        private void resetRobot() {
-            lighting.init();
-            pose.init();
-            drivetrain.init();
-            // aimer.init();
-            climber.init();
-            // indexer.init();
-            // intake.init();
-            // arm.init();
-        }
-    
-        // Returns true if the alliance is red, otherwise false (blue)
-        public static boolean isAllianceRed() {
-            return DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red;
-        }
-    
-        private void configureBindings() {
-            dj.povLeft().whileTrue(drivetrain.applyRequest(() -> 
-                    robotdrive.withVelocityX(0).withVelocityY(SwerveConstants.kAlignStrafeSpeed)
-                ).alongWith(
-                    new InstantCommand(() -> { NCDebug.Debug.debug("Debug: StrafeLeft"); })
-                )
-            );
-            dj.povRight().whileTrue(drivetrain.applyRequest(() -> 
-                robotdrive.withVelocityX(0).withVelocityY(-SwerveConstants.kAlignStrafeSpeed)
-                ).alongWith(
-                    new InstantCommand(() -> { NCDebug.Debug.debug("Debug: StrafeRight"); })
-                )
-            );
-    
-            // dj.frame().onTrue((Commands.runOnce(drivetrain::zeroGyro)));
-            // dj.stadia().onTrue(Commands.runOnce(drivetrain::addFakeVisionReading));
-    
-            //hold A to apply brake
-            dj.a().whileTrue(drivetrain.applyRequest(() -> brake));
-            //hold B to point the wheels forward
-            dj.b().whileTrue(drivetrain.applyRequest(() ->
-                point.withModuleDirection(new Rotation2d(-dj.getLeftY(),-dj.getLeftX()))
-            ));
-    
-            // Run SysId routines when holding ellipses/google and X/Y.
-            // Note that each routine should be run exactly once in a single log.
-            dj.ellipses().and(dj.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
-            dj.ellipses().and(dj.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
-            dj.google().and(dj.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
-            dj.google().and(dj.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
-    
-            // reset the field-centric heading on hamburger button press
-            dj.hamburger().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
-    
-            drivetrain.registerTelemetry(logger::telemeterize);
-        }
-    
-        /**
-         * Use this to pass the named command to the main Robot class.
-         * @return command
-         */
-        public Command getAutonomousCommand() {
-            if(AutonConstants.isDisabled) {
-                NCDebug.Debug.debug("Robot: Selected auton routine is "+m_auto_chooser.getSelected().getName());
-                return m_auto_chooser.getSelected();
-            } else {
-                NCDebug.Debug.debug("Robot: Selected auton routine is "+autoChooser.selectedCommand().getName());
-                return autoChooser.selectedCommand();
-            }
-        }
-    
-        //From here down is all used for building the shuffleboard
-        public void buildDashboards(){
-            //List of Widgets: https://github.com/Gold872/elastic-dashboard/wiki/Widgets-List-&-Properties-Reference
-            buildAutonChooser();
-            buildDriverTab();
-            // buildTab("Swerve");
-            // buildTab("System");
-            // buildPowerTab();
-            // buildDebugTab();
-            gyro.buildDashboards();
-        }    
-    
-        public void buildAutonChooser() {
-            //This builds the auton chooser, giving driver friendly names to the commands from above
-            if(AutonConstants.isDisabled) {
-                m_auto_chooser.setDefaultOption("None (Auto Disabled)", Commands.none());
-            } else {
-                // m_auto_chooser.setDefaultOption("Do Nothing", new cg_autonDoNothing(drive));
-                if(AutonConstants.kUseChoreo) {
-                    autoFactory = drivetrain.createAutoFactory();
-                    autoRoutines = new AutoRoutines(autoFactory);
-                    // autoChooser.addRoutine("None (Do Nothing)", autoRoutines::doNothingAuto);
-                    autoChooser.addRoutine("Simple Forward", autoRoutines::simpleForwardAuto);
-                    // SmartDashboard.putData("Autonomous Chooser", autoChooser);
-                // m_auto_chooser = autoChooser;
+    public void buildAutonChooser() {
+        //This builds the auton chooser, giving driver friendly names to the commands from above
+        if(AutonConstants.isDisabled) {
+            m_auto_chooser.setDefaultOption("None (Auto Disabled)", Commands.none());
+        } else {
+            // m_auto_chooser.setDefaultOption("Do Nothing", new cg_autonDoNothing(drive));
+            if(AutonConstants.kUseChoreo) {
+                autoFactory = drivetrain.createAutoFactory();
+                autoRoutines = new AutoRoutines(autoFactory);
+                // autoChooser.addRoutine("None (Do Nothing)", autoRoutines::doNothingAuto);
+                autoChooser.addRoutine("Simple Forward", autoRoutines::simpleForwardAuto);
+                // SmartDashboard.putData("Autonomous Chooser", autoChooser);
+            // m_auto_chooser = autoChooser;
             }
         }
     }

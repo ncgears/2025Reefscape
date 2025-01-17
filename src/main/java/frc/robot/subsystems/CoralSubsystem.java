@@ -145,4 +145,9 @@ public class CoralSubsystem extends SubsystemBase {
   private double getStatorCurrent() {
     return m_motor1.getStatorCurrent().getValueAsDouble();
   }
+
+  public TalonFX[] getMotors() {
+    TalonFX[] motors = {m_motor1};
+    return motors;
+  }
 }

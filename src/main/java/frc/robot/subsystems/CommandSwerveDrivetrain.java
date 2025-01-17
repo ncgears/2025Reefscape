@@ -2,12 +2,15 @@ package frc.robot.subsystems;
 
 import static edu.wpi.first.units.Units.*;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.function.Supplier;
 
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.swerve.SwerveDrivetrainConstants;
+import com.ctre.phoenix6.swerve.SwerveModule;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
@@ -396,7 +399,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         return createAutoFactory((sample, isStart) -> {});
     }
 
-
     /**
      * Creates a new auto factory for this drivetrain with the given
      * trajectory logger.
@@ -414,6 +416,19 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             trajLogger
         );
     }    
+
+    /**
+     * Returns an array list of TalonFX motors available for the orchestra
+     * @return ArrayList<TalonFX>
+     */
+    public TalonFX[] getMotors() {
+	    ArrayList<TalonFX> motors = new ArrayList<>();
+		for (SwerveModule module: getModules()) {
+			motors.add((TalonFX) module.getDriveMotor());
+            motors.add((TalonFX) module.getSteerMotor());
+		}
+		return motors.toArray(new TalonFX[motors.size()]);
+	}
 
     /**
      * Returns a command that applies the specified control request to this swerve drivetrain.

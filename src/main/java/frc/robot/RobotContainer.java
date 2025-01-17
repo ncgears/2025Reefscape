@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
@@ -12,6 +13,7 @@ import choreo.auto.AutoFactory;
 
 import static edu.wpi.first.units.Units.*;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Optional;
 
@@ -56,17 +58,14 @@ public class RobotContainer {
     public static final Lighting lighting = Lighting.getInstance();
     public static final Gyro gyro = Gyro.getInstance();
     public static final Vision vision = Vision.getInstance();
+    private final NCOrchestra orchestra = NCOrchestra.getInstance();
     // public static final DriveSubsystem drive = DriveSubsystem.getInstance(); //must be after gyro
-    public static final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+    public static final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain(); //must be after gyro
     public static final NCPose pose = NCPose.getInstance(); //must be after drive
-    // public static final NCOrchestra orchestra = NCOrchestra.getInstance();
     public static final PowerDistribution power = new PowerDistribution(1,ModuleType.kRev);
-    // public static final IntakeSubsystem intake = IntakeSubsystem.getInstance();
-    // public static final IndexerSubsystem indexer = IndexerSubsystem.getInstance();
     public static final ClimberSubsystem climber = ClimberSubsystem.getInstance();
-    // public static final AimerSubsystem aimer = AimerSubsystem.getInstance();
-    // public static final ArmSubsystem arm = ArmSubsystem.getInstance();
     public static final CoralSubsystem coral = CoralSubsystem.getInstance();
+    // public static final AlgaeSubsystem algae = AlgaeSubsystem.getInstance();
     
     public static Optional<Alliance> m_alliance;
 
@@ -87,7 +86,6 @@ public class RobotContainer {
         .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
         .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
     private final SwerveRequest.RobotCentric robotdrive = new SwerveRequest.RobotCentric()
-        // .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
         .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
@@ -116,6 +114,7 @@ public class RobotContainer {
         );
         autoRoutines = new AutoRoutines(autoFactory);
         
+        initOrchestra();
         configureBindings();
         buildDashboards();
 
@@ -129,6 +128,29 @@ public class RobotContainer {
         );
     }
     
+    private void initOrchestra() {
+        /**
+         * This adds instruments to the orchestra. 
+         * It is recommended there is at least 6-8 TalonFX devices in the orchestra.
+         * Falcon500 are much louder than Krakens
+         * 
+         * This depends on each subsystem having a getMotors() method that returns the TalonFX devices
+         */
+        if(AudioConstants.isEnabled) {
+            // Drivetrain is unique, in that it returns an ArrayList<TalonFX>, containing 8 Krakens
+            ArrayList<TalonFX> instrumentsAll = new ArrayList<>();
+            for (TalonFX motor: drivetrain.getMotors()) {
+                instrumentsAll.add(motor);
+            }
+            // The following subsystems return multiple motors (TalonFX[])
+            // for (TalonFX motor: shooter.getMotors()) {
+            //   instrumentsAll.add(motor);
+            // }
+            TalonFX[] instruments = instrumentsAll.toArray(new TalonFX[instrumentsAll.size()]);
+            orchestra.apply(instruments);
+        }
+    }
+
     /**
      * This performs robot reset initializations when the disabled() trigger fires.
      */
@@ -141,6 +163,8 @@ public class RobotContainer {
         // indexer.init();
         // intake.init();
         // arm.init();
+        coral.init();
+        // algae.init();
     }
     
     // Returns true if the alliance is red, otherwise false (blue)
@@ -171,10 +195,28 @@ public class RobotContainer {
         );
         // bind to the autonomous() and teleop() trigger which happens any time the robot is enabled in either of those modes
         RobotModeTriggers.autonomous().or(RobotModeTriggers.teleop()).onTrue(
-            new InstantCommand(() -> lighting.setColorCommand(Colors.OFF))
+            new InstantCommand(orchestra::stop).ignoringDisable(true)
+            .andThen(() -> lighting.setColorCommand(Colors.OFF))
                 // .andThen(climber.runOnce(climber::ratchetLock)).andThen(new WaitCommand(0.5)).andThen(climber.runOnce(climber::ratchetFree))
         );
 
+        if(AudioConstants.isEnabled) {
+            /** Manage Music - Song list
+            *  Brawl-Theme.chrp
+            *  Megalovania.chrp
+            *  Rickroll.chrp
+            *  Still-Alive.chrp
+            */
+            dj.stadia().onTrue(new InstantCommand(() -> {
+                if(orchestra.isPlaying()) {
+                    orchestra.stop();
+                } else {
+                    orchestra.withMusic("Still-Alive.chrp").play();
+                }
+            }).ignoringDisable(true));
+        }
+
+        //POV left and right are robot-centric strafing
         dj.povLeft().whileTrue(drivetrain.applyRequest(() -> 
                 robotdrive.withVelocityX(0).withVelocityY(SwerveConstants.kAlignStrafeSpeed)
             ).alongWith(

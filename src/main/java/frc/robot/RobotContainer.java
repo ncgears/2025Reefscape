@@ -45,13 +45,10 @@ import frc.robot.utils.CTREConfigs;
 import frc.robot.utils.InputAxis;
 import frc.robot.utils.NCDebug;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-import frc.robot.subsystems.AimerSubsystem;
-import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.AlgaeSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.CoralSubsystem;
-import frc.robot.subsystems.IndexerSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
 
 public class RobotContainer {
     public static final CTREConfigs ctreConfigs = new CTREConfigs();
@@ -65,7 +62,7 @@ public class RobotContainer {
     public static final PowerDistribution power = new PowerDistribution(1,ModuleType.kRev);
     public static final ClimberSubsystem climber = ClimberSubsystem.getInstance();
     public static final CoralSubsystem coral = CoralSubsystem.getInstance();
-    // public static final AlgaeSubsystem algae = AlgaeSubsystem.getInstance();
+    public static final AlgaeSubsystem algae = AlgaeSubsystem.getInstance();
     
     public static Optional<Alliance> m_alliance;
 

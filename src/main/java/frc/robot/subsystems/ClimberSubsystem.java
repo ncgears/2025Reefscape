@@ -37,7 +37,8 @@ public class ClimberSubsystem extends SubsystemBase {
 	private static ClimberSubsystem instance;
   //private and public variables defined here
 
-  private DigitalInput m_cageSwitch = new DigitalInput(ClimberConstants.kCageSwitchID);
+  private DigitalInput m_cageSwitch1 = new DigitalInput(ClimberConstants.kCageSwitch1ID);
+  private DigitalInput m_cageSwitch2 = new DigitalInput(ClimberConstants.kCageSwitch2ID);
 
   public enum State {
     UP(DashboardConstants.Colors.GREEN),
@@ -170,11 +171,14 @@ public class ClimberSubsystem extends SubsystemBase {
   public String getStateColor() { return m_curState.getColor(); }
 
   public boolean hasCage() {
-    return getCageSwitch();
+    return getCageSwitch1() && getCageSwitch2();
   }
 
-  private boolean getCageSwitch() {
-    return m_cageSwitch.get();
+  private boolean getCageSwitch1() {
+    return m_cageSwitch1.get();
+  }
+  private boolean getCageSwitch2() {
+    return m_cageSwitch2.get();
   }
 
   public String getTargetPositionName() { return m_targetPosition.toString(); }

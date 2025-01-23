@@ -12,7 +12,8 @@ public class ID {
      */
     public static final class DIO {
         //public static int some_named_dio = 0;
-        public static int climber_cageSwitch = 0;
+        public static int climber_cageSwitch1 = 0;
+        public static int climber_cageSwitch2 = 1;
     }
     /**
      * IDs of RoboRio Analog IO

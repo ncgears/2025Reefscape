@@ -153,6 +153,19 @@ public class NCPose {
 		return () -> RobotContainer.drivetrain.getState().Pose;
 	}
 
+	public double getBearingOfTarget(Targets target) {
+		return 0.0;
+		//RobotContainer.drivetrain.getTargetHeading();
+	}
+
+	public double getDistanceOfTarget(Targets target) {
+		return 0.0;
+	}
+
+	public Rotation2d getAngleOfTarget(Targets target) {
+		return Rotation2d.fromDegrees(0.0);
+	}
+
 	// /**
     //  * Reset the estimated pose of the swerve drive on the field.
     //  *
@@ -213,92 +226,6 @@ public class NCPose {
 	}
 	public void addVisionMeasurement(Pose2d visionMeasurement, double timestampSeconds, Matrix<N3, N1> stdDevs) {
 		RobotContainer.drivetrain.addVisionMeasurement(visionMeasurement, timestampSeconds, stdDevs);
-	}
-
-	public Pose3d updateShooterPose() {
-		m_shooterPose = new Pose3d(getPose().get())
-			.transformBy(ShooterConstants.kRobotToShooter);
-		return m_shooterPose;
-	}
-
-	/**
-	 * getShooterToTarget returns a Transform3d representing the delta between the shooter and the target
-	 * @param target The target for which we want to calculate from
-	 * @return Transform3d of the delta
-	 */
-	public Transform3d getShooterToTarget(Targets target) {
-		Pose3d shooterPose = updateShooterPose();
-		Pose3d targetPose = (RobotContainer.isAllianceRed()) ? target.getMirrorPose() : target.getPose();
-
-		// TESTING: these poses should result in a distance to target of 5 meters and a Z angle of 0.765rad (45 degrees)
-		// shooterPose = new Pose3d(3,4,0,new Rotation3d());
-		// targetPose = new Pose3d(0,0,5,new Rotation3d());
-
-		// shooterPose = new Pose3d(0,5,0,new Rotation3d());
-		// targetPose = new Pose3d(5,0,0,new Rotation3d());
-
-		return shooterPose.minus(targetPose);
-	}
-
-	/**
-     * getAngleOfTarget calculates the vertical angle of the target based on the position of the shooter in the field space
-	 * @param target The target for which we want to calculate from
-     * @return the vertical angle of the target, relative to the shooter, as a Rotation2d from the horizontal plane
-     */
-	public Rotation2d getAngleOfTarget(Targets target) {
-		Transform3d shooterToTarget = getShooterToTarget(target);
-		double distance = Math.sqrt(Math.pow(shooterToTarget.getX(),2)+Math.pow(shooterToTarget.getY(),2));
-		// distance += (distance > Aimer.kDistanceMinimumForOffset) ? Aimer.kDistanceOffset : 0;
-		distance -= (m_adjustUp) ? 0.5 : 0.0;
-		double angle = (Math.atan2(Math.abs(shooterToTarget.getZ()),distance));
-		return Rotation2d.fromRadians(angle);
-	}
-
-	public void bumpUp() { m_adjustUp = true; }
-	public void bumpDown() { m_adjustUp = false; }
-
-
-	/**
-	 * getGravityAdjustmentOfTarget calculates a distance based gravity adjustment to the angle of the target to compensate
-	 * for the drop over distance.
-	 * @param target The target for which we want to calculate from
-	 * @return the vertical adjustment for the angle, relative to the shooter, as a Rotation2d from the horizontal plane
-	 */
-	public Rotation2d getGravityAdjustmentOfTarget(Targets target) {
-		double distance = getDistanceOfTarget(target);
-		// distance -= (distance > Aimer.kGravityDistanceOffset) ? Aimer.kGravityDistanceOffset : 0;
-		if(distance > AimerConstants.kGravityDistanceOffset) {
-			distance -= AimerConstants.kGravityDistanceOffset;
-		}
-		double adjustment = distance * AimerConstants.kGravityMultiplier;
-		return Rotation2d.fromRadians(adjustment);
-
-	}
-
-	/**
-	 * getDistanceOfTarget calculates the distance between the shooter and the target in 3d space
-	 * @param target The target for which we want to calculate from
-	 * @return Distance between the shooter and the target in meters
-	 */
-	public double getDistanceOfTarget(Targets target) {
-		Transform3d shooterToTarget = getShooterToTarget(target);
-		return Math.sqrt(Math.pow(shooterToTarget.getX(),2)+Math.pow(shooterToTarget.getY(),2));
-	}
-
-	/**
-	 * getBearingOfTarget calculates the bearing of the target based on the position of the shooter in the field space
-	 * @param target The target for which we want to calculate from
-	 * @return the bearing (heading) of the target, relative to the shooter, in degrees
-	 */
-	public double getBearingOfTarget(Targets target) { 
-		// return 0.0;
-		// Transform3d shooterToTarget = getShooterToTarget(target);
-		// return shooterToTarget.getTranslation().toTranslation2d().getAngle().getDegrees();
-		Pose3d shooterPose = updateShooterPose();
-		var targetPose = (RobotContainer.isAllianceRed()) ? target.getMirrorPose() : target.getPose();
-		Translation2d bearing = targetPose.getTranslation().toTranslation2d().minus(shooterPose.getTranslation().toTranslation2d());
-		// return bearing.getAngle().getDegrees();
-		return bearing.getAngle().getDegrees();
 	}
 
 	////#region "Tracking"

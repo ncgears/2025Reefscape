@@ -37,8 +37,6 @@ public class ID {
      * IDs of Talons
      */
     public static final class Talon {
-        public static int intake = 10;
-        public static int indexer = 11;
     }
     /**
      * IDs of Gyros
@@ -61,11 +59,6 @@ public class ID {
         public static int climber = 9;
         public static int coral = 10;
         public static int algae_wrist = 11;
-        //remove
-        public static int shootertop = 12;
-        public static int shooterbottom = 13;
-        public static int aimer = 14;
-        public static int arm = 15;
     }
     /**
      * IDs of TalonFXS
@@ -92,8 +85,5 @@ public class ID {
         public static int coral = 20;
         public static int algae = 21;
         public static int climber = 22;
-        //remove
-        public static int aimer = 30;
-        public static int arm = 31;
     }
 }

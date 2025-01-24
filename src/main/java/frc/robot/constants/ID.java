@@ -25,9 +25,6 @@ public class ID {
      * IDs of RoboRio PWM
      */
     public static final class PWM {
-        public static int climber_leftServo = 0;
-        public static int climber_rightServo = 1;
-        public static int climber_ratchetServo = 2;
     }
     /**
      * IDs of RoboRio Relays
@@ -60,6 +57,7 @@ public class ID {
         public static int climber = 9;
         public static int coral = 10;
         public static int algae_wrist = 11;
+        public static int elevator = 12;
     }
     /**
      * IDs of TalonFXS
@@ -86,5 +84,6 @@ public class ID {
         public static int coral = 20;
         public static int algae = 21;
         public static int climber = 22;
+        public static int elevator = 23;
     }
 }

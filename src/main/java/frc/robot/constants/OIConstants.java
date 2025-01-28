@@ -9,6 +9,7 @@ package frc.robot.constants;
 public class OIConstants { 
     public static final int JoyDriverID = 0; //ID of Driver Joystick
     public static final int JoyOperID = 1; //ID of Operator Joystick
+    public static final int JoyProgID = 2; //ID of Programmer Joystick
     public static final double kMinDeadband = 0.02; //Deadband for analog joystick axis minimum
     public static final double kMaxDeadband = 0.98; //Deadband for analog joystick axis minimum
 }

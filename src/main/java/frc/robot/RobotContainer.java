@@ -38,7 +38,7 @@ import frc.robot.classes.Gyro;
 import frc.robot.classes.Lighting;
 import frc.robot.classes.Lighting.Colors;
 import frc.robot.classes.NCOrchestra;
-import frc.robot.classes.NCPose;
+import frc.robot.classes.Targeting;
 import frc.robot.classes.Vision;
 import frc.robot.constants.*;
 import frc.robot.utils.CTREConfigs;
@@ -58,7 +58,7 @@ public class RobotContainer {
     private final NCOrchestra orchestra = NCOrchestra.getInstance();
     // public static final DriveSubsystem drive = DriveSubsystem.getInstance(); //must be after gyro
     public static final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain(); //must be after gyro
-    public static final NCPose pose = NCPose.getInstance(); //must be after drive
+    public static final Targeting targeting = Targeting.getInstance(); //must be after drive
     public static final PowerDistribution power = new PowerDistribution(1,ModuleType.kRev);
     public static final ClimberSubsystem climber = ClimberSubsystem.getInstance();
     public static final CoralSubsystem coral = CoralSubsystem.getInstance();
@@ -89,6 +89,7 @@ public class RobotContainer {
 
     private final CommandStadiaController dj = new CommandStadiaController(OIConstants.JoyDriverID);
     private final CommandStadiaController oj = new CommandStadiaController(OIConstants.JoyOperID);
+    private final CommandStadiaController pj = new CommandStadiaController(OIConstants.JoyProgID);
 
     public RobotContainer() {
         final InputAxis m_fieldX = new InputAxis("Forward", dj::getLeftY)
@@ -152,15 +153,11 @@ public class RobotContainer {
      */
     private void resetRobot() {
         lighting.init();
-        pose.init();
+        targeting.init();
         drivetrain.init();
-        // aimer.init();
         climber.init();
-        // indexer.init();
-        // intake.init();
-        // arm.init();
         coral.init();
-        // algae.init();
+        algae.init();
     }
     
     // Returns true if the alliance is red, otherwise false (blue)
@@ -236,15 +233,44 @@ public class RobotContainer {
             point.withModuleDirection(new Rotation2d(-dj.getLeftY(),-dj.getLeftX()))
         ));
 
-        // Run SysId routines when holding ellipses/google and X/Y.
-        // Note that each routine should be run exactly once in a single log.
-        dj.ellipses().and(dj.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
-        dj.ellipses().and(dj.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
-        dj.google().and(dj.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
-        dj.google().and(dj.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
-
+        //target tracking/alignment buttons
+        dj.leftBumper().and(dj.leftTrigger().negate()).onTrue(targeting.setTrackingRFLC());
+        dj.rightBumper().and(dj.leftTrigger().negate()).onTrue(targeting.setTrackingRFCC());
+        dj.rightTrigger().and(dj.leftTrigger().negate()).onTrue(targeting.setTrackingRFRC());
+        dj.leftBumper().and(dj.leftTrigger()).onTrue(targeting.setTrackingRBLC());
+        dj.rightBumper().and(dj.leftTrigger()).onTrue(targeting.setTrackingRBCC());
+        dj.rightTrigger().and(dj.leftTrigger()).onTrue(targeting.setTrackingRBRC());
+        
         // reset the field-centric heading on hamburger button press
         dj.hamburger().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+
+        //oj
+        // right stick elevator manual
+        // a L1
+        // x L2
+        // b L3
+        // y L4
+        // rtrig score coral
+        // rbumper back to previous
+        // lbump hp intake pos
+        // ltrig algae outtake
+        // ellipses start climb
+        // d-up algae barge pos
+        // d-dn algae proc pos 
+        // d-rt algae low intake
+        // d-lt algae high intake
+        // l3 algae floor intake
+        // google - open
+        // frame - open
+        // stadia - open
+        // hamburg - open
+
+        // Run SysId routines when holding ellipses/google and X/Y.
+        // Note that each routine should be run exactly once in a single log.
+        pj.ellipses().and(pj.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
+        pj.ellipses().and(pj.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
+        pj.google().and(pj.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
+        pj.google().and(pj.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }

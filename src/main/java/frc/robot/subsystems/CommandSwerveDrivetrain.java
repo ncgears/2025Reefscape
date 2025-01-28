@@ -380,10 +380,10 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 			: DashboardConstants.Colors.RED;
 	}
 	public double getTargetHeading() { return (isTrackingTarget()) ? getTrackingTargetHeading() : target_heading; }
-	public boolean isTrackingTarget() { return RobotContainer.pose.getTracking(); }
+	public boolean isTrackingTarget() { return RobotContainer.targeting.getTracking(); }
 	public double getTrackingTargetHeading() { 
 		// return Rotation2d.fromDegrees(RobotContainer.pose.getTrackingTargetBearing()).rotateBy(new Rotation2d(Math.PI)).getDegrees(); 
-		return Rotation2d.fromDegrees(RobotContainer.pose.getTrackingTargetBearing()).getDegrees(); 
+		return Rotation2d.fromDegrees(RobotContainer.targeting.getTrackingTargetBearing()).getDegrees(); 
 	}
 
 	public Field2d getField() {
@@ -518,7 +518,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 m_hasAppliedOperatorPerspective = true;
             });
         }
-        if(!m_suppressVision) RobotContainer.pose.correctPoseWithVision();
+        if(!m_suppressVision) RobotContainer.targeting.correctPoseWithVision();
         field.setRobotPose(this.getState().Pose);
     }
 

@@ -20,6 +20,8 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.constants.*; 
 import frc.robot.utils.NCDebug;
@@ -29,8 +31,8 @@ import frc.robot.RobotContainer;
  * The NCPose class handles getting and managing the different poses and calculations of them.
  * It is responsible for maintaining the robot poses and exposing methods to calculate items related to the poses
  */
-public class NCPose {
-	private static NCPose instance;
+public class Targeting {
+	private static Targeting instance;
 
 /**
  * April tag positions, in inches
@@ -75,13 +77,30 @@ public class NCPose {
 	 */
 	private static final double m_fieldLength = VisionConstants.kTagLayout.getFieldLength();
     public enum Targets { //based on blue origin 0,0 (blue driver station, right corner)
-        SOURCE(0,0,0,120),  //determine positions
-		AMPDUMP(0,7.7,11.0,0),
-        AMP(1.8415,8.2042,0.889,-90),
-        SPEAKER(0.13,5.547868,2.0697,180),
-        STAGE_NORTH(0,0,0,-60), //determine positions
-        STAGE_SOUTH(0,0,0,60), //determine positions
-        STAGE_CENTER(0,0,0,180); //determine positions
+		HP_RIGHT(0,0,0,0),
+		HP_LEFT(0,0,0,0),
+		REEF_FRONT_RIGHT_R(0,0,0,0),
+		REEF_FRONT_RIGHT_C(0,0,0,0),
+		REEF_FRONT_RIGHT_L(0,0,0,0),
+		REEF_FRONT_CENTER_R(0,0,0,0),
+		REEF_FRONT_CENTER_C(0,0,0,0),
+		REEF_FRONT_CENTER_L(0,0,0,0),
+		REEF_FRONT_LEFT_R(0,0,0,0),
+		REEF_FRONT_LEFT_C(0,0,0,0),
+		REEF_FRONT_LEFT_L(0,0,0,0),
+		REEF_BACK_RIGHT_R(0,0,0,0),
+		REEF_BACK_RIGHT_C(0,0,0,0),
+		REEF_BACK_RIGHT_L(0,0,0,0),
+		REEF_BACK_CENTER_R(0,0,0,0),
+		REEF_BACK_CENTER_C(0,0,0,0),
+		REEF_BACK_CENTER_L(0,0,0,0),
+		REEF_BACK_LEFT_R(0,0,0,0),
+		REEF_BACK_LEFT_C(0,0,0,0),
+		REEF_BACK_LEFT_L(0,0,0,0),
+		PROCESSOR(0,0,0,0),
+		BARGE_CAGE_RIGHT(0,0,0,0),
+		BARGE_CAGE_CENTER(0,0,0,0),
+		BARGE_CAGE_LEFT(0,0,0,0); //determine positions
         private final double x,y,z,angle;
         Targets(double x, double y, double z, double angle) { this.x=x; this.y=y; this.z=z; this.angle=angle; }
 		public Rotation2d getAngle() { return new Rotation2d(this.angle); }
@@ -108,24 +127,20 @@ public class NCPose {
         public String getColor() { return this.color; }
     }
     private State m_trackingState = State.STOP; //current Tracking state
-	private Targets m_trackingTarget = Targets.SPEAKER; //current Tracking target
+	private Targets m_trackingTarget = Targets.HP_LEFT; //current Tracking target
 	private Pose3d m_shooterPose = new Pose3d();
 	private boolean m_adjustUp = false;
-	public final Trigger isTargetSpeaker = new Trigger(() -> { return (m_trackingTarget==Targets.SPEAKER); });
-	public final Trigger isTargetAmp = new Trigger(() -> { return (m_trackingTarget==Targets.AMP); });
-	public final Trigger isTargetAmpDump = new Trigger(() -> { return (m_trackingTarget==Targets.AMPDUMP); });
-	public final Trigger isTargetSource = new Trigger(() -> { return (m_trackingTarget==Targets.SOURCE); });
 	public final Trigger isTracking = new Trigger(() -> { return (m_trackingState==State.READY || m_trackingState==State.TRACKING); });
 	public final Trigger isReady = new Trigger(() -> { return (m_trackingState==State.READY); });
   
-    public NCPose() {
+    public Targeting() {
 		init();
 		createDashboards();
     }
 
 	public void init() {
 		m_trackingState = State.STOP;
-		m_trackingTarget = Targets.SPEAKER;
+		m_trackingTarget = Targets.HP_LEFT;
 		resetPose(
 			(RobotContainer.isAllianceRed()) //more realistic starting position
 				? new Pose2d(m_fieldLength - 7.2439,4.0082,new Rotation2d(Math.PI)) 
@@ -139,9 +154,9 @@ public class NCPose {
 	 * The purpose of this is to only create an instance if one does not already exist.
 	 * @return instance of this class
 	 */
-    public static NCPose getInstance() {
+    public static Targeting getInstance() {
 		if (instance == null)
-			instance = new NCPose();
+			instance = new Targeting();
 		return instance;
 	}
 
@@ -294,14 +309,22 @@ public class NCPose {
 		m_trackingTarget = target; 
 		NCDebug.Debug.debug("Tracking: Set Tracking Target ("+target.toString()+")");
 	}
-	/** Sets the tracking target to AMP (2024 Crescendo) */
-	public void setTrackingAmp() { setTrackingTarget(Targets.AMP); }
-	/** Sets the tracking target to AMPDUMP (2024 Crescendo) */
-	public void setTrackingAmpDump() { setTrackingTarget(Targets.AMPDUMP); }
-	/** Sets the tracking target to SPEAKER (2024 Crescendo) */
-	public void setTrackingSpeaker() { setTrackingTarget(Targets.SPEAKER); }
-
-
+	/** Sets the tracking target to Reef Front CENTER_C (2025 REEFSCAPE) */
+	public Command setTrackingRFCC() { return new InstantCommand(() -> setTrackingTarget(Targets.REEF_FRONT_CENTER_C)); }
+	/** Sets the tracking target to Reef Front LEFT_C (2025 REEFSCAPE) */
+	public Command setTrackingRFLC() { return new InstantCommand(() -> setTrackingTarget(Targets.REEF_FRONT_LEFT_C)); }
+	/** Sets the tracking target to Reef Front RIGHT_C (2025 REEFSCAPE) */
+	public Command setTrackingRFRC() { return new InstantCommand(() -> setTrackingTarget(Targets.REEF_FRONT_RIGHT_C)); }
+	/** Sets the tracking target to Reef Back CENTER_C (2025 REEFSCAPE) */
+	public Command setTrackingRBCC() { return new InstantCommand(() -> setTrackingTarget(Targets.REEF_BACK_CENTER_C)); }
+	/** Sets the tracking target to Reef Back LEFT_C (2025 REEFSCAPE) */
+	public Command setTrackingRBLC() { return new InstantCommand(() -> setTrackingTarget(Targets.REEF_BACK_LEFT_C)); }
+	/** Sets the tracking target to Reef Back RIGHT_C (2025 REEFSCAPE) */
+	public Command setTrackingRBRC() { return new InstantCommand(() -> setTrackingTarget(Targets.REEF_BACK_RIGHT_C)); }
+	/** Sets the tracking target to Reef HP LEFT (2025 REEFSCAPE) */
+	public Command setTrackingHPL() { return new InstantCommand(() -> setTrackingTarget(Targets.HP_LEFT)); }
+	/** Sets the tracking target to Reef HP RIGHT (2025 REEFSCAPE) */
+	public Command setTrackingHPR() { return new InstantCommand(() -> setTrackingTarget(Targets.HP_RIGHT)); }
 	public void setTrackingReady(boolean ready) {
 		m_trackingState = (ready) ? State.READY : State.TRACKING;
 	}

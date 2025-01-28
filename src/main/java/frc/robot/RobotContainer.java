@@ -49,6 +49,7 @@ import frc.robot.subsystems.AlgaeSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.CoralSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem;
 
 public class RobotContainer {
     public static final CTREConfigs ctreConfigs = new CTREConfigs();
@@ -60,6 +61,7 @@ public class RobotContainer {
     public static final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain(); //must be after gyro
     public static final Targeting targeting = Targeting.getInstance(); //must be after drive
     public static final PowerDistribution power = new PowerDistribution(1,ModuleType.kRev);
+    public static final ElevatorSubsystem elevator = new ElevatorSubsystem();
     public static final ClimberSubsystem climber = ClimberSubsystem.getInstance();
     public static final CoralSubsystem coral = CoralSubsystem.getInstance();
     public static final AlgaeSubsystem algae = AlgaeSubsystem.getInstance();
@@ -103,6 +105,10 @@ public class RobotContainer {
         final InputAxis m_rotate = new InputAxis("Rotate", dj::getRightX)
             .withDeadband(OIConstants.kMinDeadband)
             .withInvert(true);
+        final InputAxis m_elevatorAxis = new InputAxis("Elevator", oj::getRightY)
+            .withDeadband(OIConstants.kMinDeadband)
+            .withSquaring(true)
+            .withInvert(true);
         autoFactory = new AutoFactory(
             () -> drivetrain.getState().Pose,
             drivetrain::resetPose,
@@ -124,6 +130,11 @@ public class RobotContainer {
                     .withRotationalRate(m_rotate.getAsDouble() * MaxAngularRate) // Drive counterclockwise with negative X (left)
             )
         );
+
+        if(!ElevatorConstants.isDisabled) {
+            elevator.setDefaultCommand(elevator.ElevatorMoveC(m_elevatorAxis));
+        }
+      
     }
     
     private void initOrchestra() {
@@ -245,6 +256,7 @@ public class RobotContainer {
         dj.hamburger().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         //oj
+
         // right stick elevator manual
         // a L1
         // x L2

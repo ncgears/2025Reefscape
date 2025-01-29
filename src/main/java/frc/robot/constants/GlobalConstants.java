@@ -9,7 +9,7 @@ package frc.robot.constants;
 public class GlobalConstants {
     //Global Constants
     public static final int kFalconMaxRPS = 6350 / 60;
-    public static final int kKrakenMaxRPS = 6000 / 60;
+    public static final int kKrakenMaxRPS = 5800 / 60;
     public static final boolean CAMERA_ENABLED = false; //set to false if UsbCamera is removed
     public static final boolean SWERVE_SENSOR_NONCONTINUOUS = false;
     public static final int kTimeoutMs = 30; //Timeout for reporting in DS if action fails, set to 0 to skip confirmation

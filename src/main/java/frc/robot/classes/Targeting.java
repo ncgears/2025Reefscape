@@ -35,7 +35,7 @@ public class Targeting {
 	private static Targeting instance;
 
 /**
- * April tag positions, in inches
+ * 2024 April tag positions, in inches
  * ID	X	Y	Z	Rotation
  * 1	593.68	9.68	53.38	120
  * 2	637.21	34.79	53.38	120
@@ -53,7 +53,7 @@ public class Targeting {
  * 14	209.48	161.62	52.00	0
  * 15	182.73	177.10	52.00	120
  * 16	182.73	146.19	52.00	240
- * April tag positions, in meters
+ * 2024 April tag positions, in meters
  * ID	X	        Y	        Z	        Rotation    Name
  * 1	15.079472	0.245872	1.355852	120         Blue Source Right
  * 2	16.185134	0.883666	1.355852	120         Blue Source Left
@@ -77,30 +77,30 @@ public class Targeting {
 	 */
 	private static final double m_fieldLength = VisionConstants.kTagLayout.getFieldLength();
     public enum Targets { //based on blue origin 0,0 (blue driver station, right corner)
-		HP_RIGHT(0,0,0,0),
-		HP_LEFT(0,0,0,0),
-		REEF_FRONT_RIGHT_R(0,0,0,0),
-		REEF_FRONT_RIGHT_C(0,0,0,0),
-		REEF_FRONT_RIGHT_L(0,0,0,0),
-		REEF_FRONT_CENTER_R(0,0,0,0),
-		REEF_FRONT_CENTER_C(0,0,0,0),
-		REEF_FRONT_CENTER_L(0,0,0,0),
-		REEF_FRONT_LEFT_R(0,0,0,0),
-		REEF_FRONT_LEFT_C(0,0,0,0),
-		REEF_FRONT_LEFT_L(0,0,0,0),
-		REEF_BACK_RIGHT_R(0,0,0,0),
-		REEF_BACK_RIGHT_C(0,0,0,0),
-		REEF_BACK_RIGHT_L(0,0,0,0),
-		REEF_BACK_CENTER_R(0,0,0,0),
-		REEF_BACK_CENTER_C(0,0,0,0),
-		REEF_BACK_CENTER_L(0,0,0,0),
-		REEF_BACK_LEFT_R(0,0,0,0),
-		REEF_BACK_LEFT_C(0,0,0,0),
-		REEF_BACK_LEFT_L(0,0,0,0),
-		PROCESSOR(0,0,0,0),
-		BARGE_CAGE_RIGHT(0,0,0,0),
-		BARGE_CAGE_CENTER(0,0,0,0),
-		BARGE_CAGE_LEFT(0,0,0,0); //determine positions
+		HP_RIGHT(0.851154,0.65532,1.4859,54),
+		HP_LEFT(0.851154,7.39648,1.4859,306),
+		REEF_FRONT_RIGHT_R(4.2158,3.2234,0,240),
+		REEF_FRONT_RIGHT_C(4.073906,3.306318,0.308102,240),
+		REEF_FRONT_RIGHT_L(3.9312,3.3877,0,240),
+		REEF_FRONT_CENTER_R(3.6576,3.8616,0,180),
+		REEF_FRONT_CENTER_C(3.6576,4.0259,0.308102,180),
+		REEF_FRONT_CENTER_L(3.6576,4.1902,0,180),
+		REEF_FRONT_LEFT_R(3.9312,4.664,0,120),
+		REEF_FRONT_LEFT_C(4.073906,4.745482,0.308102,120),
+		REEF_FRONT_LEFT_L(4.2158,4.8283,0,120),
+		REEF_BACK_RIGHT_R(4.7629,3.2234,0,300),
+		REEF_BACK_RIGHT_C(4.90474,3.306318,0.308102,300),
+		REEF_BACK_RIGHT_L(5.0475,3.3877,0,300),
+		REEF_BACK_CENTER_R(5.321046,3.8616,0,0),
+		REEF_BACK_CENTER_C(5.321046,4.0259,0.308102,0),
+		REEF_BACK_CENTER_L(5.321046,4.1902,0,0),
+		REEF_BACK_LEFT_R(5.0475,4.664,0,60),
+		REEF_BACK_LEFT_C(4.90474,4.745482,0.308102,60),
+		REEF_BACK_LEFT_L(4.7629,4.8283,0,60),
+		PROCESSOR(5.969,-0.00381,1.30175,90),
+		BARGE_CAGE_RIGHT(8.7741,5.0784,0,0),
+		BARGE_CAGE_CENTER(8.7741,6.169,0,0),
+		BARGE_CAGE_LEFT(8.7741,7.2596,0,0);
         private final double x,y,z,angle;
         Targets(double x, double y, double z, double angle) { this.x=x; this.y=y; this.z=z; this.angle=angle; }
 		public Rotation2d getAngle() { return new Rotation2d(this.angle); }

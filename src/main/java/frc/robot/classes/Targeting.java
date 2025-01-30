@@ -98,9 +98,12 @@ public class Targeting {
 		REEF_BACK_LEFT_C(4.90474,4.745482,0.308102,60),
 		REEF_BACK_LEFT_L(4.7629,4.8283,0,60),
 		PROCESSOR(5.969,-0.00381,1.30175,90),
-		BARGE_CAGE_RIGHT(8.7741,5.0784,0,0),
-		BARGE_CAGE_CENTER(8.7741,6.169,0,0),
-		BARGE_CAGE_LEFT(8.7741,7.2596,0,0);
+		SPIKE_LEFT(1.2192,5.8547,0,-1),
+		SPIKE_CENTER(1.2192,4.0259,0,-1),
+		SPIKE_RIGHT(1.2192,2.1971,0,-1),
+		BARGE_CAGE_RIGHT(8.7741,5.0784,0,-1),
+		BARGE_CAGE_CENTER(8.7741,6.169,0,-1),
+		BARGE_CAGE_LEFT(8.7741,7.2596,0,-1);
         private final double x,y,z,angle;
         Targets(double x, double y, double z, double angle) { this.x=x; this.y=y; this.z=z; this.angle=angle; }
 		public Rotation2d getAngle() { return new Rotation2d(this.angle); }

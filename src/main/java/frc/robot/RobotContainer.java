@@ -221,9 +221,15 @@ public class RobotContainer {
         }
 
         if(!ClimberConstants.isDisabled) {
-            climber.hasCage.and(climber.climbComplete.negate()).onTrue(climber.climberMoveC(() -> ClimberConstants.kClimbPower))
-                .onFalse(climber.climberMoveC(() -> 0));
-        }
+            /**
+             * This monitors the hasCage trigger and immediately starts climbing until the climbComplete trigger, then goes to holding mode
+             * Once the climbComplete trigger fires, the climber stops after 2 seconds
+             */
+            climber.hasCage.and(climber.climbComplete.negate()).onTrue(climber.climberMoveC(() -> ClimberConstants.kClimbPower));
+                // .onFalse(climber.climberMoveC(() -> 0).andThen(new WaitCommand(2).andThen(climber.climberStopC())));
+            // climber.climbComplete.onTrue(climber.climberHoldC().andThen(new WaitCommand(2)).andThen(climber.climberStopC()));
+            climber.climbComplete.onTrue(climber.climberStopC());
+            }
 
         //POV left and right are robot-centric strafing
         dj.povLeft().whileTrue(drivetrain.applyRequest(() -> 

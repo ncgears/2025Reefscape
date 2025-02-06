@@ -39,9 +39,9 @@ public class ClimberSubsystem extends SubsystemBase {
   private DigitalInput m_climbSwitch = new DigitalInput(ClimberConstants.kClimbSwitchID);
 
   public enum State {
-    UP(DashboardConstants.Colors.GREEN),
+    UP(DashboardConstants.Colors.ORANGE),
     DOWN(DashboardConstants.Colors.RED),
-    HOLD(DashboardConstants.Colors.ORANGE),
+    HOLD(DashboardConstants.Colors.GREEN),
     STOP(DashboardConstants.Colors.BLACK);
     private final String color;
     State(String color) { this.color = color; }
@@ -103,7 +103,7 @@ public class ClimberSubsystem extends SubsystemBase {
     driverTab.addString("Climber", this::getStateColor)
       .withSize(2, 2)
       .withWidget("Single Color View")
-      .withPosition(18, 7);  
+      .withPosition(14, 7);  
 
     ShuffleboardTab systemTab = Shuffleboard.getTab("System");
     ShuffleboardLayout climberList = systemTab.getLayout("Climber", BuiltInLayouts.kList)
@@ -195,6 +195,12 @@ public class ClimberSubsystem extends SubsystemBase {
   public Command climberMoveC(DoubleSupplier power) {
     return run(() -> climberMove(power.getAsDouble()));
   }
+  public Command climberStopC() {
+    return run(() -> climberStop());
+  }
+  public Command climberHoldC() {
+    return run(() -> climberHold());
+  }
 
   public void climberUp() {
     m_curState = State.UP;
@@ -217,7 +223,7 @@ public class ClimberSubsystem extends SubsystemBase {
   }
   public void climberStop() {
     m_motor1.setControl(m_neutral);
-    if(m_curState != State.HOLD) {
+    if(m_curState != State.STOP) {
       m_curState = State.STOP;
       NCDebug.Debug.debug("Climber: Stop");
     }

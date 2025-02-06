@@ -119,7 +119,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     driverTab.addString("Elevator", this::getStateColor)
       .withSize(2, 2)
       .withWidget("Single Color View")
-      .withPosition(18, 7);  
+      .withPosition(12, 7);  
 
     ShuffleboardTab systemTab = Shuffleboard.getTab("System");
     ShuffleboardLayout ElevatorList = systemTab.getLayout("Elevator", BuiltInLayouts.kList)

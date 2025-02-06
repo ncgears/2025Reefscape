@@ -114,7 +114,7 @@ public class Targeting {
             // new Rotation3d(0,0,Math.toRadians(this.angle))
         ); }
         public Pose3d getMirrorPose() { return new Pose3d(
-            new Translation3d(m_fieldLength - this.x, this.y, this.z), //field is 16.54175 meters
+            new Translation3d(m_fieldLength - this.x, this.y, this.z),
 			new Rotation3d()
             // new Rotation3d(0,0,Math.PI - Math.toRadians(this.angle))
         ); }

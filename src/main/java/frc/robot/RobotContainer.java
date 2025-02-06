@@ -220,6 +220,11 @@ public class RobotContainer {
             }).ignoringDisable(true));
         }
 
+        if(!ClimberConstants.isDisabled) {
+            climber.hasCage.and(climber.climbComplete.negate()).onTrue(climber.climberMoveC(() -> ClimberConstants.kClimbPower))
+                .onFalse(climber.climberMoveC(() -> 0));
+        }
+
         //POV left and right are robot-centric strafing
         dj.povLeft().whileTrue(drivetrain.applyRequest(() -> 
                 robotdrive.withVelocityX(0).withVelocityY(SwerveConstants.kAlignStrafeSpeed)

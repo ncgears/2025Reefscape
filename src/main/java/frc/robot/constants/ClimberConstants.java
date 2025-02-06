@@ -22,9 +22,11 @@ public class ClimberConstants {
     public static final boolean kIsInverted = true;
     public static final NeutralModeValue kNeutralMode = NeutralModeValue.Coast;
     public static final double kStowPosition = 0;
+    public static final double kClimbPower = 0.5;
 
     public static final int kCageSwitch1ID = ID.DIO.climber_cageSwitch1;
     public static final int kCageSwitch2ID = ID.DIO.climber_cageSwitch2;
+    public static final int kClimbSwitchID = ID.DIO.climber_climbSwitch;
 
     public static final double kGearRatio = 46.667; // 20:1 gearbox (0.05), 18t:42t -- this is between rotor and sensor
     public static final double kSensorGearRatio = 1.0; // no gearing between sensor and spool -- this is between sensor and spool

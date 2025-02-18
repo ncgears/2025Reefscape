@@ -43,7 +43,7 @@ import frc.robot.RobotContainer;
 public class ElevatorSubsystem extends SubsystemBase {
 	private static ElevatorSubsystem instance;
   //private and public variables defined here
-
+  //#region Declarations
   public enum State {
     UP(DashboardConstants.Colors.GREEN),
     DOWN(DashboardConstants.Colors.RED),
@@ -74,8 +74,9 @@ public class ElevatorSubsystem extends SubsystemBase {
   private TalonFX m_motor1;
   private State m_curState = State.STOP;
   private Position m_targetPosition = Position.STOW;
-  private boolean m_ratchetLocked = false;
+  //#endregion
 
+  //#region Setup
   /**
 	 * Returns the instance of the ElevatorSubsystem subsystem.
 	 * The purpose of this is to only create an instance if one does not already exist.
@@ -111,16 +112,9 @@ public class ElevatorSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
   }
+  //#endregion
 
-  // @Override
-  // public void initSendable(SendableBuilder builder) {
-  //   super.initSendable(builder);
-  //   builder.setSmartDashboardType("Number Slider");
-  //   builder.setActuator(true);
-  //   builder.addDoubleProperty("Target Speed", this::getTargetSpeed, this::setSpeedPercent);
-  //   builder.addDoubleProperty("Current Speed", this::getSpeedPercent, null);
-  // }
-
+  //#region Setup Dashboard
   public void createDashboards() {
     ShuffleboardTab driverTab = Shuffleboard.getTab("Driver");
     driverTab.addString("Elevator", this::getStateColor)
@@ -165,7 +159,9 @@ public class ElevatorSubsystem extends SubsystemBase {
         .withProperties(Map.of("show_type",false));  
     }
   }
+  //#endregion
 
+  //#region Getters
   public State getState() { return m_curState; }
   public String getStateName() { return m_curState.toString(); }
   public String getStateColor() { return m_curState.getColor(); }
@@ -181,12 +177,16 @@ public class ElevatorSubsystem extends SubsystemBase {
   public Angle getPositionAbsolute() {
     return m_encoder.getPosition().getValue();
   }
+  //#endregion
 
+  //#region Setters
   public void setPosition(Position position) {
     m_motor1.setControl(m_mmVoltage.withPosition(position.getAngularPositionRotations()));
     NCDebug.Debug.debug("Elevator: Move to "+position.toString());
   }
+  //#endregion
 
+  //#region Limits
   public boolean getForwardLimit() {
     //if using NormallyOpen, this should be ForwardLimitValue.ClosedToGround
     // return m_motor1.getForwardLimit().getValue() == ForwardLimitValue.ClosedToGround;
@@ -201,7 +201,9 @@ public class ElevatorSubsystem extends SubsystemBase {
     //if Either limit is met
     return getForwardLimit() || getReverseLimit();
   }
+  //#endregion
 
+  //#region Control Methods
   public void ElevatorMove(double power) {
     if(power>0) {
       if(m_curState != State.UP) {
@@ -267,6 +269,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     m_motor1.setNeutralMode(NeutralModeValue.Brake);
     NCDebug.Debug.debug("Elevator: Switch to Brake");
   }
+  //#endregion
 
   //#region SysID Functions
   private final VoltageOut m_voltReq = new VoltageOut(0.0);

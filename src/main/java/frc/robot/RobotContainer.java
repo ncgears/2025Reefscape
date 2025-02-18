@@ -291,7 +291,10 @@ public class RobotContainer {
 
         // Run SysId routines when holding ellipses/google and X/Y.
         // Note that each routine should be run exactly once in a single log.
-        var m_mechanism = drivetrain; //drivetrain, elevator, coral, algae, climber
+        var m_mechanism = elevator; //drivetrain, elevator, coral, algae, climber
+        pj.ellipses().and(pj.a()).whileTrue(m_mechanism.runSysIdCommand());
+        
+        //seperately, but would need to use logic to see if we are atLimit
         pj.ellipses().and(pj.y()).whileTrue(m_mechanism.sysIdDynamic(Direction.kForward));
         pj.ellipses().and(pj.x()).whileTrue(m_mechanism.sysIdDynamic(Direction.kReverse));
         pj.google().and(pj.y()).whileTrue(m_mechanism.sysIdQuasistatic(Direction.kForward));

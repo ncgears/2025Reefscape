@@ -289,6 +289,14 @@ public class ElevatorSubsystem extends SubsystemBase {
   public Command sysIdDynamic(SysIdRoutine.Direction direction) {
       return m_sysIdRoutine.dynamic(direction);
   }
+  public Command runSysIdCommand() {
+    return Commands.sequence(
+      sysIdQuasistatic(SysIdRoutine.Direction.kForward).until(this::atLimit),
+      sysIdQuasistatic(SysIdRoutine.Direction.kReverse).until(this::atLimit),
+      sysIdDynamic(SysIdRoutine.Direction.kForward).until(this::atLimit),
+      sysIdDynamic(SysIdRoutine.Direction.kReverse).until(this::atLimit)
+    );
+  }
   //#endregion
 
   //#region Example for 2054

@@ -281,11 +281,23 @@ public class ElevatorSubsystem extends SubsystemBase {
     //move the wheel
     return run(() -> moveElevator(targetPos));
   }
-  public Command raiseElevatorCommand(elevatorPositions targetPos) {
+  public boolean elevAtPosition() {
+    //this should ask the elev subsystem if the elev is at the target
+    return true;
+  }
+  public Command raiseElevatorCommand(elevatorPositions elevTarget, wheelPositions wheelTarget) {
     return Commands.sequence(
-      moveWheelCommand(wheelPositions.TRANSIT).until(() -> wheelAtPosition()), //this should be asking the wheel subsystem
-      moveElevatorCommand(targetPos)
+      moveWheelCommand(wheelPositions.TRANSIT).until(() -> wheelAtPosition()),
+      moveElevatorCommand(elevTarget).until(() -> elevAtPosition()),
+      moveWheelCommand(wheelTarget)
     );
   }
-
+  public Command lowerElevatorCommand(elevatorPositions elevTarget, wheelPositions wheelTarget) {
+    return Commands.sequence(
+      moveWheelCommand(wheelPositions.TRANSIT).until(() -> wheelAtPosition()),
+      moveElevatorCommand(elevTarget).until(() -> elevAtPosition()),
+      moveWheelCommand(wheelTarget)
+    );
+  }
+  
 }

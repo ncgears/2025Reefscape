@@ -11,11 +11,11 @@ import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.hardware.TalonFXS;
 
-import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.constants.*; 
@@ -40,11 +40,13 @@ public class AlgaeSubsystem extends SubsystemBase {
   }
   private Direction m_curDirection = Direction.STOP;
   public enum Position {
-    DOWN(DashboardConstants.Colors.GREEN),
-    UP(DashboardConstants.Colors.RED),
-    STOW(DashboardConstants.Colors.ORANGE);
+    DOWN(AlgaeConstants.wrist.Positions.down, DashboardConstants.Colors.ORANGE),
+    UP(AlgaeConstants.wrist.Positions.up, DashboardConstants.Colors.GREEN),
+    STOW(AlgaeConstants.wrist.Positions.stow, DashboardConstants.Colors.RED);
+    private final double position;
     private final String color;
-    Position(String color) { this.color = color; }
+    Position(double position, String color) { this.position = position; this.color = color; }
+    public double getRotations() { return this.position; }
     public String getColor() { return this.color; }
   }
   private Position m_curPosition = Position.STOW;
@@ -109,7 +111,7 @@ public class AlgaeSubsystem extends SubsystemBase {
 
   public void createDashboards() {
     ShuffleboardTab driverTab = Shuffleboard.getTab("Driver");
-    driverTab.addString("Algae", this::getColor)
+    driverTab.addString("Algae", this::getDirectionColor)
       .withSize(2, 2)
       .withWidget("Single Color View")
       .withPosition(10, 7);  
@@ -118,8 +120,9 @@ public class AlgaeSubsystem extends SubsystemBase {
 				.withSize(4,2)
 				.withPosition(4,0)
 				.withProperties(Map.of("Label position","LEFT"));
-			AlgaeList.addString("Status", this::getColor)
+			AlgaeList.addString("Status", this::getDirectionColor)
 				.withWidget("Single Color View");
+      AlgaeList.addString("Position", this::getPositionName);
 			AlgaeList.addString("Direction", this::getDirectionName);
 
       if(AlgaeConstants.debugDashboard) {
@@ -128,9 +131,10 @@ public class AlgaeSubsystem extends SubsystemBase {
 				.withSize(4,6)
 				.withPosition(8,4)
 				.withProperties(Map.of("Label position","LEFT"));
-			dbgAlgaeList.addString("Status", this::getColor)
+			dbgAlgaeList.addString("Status", this::getDirectionColor)
 				.withWidget("Single Color View");
-			dbgAlgaeList.addString("Direction", this::getDirectionName);
+      dbgAlgaeList.addString("Position", this::getPositionName);
+      dbgAlgaeList.addString("Direction", this::getDirectionName);
       // dbgAlgaeList.add("Algae In", new InstantCommand(this::AlgaeIn))
       //   .withProperties(Map.of("show_type",false));  
       // dbgAlgaeList.add("Algae Out", new InstantCommand(this::AlgaeOut))
@@ -150,7 +154,10 @@ public class AlgaeSubsystem extends SubsystemBase {
 
   public Direction getDirection() { return m_curDirection; }
   public String getDirectionName() { return m_curDirection.toString(); }
-  public String getColor() { return m_curDirection.getColor(); }
+  public String getDirectionColor() { return m_curDirection.getColor(); }
+  public Position getPosition() { return m_curPosition; }
+  public String getPositionName() { return m_curPosition.toString(); }
+  public String getPositionColor() { return m_curPosition.getColor(); }
 
   private double getStatorCurrent() {
     return m_wristmotor1.getStatorCurrent().getValueAsDouble();
@@ -160,4 +167,17 @@ public class AlgaeSubsystem extends SubsystemBase {
     TalonFX[] motors = {m_wristmotor1};
     return motors;
   }
+
+  private void setPosition(Position position) {
+    m_wristmotor1.setControl(m_mmVoltage.withPosition(position.getRotations()));
+    NCDebug.Debug.debug("Elevator: Move to "+position.toString());
+  }
+  public Command setAlgaePositionCommand(Position position) {
+    return run(() -> setPosition(position));
+  }
+  public boolean atPosition() {
+    //this is arbitrary and needs tuning, just saved as example
+    return m_wristmotor1.getClosedLoopError().getValueAsDouble() <= 0.01;
+  }
+
 }

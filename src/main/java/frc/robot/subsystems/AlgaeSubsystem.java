@@ -1,12 +1,16 @@
 
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.Volts;
+
 import java.util.Map;
 
+import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.StaticBrake;
+import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.hardware.TalonFXS;
@@ -16,8 +20,10 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.constants.*; 
 import frc.robot.utils.NCDebug;
 import frc.robot.RobotContainer;
@@ -56,9 +62,9 @@ public class AlgaeSubsystem extends SubsystemBase {
   private final NeutralOut m_neutral = new NeutralOut();
   private final StaticBrake m_brake = new StaticBrake();
 
-  private final CANcoder m_encoder;
-  private final TalonFX m_wristmotor1;
-  private final TalonFXS m_swizmotor_left, m_swizmotor_right; 
+  private CANcoder m_encoder;
+  private TalonFX m_wristmotor1;
+  private TalonFXS m_swizmotor_left, m_swizmotor_right; 
 
   public final Trigger isRunning = new Trigger(() -> { return (m_curDirection != Direction.STOP);});
 
@@ -179,5 +185,46 @@ public class AlgaeSubsystem extends SubsystemBase {
     //this is arbitrary and needs tuning, just saved as example
     return m_wristmotor1.getClosedLoopError().getValueAsDouble() <= 0.01;
   }
+  public boolean getForwardLimit() {
+    return m_wristmotor1.getPosition().getValueAsDouble() >= AlgaeConstants.Positions.kFwdLimit;
+  }
+  public boolean getReverseLimit() {
+    return m_wristmotor1.getPosition().getValueAsDouble() <= AlgaeConstants.Positions.kRevLimit;
+  }
+  public boolean atLimit() {
+    return getForwardLimit() || getReverseLimit();
+  }
+
+  //#region SysID Functions
+  private final VoltageOut m_voltReq = new VoltageOut(0.0);
+  private final SysIdRoutine m_sysIdRoutine = new SysIdRoutine(
+    new SysIdRoutine.Config(
+      null, //default ramp rate 1V/s
+      Volts.of(4), //reduce dynamic step voltage to 4 to prevent brownout
+      null, //default timeout 10s
+      (state) -> SignalLogger.writeString("state", state.toString())
+    ),
+    new SysIdRoutine.Mechanism(
+      (volts) -> m_wristmotor1.setControl(m_voltReq.withOutput(volts.in(Volts))),
+      null,
+      this
+    )
+  );
+  public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
+      return m_sysIdRoutine.quasistatic(direction);
+  }
+  public Command sysIdDynamic(SysIdRoutine.Direction direction) {
+      return m_sysIdRoutine.dynamic(direction);
+  }
+  public Command runSysIdCommand() {
+    return Commands.sequence(
+      sysIdQuasistatic(SysIdRoutine.Direction.kForward).until(this::atLimit),
+      sysIdQuasistatic(SysIdRoutine.Direction.kReverse).until(this::atLimit),
+      sysIdDynamic(SysIdRoutine.Direction.kForward).until(this::atLimit),
+      sysIdDynamic(SysIdRoutine.Direction.kReverse).until(this::atLimit)
+    );
+  }
+  //#endregion
+
 
 }

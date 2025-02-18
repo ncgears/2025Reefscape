@@ -1,13 +1,17 @@
 
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.Volts;
+
 import java.util.Map;
 import java.util.function.DoubleSupplier;
 
+import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.StaticBrake;
+import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.ForwardLimitValue;
@@ -27,6 +31,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.constants.*; 
 import frc.robot.utils.NCDebug;
 import frc.robot.RobotContainer;
@@ -184,12 +189,17 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   public boolean getForwardLimit() {
     //if using NormallyOpen, this should be ForwardLimitValue.ClosedToGround
-    return m_motor1.getForwardLimit().getValue() == ForwardLimitValue.ClosedToGround;
+    // return m_motor1.getForwardLimit().getValue() == ForwardLimitValue.ClosedToGround;
+    return m_motor1.getPosition().getValueAsDouble() >= ElevatorConstants.Positions.kFwdLimit;
   }
-
   public boolean getReverseLimit() {
     //if using NormallyOpen, this should be ReverseLimitValue.ClosedToGround
-    return m_motor1.getReverseLimit().getValue() == ReverseLimitValue.ClosedToGround;
+    // return m_motor1.getReverseLimit().getValue() == ReverseLimitValue.ClosedToGround;
+    return m_motor1.getPosition().getValueAsDouble() <= ElevatorConstants.Positions.kRevLimit;
+  }
+  public boolean atLimit() {
+    //if Either limit is met
+    return getForwardLimit() || getReverseLimit();
   }
 
   public void ElevatorMove(double power) {
@@ -249,18 +259,39 @@ public class ElevatorSubsystem extends SubsystemBase {
       NCDebug.Debug.debug("Elevator: Stop");
     }
   }
-
   public void setCoast() {
     m_motor1.setNeutralMode(NeutralModeValue.Coast);
     NCDebug.Debug.debug("Elevator: Switch to Coast");
   }
-
   public void setBrake() {
     m_motor1.setNeutralMode(NeutralModeValue.Brake);
     NCDebug.Debug.debug("Elevator: Switch to Brake");
   }
 
-  //EXAMPLE for 2054
+  //#region SysID Functions
+  private final VoltageOut m_voltReq = new VoltageOut(0.0);
+  private final SysIdRoutine m_sysIdRoutine = new SysIdRoutine(
+    new SysIdRoutine.Config(
+      null, //default ramp rate 1V/s
+      Volts.of(4), //reduce dynamic step voltage to 4 to prevent brownout
+      null, //default timeout 10s
+      (state) -> SignalLogger.writeString("state", state.toString())
+    ),
+    new SysIdRoutine.Mechanism(
+      (volts) -> m_motor1.setControl(m_voltReq.withOutput(volts.in(Volts))),
+      null,
+      this
+    )
+  );
+  public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
+      return m_sysIdRoutine.quasistatic(direction);
+  }
+  public Command sysIdDynamic(SysIdRoutine.Direction direction) {
+      return m_sysIdRoutine.dynamic(direction);
+  }
+  //#endregion
+
+  //#region Example for 2054
   private enum elevatorPositions {FLOOR,L1,L2,L3,L4};
   private enum wheelPositions {TRANSIT,CORAL,ALGAE};
   private void moveWheel(wheelPositions targetPos) {
@@ -299,5 +330,6 @@ public class ElevatorSubsystem extends SubsystemBase {
       moveWheelCommand(wheelTarget)
     );
   }
-  
+  //#endregion
+
 }

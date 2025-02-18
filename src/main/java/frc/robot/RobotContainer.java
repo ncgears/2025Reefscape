@@ -291,10 +291,11 @@ public class RobotContainer {
 
         // Run SysId routines when holding ellipses/google and X/Y.
         // Note that each routine should be run exactly once in a single log.
-        pj.ellipses().and(pj.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
-        pj.ellipses().and(pj.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
-        pj.google().and(pj.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
-        pj.google().and(pj.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
+        var m_mechanism = drivetrain; //drivetrain, elevator, coral, algae, climber
+        pj.ellipses().and(pj.y()).whileTrue(m_mechanism.sysIdDynamic(Direction.kForward));
+        pj.ellipses().and(pj.x()).whileTrue(m_mechanism.sysIdDynamic(Direction.kReverse));
+        pj.google().and(pj.y()).whileTrue(m_mechanism.sysIdQuasistatic(Direction.kForward));
+        pj.google().and(pj.x()).whileTrue(m_mechanism.sysIdQuasistatic(Direction.kReverse));
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }

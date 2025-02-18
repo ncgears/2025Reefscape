@@ -13,6 +13,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.ForwardLimitValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.ReverseLimitValue;
+import com.google.errorprone.annotations.Var;
 
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Angle;
@@ -22,6 +23,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -176,8 +178,6 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
 
   public void setPosition(Position position) {
-    // if(getPosition() <= position.getAngularPositionRotations()) ratchetFree();
-    // if(getPosition() > position.getAngularPositionRotations()) ratchetLock();
     m_motor1.setControl(m_mmVoltage.withPosition(position.getAngularPositionRotations()));
     NCDebug.Debug.debug("Elevator: Move to "+position.toString());
   }
@@ -258,6 +258,34 @@ public class ElevatorSubsystem extends SubsystemBase {
   public void setBrake() {
     m_motor1.setNeutralMode(NeutralModeValue.Brake);
     NCDebug.Debug.debug("Elevator: Switch to Brake");
+  }
+
+  //EXAMPLE for 2054
+  private enum elevatorPositions {FLOOR,L1,L2,L3,L4};
+  private enum wheelPositions {TRANSIT,CORAL,ALGAE};
+  private void moveWheel(wheelPositions targetPos) {
+    //move the wheel to targetPos
+  }
+  public Command moveWheelCommand(wheelPositions targetPos) {
+    //move the wheel
+    return run(() -> moveWheel(targetPos));
+  }
+  public boolean wheelAtPosition() {
+    //this should ask the wheel subsystem if the wheel is at the target
+    return true;
+  }
+  private void moveElevator(elevatorPositions targetPos) {
+    //move the elevator
+  }
+  public Command moveElevatorCommand(elevatorPositions targetPos) {
+    //move the wheel
+    return run(() -> moveElevator(targetPos));
+  }
+  public Command raiseElevatorCommand(elevatorPositions targetPos) {
+    return Commands.sequence(
+      moveWheelCommand(wheelPositions.TRANSIT).until(() -> wheelAtPosition()), //this should be asking the wheel subsystem
+      moveElevatorCommand(targetPos)
+    );
   }
 
 }

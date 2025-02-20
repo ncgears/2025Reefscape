@@ -35,6 +35,7 @@ import frc.robot.RobotContainer;
 public class AlgaeSubsystem extends SubsystemBase {
 	private static AlgaeSubsystem instance;
   //private and public variables defined here
+  //#region Declarations
   public enum Direction {
     OUT(DashboardConstants.Colors.GREEN),
     IN(DashboardConstants.Colors.RED),
@@ -65,9 +66,13 @@ public class AlgaeSubsystem extends SubsystemBase {
   private CANcoder m_encoder;
   private TalonFX m_wristmotor1;
   private TalonFXS m_swizmotor_left, m_swizmotor_right; 
+  //#endregion Declarations
 
+  //#region Triggers
   public final Trigger isRunning = new Trigger(() -> { return (m_curDirection != Direction.STOP);});
+  //#endregion Triggers
 
+  //#region Setup
   /**
 	 * Returns the instance of the AlgaeSubsystem subsystem.
 	 * The purpose of this is to only create an instance if one does not already exist.
@@ -114,7 +119,9 @@ public class AlgaeSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
   }
+  //#endregion Setup
 
+  //#region Dashboard
   public void createDashboards() {
     ShuffleboardTab driverTab = Shuffleboard.getTab("Driver");
     driverTab.addString("Algae", this::getDirectionColor)
@@ -149,15 +156,9 @@ public class AlgaeSubsystem extends SubsystemBase {
       //   .withProperties(Map.of("show_type",false));  
     }
   }
+  //#endregion Dashboard
 
-  public void AlgaeStop() {
-    m_wristmotor1.setControl(m_neutral);
-    if(m_curDirection != Direction.HOLD) {
-      m_curDirection = Direction.STOP;
-      NCDebug.Debug.debug("Algae: Stop");
-    }
-  }
-
+  //#region Getters
   public Direction getDirection() { return m_curDirection; }
   public String getDirectionName() { return m_curDirection.toString(); }
   public String getDirectionColor() { return m_curDirection.getColor(); }
@@ -173,7 +174,9 @@ public class AlgaeSubsystem extends SubsystemBase {
     TalonFX[] motors = {m_wristmotor1};
     return motors;
   }
+  //#endregion Getters
 
+  //#region Setters
   private void setPosition(Position position) {
     m_wristmotor1.setControl(m_mmVoltage.withPosition(position.getRotations()));
     NCDebug.Debug.debug("Elevator: Move to "+position.toString());
@@ -181,10 +184,12 @@ public class AlgaeSubsystem extends SubsystemBase {
   public Command setAlgaePositionCommand(Position position) {
     return run(() -> setPosition(position));
   }
-  public boolean atPosition() {
-    //this is arbitrary and needs tuning, just saved as example
-    return m_wristmotor1.getClosedLoopError().getValueAsDouble() <= 0.01;
+  public boolean isAtTarget() {
+    return m_wristmotor1.getClosedLoopError().getValueAsDouble() <= AlgaeConstants.wrist.kPositionTolerance;
   }
+  //#endregion Setters
+
+  //#region Limits
   public boolean getForwardLimit() {
     return m_wristmotor1.getPosition().getValueAsDouble() >= AlgaeConstants.Positions.kFwdLimit;
   }
@@ -194,6 +199,17 @@ public class AlgaeSubsystem extends SubsystemBase {
   public boolean atLimit() {
     return getForwardLimit() || getReverseLimit();
   }
+  //#endregion Limits
+
+  //#region Controls
+  public void AlgaeStop() {
+    m_wristmotor1.setControl(m_neutral);
+    if(m_curDirection != Direction.HOLD) {
+      m_curDirection = Direction.STOP;
+      NCDebug.Debug.debug("Algae: Stop");
+    }
+  }
+  //#endregion Controls
 
   //#region SysID Functions
   private final VoltageOut m_voltReq = new VoltageOut(0.0);

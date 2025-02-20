@@ -24,6 +24,7 @@ public class AlgaeConstants {
         public static final boolean kIsInverted = true;
         public static final NeutralModeValue kNeutralMode = NeutralModeValue.Brake;
         public static final double kSpeed = 0.75;
+        public static final double kPositionTolerance = 0.05;
         public class Positions {
             public static final double up = 0.0;
             public static final double down = 0.0;

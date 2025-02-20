@@ -60,7 +60,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     L4(ElevatorConstants.Positions.kL4);
     private final double position;
     Position(double position) { this.position = position; }
-    public double getAngularPositionRotations() { return this.position; }
+    public double getRotations() { return this.position; }
   }
   private final MotionMagicVoltage m_mmVoltage = new MotionMagicVoltage(0);
   private final DutyCycleOut m_DutyCycle = new DutyCycleOut(0);
@@ -205,7 +205,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   public void setPosition(Position position) {
     setPrevPosition(position);
-    m_motor1.setControl(m_mmVoltage.withPosition(position.getAngularPositionRotations()));
+    m_motor1.setControl(m_mmVoltage.withPosition(position.getRotations()));
     NCDebug.Debug.debug("Elevator: Move to "+position.toString());
   }
   //#endregion Setters

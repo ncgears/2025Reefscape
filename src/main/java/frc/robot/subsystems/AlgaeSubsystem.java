@@ -15,6 +15,8 @@ import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.hardware.TalonFXS;
 
+import edu.wpi.first.units.Units;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
@@ -143,13 +145,16 @@ public class AlgaeSubsystem extends SubsystemBase {
       ShuffleboardTab debugTab = Shuffleboard.getTab("Debug");
 			ShuffleboardLayout dbgAlgaeList = debugTab.getLayout("Algae", BuiltInLayouts.kList)
 				.withSize(4,6)
-				.withPosition(8,4)
+				.withPosition(12,4)
 				.withProperties(Map.of("Label position","LEFT"));
 			dbgAlgaeList.addString("Status", this::getDirectionColor)
 				.withWidget("Single Color View");
-      dbgAlgaeList.addString("Position", this::getPositionName);
       dbgAlgaeList.addString("Direction", this::getDirectionName);
-      // dbgAlgaeList.add("Algae In", new InstantCommand(this::AlgaeIn))
+      dbgAlgaeList.addString("Target", this::getTargetPositionName);
+      dbgAlgaeList.addNumber("Target Pos", this::getTargetPosition);
+      dbgAlgaeList.addNumber("Motor Pos", () -> { return getMotorPosition().in(Units.Rotations); });
+      dbgAlgaeList.addNumber("Absolute Pos", () -> { return getPositionAbsolute().in(Units.Rotations); });
+        // dbgAlgaeList.add("Algae In", new InstantCommand(this::AlgaeIn))
       //   .withProperties(Map.of("show_type",false));  
       // dbgAlgaeList.add("Algae Out", new InstantCommand(this::AlgaeOut))
       //   .withProperties(Map.of("show_type",false));  
@@ -166,10 +171,22 @@ public class AlgaeSubsystem extends SubsystemBase {
   public Position getPosition() { return m_curPosition; }
   public String getPositionName() { return m_curPosition.toString(); }
   public String getPositionColor() { return m_curPosition.getColor(); }
+  public String getTargetPositionName() { return m_curPosition.toString(); }
+  public double getTargetPosition() { return m_wristmotor1.getClosedLoopReference().getValue(); }
+  public double getPositionError() { return m_wristmotor1.getClosedLoopError().getValue(); }
 
   private double getStatorCurrent() {
     return m_wristmotor1.getStatorCurrent().getValueAsDouble();
   }
+
+  public Angle getMotorPosition() {
+    return m_wristmotor1.getPosition().getValue();
+  }
+
+  public Angle getPositionAbsolute() {
+    return m_encoder.getPosition().getValue();
+  }
+
 
   public TalonFX[] getMotors() {
     TalonFX[] motors = {m_wristmotor1};

@@ -13,7 +13,7 @@ public class ClimberConstants {
 
     //Controller Setup
     public static final String canBus = "rio";
-    public static final boolean debugDashboard = false; //enable debugging dashboard
+    public static final boolean debugDashboard = true; //enable debugging dashboard
     public static final boolean isDisabled = false; //disable climber default command
     public static final int kCANcoderID = ID.CANcoder.climber;
     public static final boolean kUseCANcoder = true;

@@ -270,7 +270,7 @@ public class ElevatorSubsystem extends SubsystemBase {
       default:
         NCDebug.Debug.debug("Elevator: Not in a scoring configuration from "+m_targetPosition.toString());
     }
-    return null;
+    return run(() -> {});
   }
   public Command LastPositionC() {
     return run(

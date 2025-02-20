@@ -52,6 +52,7 @@ import frc.robot.subsystems.ElevatorSubsystem;
 
 
 public class RobotContainer {
+    //#region Declarations
     public static final CTREConfigs ctreConfigs = new CTREConfigs();
     public static final Lighting lighting = Lighting.getInstance();
     public static final Gyro gyro = Gyro.getInstance();
@@ -92,6 +93,7 @@ public class RobotContainer {
     private final CommandStadiaController dj = new CommandStadiaController(OIConstants.JoyDriverID);
     private final CommandStadiaController oj = new CommandStadiaController(OIConstants.JoyOperID);
     private final CommandStadiaController pj = new CommandStadiaController(OIConstants.JoyProgID);
+    //#endregion Declarations
 
     public RobotContainer() {
         final InputAxis m_fieldX = new InputAxis("Forward", dj::getLeftY)
@@ -122,6 +124,7 @@ public class RobotContainer {
         configureBindings();
         buildDashboards();
 
+        //#region Default Commands
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
@@ -137,6 +140,7 @@ public class RobotContainer {
         if(!ElevatorConstants.isDisabled) {
             elevator.setDefaultCommand(elevator.ElevatorMoveC(m_elevatorAxis));
         }
+        //#endregion Default Commands
       
     }
     
@@ -288,7 +292,7 @@ public class RobotContainer {
         oj.rightBumper().onTrue(elevator.LastPositionC());  //return to previous position L1..L4
 
         // Other OJ bindings
-        // right stick elevator manual
+        // right stick elevator manual (see setup section
         // lbump hp intake pos
         // ltrig algae outtake
         // ellipses start climb

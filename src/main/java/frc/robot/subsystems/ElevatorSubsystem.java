@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.constants.*; 
 import frc.robot.utils.NCDebug;
@@ -68,8 +69,17 @@ public class ElevatorSubsystem extends SubsystemBase {
   private CANcoder m_encoder;
   private TalonFX m_motor1;
   private State m_curState = State.STOP;
+  private Position m_prevPosition = Position.L1;
   private Position m_targetPosition = Position.STOW;
   //#endregion
+
+  //#region Triggers
+  /**
+   * Returns true when the elevator has reached its limit
+   */
+  public final Trigger atTarget = new Trigger(this::isAtTarget);
+
+  //#endregion Triggers
 
   //#region Setup
   /**
@@ -107,9 +117,9 @@ public class ElevatorSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
   }
-  //#endregion
+  //#endregion Setup
 
-  //#region Setup Dashboard
+  //#region Dashboard
   public void createDashboards() {
     ShuffleboardTab driverTab = Shuffleboard.getTab("Driver");
     driverTab.addString("Elevator", this::getStateColor)
@@ -154,7 +164,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         .withProperties(Map.of("show_type",false));  
     }
   }
-  //#endregion
+  //#endregion Dashboard
 
   //#region Getters
   public State getState() { return m_curState; }
@@ -172,14 +182,33 @@ public class ElevatorSubsystem extends SubsystemBase {
   public Angle getPositionAbsolute() {
     return m_encoder.getPosition().getValue();
   }
-  //#endregion
+
+  public boolean isAtTarget() {
+    return (getPositionError() <= ElevatorConstants.kPositionTolerance);
+  }
+  //#endregion Getters
 
   //#region Setters
+  public void setPrevPosition(Position position) {
+    switch (position) {
+      case L4:
+      case L3:
+      case L2:
+      case L1:
+        m_prevPosition = position;
+        NCDebug.Debug.debug("Elevator: Saved Last Position "+position.toString());
+        break;
+      default:
+        break;
+    }
+  }
+
   public void setPosition(Position position) {
+    setPrevPosition(position);
     m_motor1.setControl(m_mmVoltage.withPosition(position.getAngularPositionRotations()));
     NCDebug.Debug.debug("Elevator: Move to "+position.toString());
   }
-  //#endregion
+  //#endregion Setters
 
   //#region Limits
   public boolean getForwardLimit() {
@@ -196,7 +225,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     //if Either limit is met
     return getForwardLimit() || getReverseLimit();
   }
-  //#endregion
+  //#endregion Limits
 
   //#region Control Methods
   public void ElevatorMove(double power) {
@@ -225,13 +254,29 @@ public class ElevatorSubsystem extends SubsystemBase {
     return run(() -> ElevatorMove(power.getAsDouble()));
   }
 
-  public void ElevatorL4() { setPosition(Position.L4); }
-  public void ElevatorL4Score() { setPosition(Position.L4SCORE); }
-  public void ElevatorL3() { setPosition(Position.L3); }
-  public void ElevatorL3Score() { setPosition(Position.L3SCORE); }
-  public void ElevatorL2() { setPosition(Position.L2); }
-  public void ElevatorL2Score() { setPosition(Position.L2SCORE); }
-  public void ElevatorL1() { setPosition(Position.L1); }
+  public Command ElevatorPositionC(Position position) {
+    return run(
+      () -> setPosition(position)
+    );
+  }
+  public Command ScoreC() { 
+    switch (m_targetPosition) {
+      case L4:
+        return run(() -> setPosition(Position.L4SCORE)); 
+      case L3:
+        return run(() -> setPosition(Position.L3SCORE)); 
+      case L2:
+        return run(() -> setPosition(Position.L2SCORE)); 
+      default:
+        NCDebug.Debug.debug("Elevator: Not in a scoring configuration from "+m_targetPosition.toString());
+    }
+    return null;
+  }
+  public Command LastPositionC() {
+    return run(
+      () -> setPosition(m_prevPosition)
+    );
+  }
 
   public void ElevatorUp() {
     m_curState = State.UP;
@@ -264,7 +309,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     m_motor1.setNeutralMode(NeutralModeValue.Brake);
     NCDebug.Debug.debug("Elevator: Switch to Brake");
   }
-  //#endregion
+  //#endregion Control Methods
 
   //#region SysID Functions
   private final VoltageOut m_voltReq = new VoltageOut(0.0);
@@ -295,7 +340,7 @@ public class ElevatorSubsystem extends SubsystemBase {
       sysIdDynamic(SysIdRoutine.Direction.kReverse).until(this::atLimit)
     );
   }
-  //#endregion
+  //#endregion SysID Functions
 
   //#region Example for 2054
   private enum elevatorPositions {FLOOR,L1,L2,L3,L4};
@@ -336,6 +381,6 @@ public class ElevatorSubsystem extends SubsystemBase {
       moveWheelCommand(wheelTarget)
     );
   }
-  //#endregion
+  //#endregion Example for 2054
 
 }

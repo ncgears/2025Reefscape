@@ -50,6 +50,7 @@ import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.CoralSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem.Position;
 
 
 public class RobotContainer {
@@ -178,6 +179,7 @@ public class RobotContainer {
     }
     
     private void configureBindings() {
+        //#region RobotMode Triggers
         // bind to the disabled() trigger which happens any time the robot is disabled
         RobotModeTriggers.disabled().onTrue(
             new InstantCommand(this::resetRobot).ignoringDisable(true)
@@ -204,7 +206,22 @@ public class RobotContainer {
             .andThen(() -> lighting.setColorCommand(Colors.OFF))
                 // .andThen(climber.runOnce(climber::ratchetLock)).andThen(new WaitCommand(0.5)).andThen(climber.runOnce(climber::ratchetFree))
         );
+        //#endregion
 
+        //#region Trigger Actions
+        if(!ClimberConstants.isDisabled) {
+            /**
+             * This monitors the hasCage trigger and immediately starts climbing until the climbComplete trigger, then goes to holding mode
+             * Once the climbComplete trigger fires, the climber stops after 2 seconds
+             */
+            climber.hasCage.and(climber.climbComplete.negate()).onTrue(climber.climberMoveC(() -> ClimberConstants.kClimbPower));
+            // .onFalse(climber.climberMoveC(() -> 0).andThen(new WaitCommand(2).andThen(climber.climberStopC())));
+            // climber.climbComplete.onTrue(climber.climberHoldC().andThen(new WaitCommand(2)).andThen(climber.climberStopC()));
+            climber.climbComplete.onTrue(climber.climberStopC());
+        }
+        //#endregion Trigger Actions
+
+        //#region Driver Joystick
         if(AudioConstants.isEnabled) {
             /** Manage Music - Song list
             *  Brawl-Theme.chrp
@@ -220,17 +237,6 @@ public class RobotContainer {
                 }
             }).ignoringDisable(true));
         }
-
-        if(!ClimberConstants.isDisabled) {
-            /**
-             * This monitors the hasCage trigger and immediately starts climbing until the climbComplete trigger, then goes to holding mode
-             * Once the climbComplete trigger fires, the climber stops after 2 seconds
-             */
-            climber.hasCage.and(climber.climbComplete.negate()).onTrue(climber.climberMoveC(() -> ClimberConstants.kClimbPower));
-                // .onFalse(climber.climberMoveC(() -> 0).andThen(new WaitCommand(2).andThen(climber.climberStopC())));
-            // climber.climbComplete.onTrue(climber.climberHoldC().andThen(new WaitCommand(2)).andThen(climber.climberStopC()));
-            climber.climbComplete.onTrue(climber.climberStopC());
-            }
 
         //POV left and right are robot-centric strafing
         dj.povLeft().whileTrue(drivetrain.applyRequest(() -> 
@@ -266,16 +272,22 @@ public class RobotContainer {
         
         // reset the field-centric heading on hamburger button press
         dj.hamburger().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+        //#endregion Driver Joystick
 
-        //oj
+        //#region Operator Joystick
+        oj.a().onTrue(elevator.ElevatorPositionC(Position.L1)); //move to L1
+        oj.x().onTrue(elevator.ElevatorPositionC(Position.L2)); //move to L2
+        oj.b().onTrue(elevator.ElevatorPositionC(Position.L3)); //move to L3
+        oj.y().onTrue(elevator.ElevatorPositionC(Position.L4)); //move to L4
+        oj.rightTrigger().onTrue(
+            elevator.ScoreC()
+            .until(elevator::isAtTarget)
+            .andThen(new WaitCommand(1)) //Will be retract coral subsystem
+        ); //score the coral from L2..L4
+        oj.rightBumper().onTrue(elevator.LastPositionC());  //return to previous position L1..L4
 
+        // Other OJ bindings
         // right stick elevator manual
-        // a L1
-        // x L2
-        // b L3
-        // y L4
-        // rtrig score coral
-        // rbumper back to previous
         // lbump hp intake pos
         // ltrig algae outtake
         // ellipses start climb
@@ -288,7 +300,9 @@ public class RobotContainer {
         // frame - open
         // stadia - open
         // hamburg - open
+        //#endregion Operator Joystick
 
+        //#region Programmer Joystick
         // Run SysId routines when holding ellipses/google and X/Y.
         // Note that each routine should be run exactly once in a single log.
         var m_mechanism = elevator; //drivetrain, elevator, coral, algae, climber
@@ -299,6 +313,7 @@ public class RobotContainer {
         pj.ellipses().and(pj.x()).whileTrue(m_mechanism.sysIdDynamic(Direction.kReverse));
         pj.google().and(pj.y()).whileTrue(m_mechanism.sysIdQuasistatic(Direction.kForward));
         pj.google().and(pj.x()).whileTrue(m_mechanism.sysIdQuasistatic(Direction.kReverse));
+        //#endregion Programmer Joystick
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }
@@ -317,6 +332,7 @@ public class RobotContainer {
         }
     }
 
+    //#region Dashboard
     //From here down is all used for building the shuffleboard
     public void buildDashboards(){
         //List of Widgets: https://github.com/Gold872/elastic-dashboard/wiki/Widgets-List-&-Properties-Reference
@@ -403,5 +419,5 @@ public class RobotContainer {
     private ShuffleboardTab buildTab(String tabname) {
         return Shuffleboard.getTab(tabname);
     }
-
+    //#endregion Dashboard
 }

@@ -47,6 +47,17 @@ public class CoralSubsystem extends SubsystemBase {
   }
   private Direction m_curDirection = Direction.STOP;
 
+  public enum Position {
+    OUT(CoralConstants.Positions.kOut, DashboardConstants.Colors.GREEN),
+    IN(CoralConstants.Positions.kIn, DashboardConstants.Colors.RED),
+    SCORE(CoralConstants.Positions.kScore, DashboardConstants.Colors.ORANGE);
+    private final double position;
+    private final String color;
+    Position(double position, String color) { this.position = position; this.color = color; }
+    public double getRotations() { return this.position; }
+    public String getColor() { return this.color; }
+  }
+
   private final MotionMagicVoltage m_mmVoltage = new MotionMagicVoltage(0);
   private final DutyCycleOut m_DutyCycle = new DutyCycleOut(0);
   private final NeutralOut m_neutral = new NeutralOut();
@@ -158,6 +169,10 @@ public class CoralSubsystem extends SubsystemBase {
   //#endregion Getters
 
   //#region Setters
+  public void setPosition(Position position) {
+    m_motor1.setControl(m_mmVoltage.withPosition(position.getRotations()));
+    NCDebug.Debug.debug("Coral: Move to "+position.toString());
+  }
   //#endregion Setters
 
   //#region Limits
@@ -179,6 +194,18 @@ public class CoralSubsystem extends SubsystemBase {
       m_curDirection = Direction.STOP;
       NCDebug.Debug.debug("Coral: Stop");
     }
+  }
+
+  public Command CoralPositionC(Position position) {
+    return run(
+      () -> setPosition(position)
+    );
+  }
+
+  public Command CoralStopC() {
+    return  run(
+      () -> coralStop()
+    );
   }
   //#endregion Controls
 

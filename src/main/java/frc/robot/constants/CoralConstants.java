@@ -44,7 +44,10 @@ public class CoralConstants {
     public class Positions {
         public static final double kFwdLimit = 3.38; //Forward imit
         public static final double kRevLimit = -0.01; //Reverse Limit
-        public static final double kStow = 0.0; //all the way in
+        public static final double kStow = 0.0; //all the way in (home)
+        public static final double kOut = 0.0; //out ready for scoring
+        public static final double kScore = 0.0; //retracted to score
+        public static final double kIn = 0.0; //retracted for transit
     }
     public static final boolean kSoftForwardLimitEnable = true;
     public static final double kSoftForwardLimit = Positions.kFwdLimit;

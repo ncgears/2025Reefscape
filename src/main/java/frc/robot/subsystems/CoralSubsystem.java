@@ -15,6 +15,8 @@ import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.math.filter.LinearFilter;
+import edu.wpi.first.units.Units;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
@@ -58,6 +60,7 @@ public class CoralSubsystem extends SubsystemBase {
     public double getRotations() { return this.position; }
     public String getColor() { return this.color; }
   }
+  private Position m_targetPosition = Position.IN;
 
   private final MotionMagicVoltage m_mmVoltage = new MotionMagicVoltage(0);
   private final DutyCycleOut m_DutyCycle = new DutyCycleOut(0);
@@ -144,12 +147,15 @@ public class CoralSubsystem extends SubsystemBase {
 			dbgCoralList.addString("Status", this::getColor)
 				.withWidget("Single Color View");
 			dbgCoralList.addString("Direction", this::getDirectionName);
-      // dbgCoralList.add("Coral In", new InstantCommand(this::CoralIn))
-      //   .withProperties(Map.of("show_type",false));  
-      // dbgCoralList.add("Coral Out", new InstantCommand(this::CoralOut))
-      //   .withProperties(Map.of("show_type",false));  
-      // dbgCoralList.add("Coral Stop", new InstantCommand(this::CoralStop))
-      //   .withProperties(Map.of("show_type",false));  
+      dbgCoralList.addString("Target", this::getTargetPositionName);
+      dbgCoralList.addNumber("Target Pos", this::getTargetPosition);
+      dbgCoralList.addNumber("Motor Pos", () -> { return NCDebug.General.roundDouble(getMotorPosition().in(Units.Rotations),6); });
+      dbgCoralList.add("Coral In", CoralPositionC(Position.IN))
+         .withProperties(Map.of("show_type",false));  
+      dbgCoralList.add("Coral Out", CoralPositionC(Position.OUT))
+         .withProperties(Map.of("show_type",false));  
+      dbgCoralList.add("Coral Score", CoralPositionC(Position.SCORE))
+         .withProperties(Map.of("show_type",false));  
     }
   }
   //#endregion Dashboard
@@ -158,9 +164,16 @@ public class CoralSubsystem extends SubsystemBase {
   public Direction getDirection() { return m_curDirection; }
   public String getDirectionName() { return m_curDirection.toString(); }
   public String getColor() { return m_curDirection.getColor(); }
+  public double getTargetPosition() { return m_motor1.getClosedLoopReference().getValue(); }
+  public String getTargetPositionName() { return m_targetPosition.toString(); }
+  public double getPositionError() { return m_motor1.getClosedLoopError().getValue(); }
 
   private double getStatorCurrent() {
     return m_motor1.getStatorCurrent().getValueAsDouble();
+  }
+
+  public Angle getMotorPosition() {
+    return m_motor1.getPosition().getValue();
   }
 
   public TalonFX[] getMotors() {
@@ -171,6 +184,7 @@ public class CoralSubsystem extends SubsystemBase {
 
   //#region Setters
   public void setPosition(Position position) {
+    m_targetPosition = position;
     m_motor1.setControl(m_mmVoltage.withPosition(position.getRotations()));
     NCDebug.Debug.debug("Coral: Move to "+position.toString());
   }
@@ -198,13 +212,13 @@ public class CoralSubsystem extends SubsystemBase {
   }
 
   public Command CoralPositionC(Position position) {
-    return run(
+    return runOnce(
       () -> setPosition(position)
     );
   }
 
   public Command CoralStopC() {
-    return  run(
+    return  runOnce(
       () -> coralStop()
     );
   }

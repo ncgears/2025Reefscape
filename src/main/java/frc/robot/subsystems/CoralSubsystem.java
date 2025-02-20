@@ -32,6 +32,7 @@ import frc.robot.RobotContainer;
  * This subsystem handles managing the Coral.
  * It is responsible for running the Coral using information from the indexer about whether we have a note.
  */
+@SuppressWarnings({"unused"})
 public class CoralSubsystem extends SubsystemBase {
 	private static CoralSubsystem instance;
   //private and public variables defined here

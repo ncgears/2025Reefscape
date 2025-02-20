@@ -49,7 +49,6 @@ import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.CoralSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
-import frc.robot.subsystems.ElevatorSubsystem.Position;
 
 
 public class RobotContainer {
@@ -274,10 +273,10 @@ public class RobotContainer {
         //#endregion Driver Joystick
 
         //#region Operator Joystick
-        oj.a().onTrue(elevator.ElevatorPositionC(Position.L1)); //move to L1
-        oj.x().onTrue(elevator.ElevatorPositionC(Position.L2)); //move to L2
-        oj.b().onTrue(elevator.ElevatorPositionC(Position.L3)); //move to L3
-        oj.y().onTrue(elevator.ElevatorPositionC(Position.L4)); //move to L4
+        oj.a().onTrue(elevator.ElevatorPositionC(ElevatorSubsystem.Position.L1)); //move to L1
+        oj.x().onTrue(elevator.ElevatorPositionC(ElevatorSubsystem.Position.L2)); //move to L2
+        oj.b().onTrue(elevator.ElevatorPositionC(ElevatorSubsystem.Position.L3)); //move to L3
+        oj.y().onTrue(elevator.ElevatorPositionC(ElevatorSubsystem.Position.L4)); //move to L4
         oj.rightTrigger().onTrue(
             elevator.ScoreC()
             .until(elevator::isAtTarget)

@@ -32,6 +32,7 @@ import frc.robot.RobotContainer;
  * This subsystem handles managing the Algae.
  * It is responsible for running the Algae using information from the indexer about whether we have a note.
  */
+@SuppressWarnings({"unused"})
 public class AlgaeSubsystem extends SubsystemBase {
 	private static AlgaeSubsystem instance;
   //private and public variables defined here
@@ -59,7 +60,7 @@ public class AlgaeSubsystem extends SubsystemBase {
   private Position m_curPosition = Position.STOW;
 
   private final MotionMagicVoltage m_mmVoltage = new MotionMagicVoltage(0);
-  private final DutyCycleOut m_DutyCycle = new DutyCycleOut(0);
+  // private final DutyCycleOut m_DutyCycle = new DutyCycleOut(0);
   private final NeutralOut m_neutral = new NeutralOut();
   private final StaticBrake m_brake = new StaticBrake();
 

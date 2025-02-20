@@ -241,7 +241,5 @@ public class AlgaeSubsystem extends SubsystemBase {
       sysIdDynamic(SysIdRoutine.Direction.kReverse).until(this::atLimit)
     );
   }
-  //#endregion
-
-
+  //#endregion SysID Functions
 }

@@ -71,7 +71,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   private State m_curState = State.STOP;
   private Position m_prevPosition = Position.L1;
   private Position m_targetPosition = Position.STOW;
-  //#endregion
+  //#endregion Declarations
 
   //#region Triggers
   /**

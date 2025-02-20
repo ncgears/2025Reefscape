@@ -131,6 +131,9 @@ public class RobotContainer {
             )
         );
 
+        /**
+         * Handle manual control of the elevator
+         */
         if(!ElevatorConstants.isDisabled) {
             elevator.setDefaultCommand(elevator.ElevatorMoveC(m_elevatorAxis));
         }
@@ -280,7 +283,7 @@ public class RobotContainer {
         oj.rightTrigger().onTrue(
             elevator.ScoreC()
             .until(elevator::isAtTarget)
-            .andThen(new WaitCommand(1)) //Will be retract coral subsystem
+            .andThen(coral.CoralPositionC(CoralSubsystem.Position.SCORE))
         ); //score the coral from L2..L4
         oj.rightBumper().onTrue(elevator.LastPositionC());  //return to previous position L1..L4
 

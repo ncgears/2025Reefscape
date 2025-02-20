@@ -25,7 +25,6 @@ import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -403,12 +402,14 @@ public class RobotContainer {
         //     .withWidget("Camera Stream");
     }
 
+    @SuppressWarnings({"unused"})
     private void buildDebugTab(){
         ShuffleboardTab debugTab = buildTab("Debug");
         debugTab.add("Command Scheduler", CommandScheduler.getInstance())
             .withPosition(0,2);      
     }
 
+    @SuppressWarnings({"unused"})
     private void buildPowerTab(){
         ShuffleboardTab powerTab = buildTab("Power");
         powerTab.add("Power", power)

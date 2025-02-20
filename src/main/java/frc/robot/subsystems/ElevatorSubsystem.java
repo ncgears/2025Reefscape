@@ -227,7 +227,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
   //#endregion Limits
 
-  //#region Control Methods
+  //#region Controls
   public void ElevatorMove(double power) {
     if(power>0) {
       if(m_curState != State.UP) {
@@ -309,7 +309,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     m_motor1.setNeutralMode(NeutralModeValue.Brake);
     NCDebug.Debug.debug("Elevator: Switch to Brake");
   }
-  //#endregion Control Methods
+  //#endregion Controls
 
   //#region SysID Functions
   private final VoltageOut m_voltReq = new VoltageOut(0.0);

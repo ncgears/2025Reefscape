@@ -151,8 +151,8 @@ public class ElevatorSubsystem extends SubsystemBase {
         .withWidget("Single Color View");
       dbgElevatorList.addString("State", this::getStateName);
       dbgElevatorList.addNumber("Target", this::getTargetPosition);
-      dbgElevatorList.addNumber("Position", () -> { return getPosition().in(Units.Rotations); });
-      dbgElevatorList.addNumber("Absolute", () -> { return getPositionAbsolute().in(Units.Rotations); });
+      dbgElevatorList.addNumber("Position", () -> { return NCDebug.General.roundDouble(getPosition().in(Units.Rotations),6); });
+      dbgElevatorList.addNumber("Absolute", () -> { return NCDebug.General.roundDouble(getPositionAbsolute().in(Units.Rotations),6); });
       dbgElevatorList.addNumber("Error", this::getPositionError);
       dbgElevatorList.add("Elevator Up", new InstantCommand(this::ElevatorUp))
         .withProperties(Map.of("show_type",false));  

@@ -144,16 +144,16 @@ public class AlgaeSubsystem extends SubsystemBase {
       if(AlgaeConstants.debugDashboard) {
       ShuffleboardTab debugTab = Shuffleboard.getTab("Debug");
 			ShuffleboardLayout dbgAlgaeList = debugTab.getLayout("Algae", BuiltInLayouts.kList)
-				.withSize(4,6)
-				.withPosition(12,4)
+				.withSize(4,10)
+				.withPosition(12,0)
 				.withProperties(Map.of("Label position","LEFT"));
 			dbgAlgaeList.addString("Status", this::getDirectionColor)
 				.withWidget("Single Color View");
       dbgAlgaeList.addString("Direction", this::getDirectionName);
       dbgAlgaeList.addString("Target", this::getTargetPositionName);
       dbgAlgaeList.addNumber("Target Pos", this::getTargetPosition);
-      dbgAlgaeList.addNumber("Motor Pos", () -> { return getMotorPosition().in(Units.Rotations); });
-      dbgAlgaeList.addNumber("Absolute Pos", () -> { return getPositionAbsolute().in(Units.Rotations); });
+      dbgAlgaeList.addNumber("Motor Pos", () -> { return NCDebug.General.roundDouble(getMotorPosition().in(Units.Rotations),6); });
+      dbgAlgaeList.addNumber("Absolute", () -> { return NCDebug.General.roundDouble(getPositionAbsolute().in(Units.Rotations),6); });
         // dbgAlgaeList.add("Algae In", new InstantCommand(this::AlgaeIn))
       //   .withProperties(Map.of("show_type",false));  
       // dbgAlgaeList.add("Algae Out", new InstantCommand(this::AlgaeOut))

@@ -129,17 +129,17 @@ public class ClimberSubsystem extends SubsystemBase {
       ShuffleboardTab debugTab = Shuffleboard.getTab("Debug");
 			ShuffleboardLayout dbgClimberList = debugTab.getLayout("Climber", BuiltInLayouts.kList)
 				.withSize(4,10)
-				.withPosition(16,0)
+				.withPosition(4,0)
 				.withProperties(Map.of("Label position","LEFT"));
       dbgClimberList.addString("Status", this::getStateColor)
         .withWidget("Single Color View");
       dbgClimberList.addBoolean("Has Cage", this::getHasCage);
       dbgClimberList.addBoolean("Complete", this::getClimbComplete);
       dbgClimberList.addString("State", this::getStateName);
-      dbgClimberList.addNumber("Position", () -> { return getPosition().in(Units.Rotations); });
+      dbgClimberList.addNumber("Position", () -> { return NCDebug.General.roundDouble(getPosition().in(Units.Rotations),6); });
       dbgClimberList.addBoolean("CageSw1", this::getCageSwitch1);
       dbgClimberList.addBoolean("CageSw2", this::getCageSwitch2);
-        dbgClimberList.add("Climber Up", new InstantCommand(this::climberUp))
+      dbgClimberList.add("Climber Up", new InstantCommand(this::climberUp))
         .withProperties(Map.of("show_type",false));  
       dbgClimberList.add("Climber Down", new InstantCommand(this::climberDown))
         .withProperties(Map.of("show_type",false));  

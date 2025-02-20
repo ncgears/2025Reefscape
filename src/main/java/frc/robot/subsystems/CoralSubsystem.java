@@ -138,8 +138,8 @@ public class CoralSubsystem extends SubsystemBase {
       if(CoralConstants.debugDashboard) {
       ShuffleboardTab debugTab = Shuffleboard.getTab("Debug");
 			ShuffleboardLayout dbgCoralList = debugTab.getLayout("Coral", BuiltInLayouts.kList)
-				.withSize(4,6)
-				.withPosition(8,4)
+				.withSize(4,10)
+				.withPosition(8,0)
 				.withProperties(Map.of("Label position","LEFT"));
 			dbgCoralList.addString("Status", this::getColor)
 				.withWidget("Single Color View");

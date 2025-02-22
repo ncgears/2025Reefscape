@@ -100,6 +100,63 @@ public final class CTREConfigs {
         //Audio
         coralFXConfig.Audio = new AudioConfigs().withAllowMusicDurDisable(true);
 
+        //Algae Configuration
+        //CANcoder
+        algaeCCConfig.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 0.5;
+        algaeCCConfig.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
+        algaeCCConfig.MagnetSensor.MagnetOffset = AlgaeConstants.kMagnetOffset;
+
+        Slot0Configs algaeSlot0Configs = new Slot0Configs()
+            .withKP(AlgaeConstants.kP)
+            .withKI(AlgaeConstants.kI)
+            .withKD(AlgaeConstants.kD)
+            .withKS(AlgaeConstants.kS)
+            .withKV(AlgaeConstants.kV)
+            .withKA(AlgaeConstants.kA);
+        algaewristFXConfig.Slot0 = algaeSlot0Configs;
+        //Current Limits
+        CurrentLimitsConfigs algaeCurrentLimitsConfigs = new CurrentLimitsConfigs()
+            .withSupplyCurrentLimit(AlgaeConstants.kCurrentLimitAmps)
+            // .withSupplyCurrentLowerLimit(AlgaeConstants.kCurrentLimitThresholdAmps)
+            // .withSupplyCurrentLowerTime(AlgaeConstants.kCurrentLimitThresholdSecs)
+            .withSupplyCurrentLimitEnable(AlgaeConstants.kCurrentLimitEnable);
+        algaewristFXConfig.CurrentLimits = algaeCurrentLimitsConfigs;
+        //Motion Magic
+        MotionMagicConfigs algaeMotionMagicConfigs = new MotionMagicConfigs()
+            .withMotionMagicCruiseVelocity(AlgaeConstants.kMotionMagicCruise)
+            .withMotionMagicAcceleration(AlgaeConstants.kMotionMagicAccel)
+            .withMotionMagicJerk(AlgaeConstants.kMotionMagicJerk);
+        algaewristFXConfig.MotionMagic = algaeMotionMagicConfigs;
+        //Mechanical Limits
+        SoftwareLimitSwitchConfigs algaeSoftwareLimitSwitchConfigs = new SoftwareLimitSwitchConfigs()
+            .withReverseSoftLimitEnable(AlgaeConstants.kSoftReverseLimitEnable)
+            .withReverseSoftLimitThreshold(AlgaeConstants.kSoftReverseLimit)
+            .withForwardSoftLimitEnable(AlgaeConstants.kSoftForwardLimitEnable)
+            .withForwardSoftLimitThreshold(AlgaeConstants.kSoftForwardLimit);
+        algaewristFXConfig.SoftwareLimitSwitch = algaeSoftwareLimitSwitchConfigs;
+        // HardwareLimitSwitchConfigs coralHardwareLimitsConfigs = new HardwareLimitSwitchConfigs()
+        //     .withReverseLimitEnable(false)
+        //     .withReverseLimitType(ReverseLimitTypeValue.NormallyOpen)
+        //     .withReverseLimitAutosetPositionEnable(true)
+        //     .withReverseLimitAutosetPositionValue(0.0)
+        //     .withForwardLimitEnable(false)
+        //     .withForwardLimitType(ForwardLimitTypeValue.NormallyOpen); //Add autoset position on forward limit to appropriate number also.
+        // algaewristFXConfig.HardwareLimitSwitch = algaeHardwareLimitsConfigs;
+        //Encoder
+        if(AlgaeConstants.kUseCANcoder) {
+            algaewristFXConfig.Feedback.FeedbackRemoteSensorID = AlgaeConstants.kCANcoderID;
+            algaewristFXConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.FusedCANcoder;
+            algaewristFXConfig.Feedback.RotorToSensorRatio = AlgaeConstants.kGearRatio;
+            algaewristFXConfig.Feedback.SensorToMechanismRatio = AlgaeConstants.kSensorGearRatio; //CANcoder is the same as mechanism
+        } else {
+            algaewristFXConfig.Feedback.SensorToMechanismRatio = AlgaeConstants.kGearRatio;
+        }
+        //Neutral and Direction
+        algaewristFXConfig.MotorOutput.NeutralMode = AlgaeConstants.wrist.kNeutralMode;
+        algaewristFXConfig.MotorOutput.Inverted = (AlgaeConstants.wrist.kIsInverted) ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
+        //Audio
+        algaewristFXConfig.Audio = new AudioConfigs().withAllowMusicDurDisable(true);
+
         //Elevator
         //CANcoder
         elevatorCCConfig.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 0.5;

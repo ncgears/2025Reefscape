@@ -13,7 +13,7 @@ public class ElevatorConstants {
 
     //Controller Setup
     public static final String canBus = "rio";
-    public static final boolean debugDashboard = false; //enable debugging dashboard
+    public static final boolean debugDashboard = true; //enable debugging dashboard
     public static final boolean isDisabled = false; //disable climber default command
     public static final int kCANcoderID = ID.CANcoder.elevator;
     public static final boolean kUseCANcoder = true;
@@ -21,7 +21,7 @@ public class ElevatorConstants {
     public static final int kMotorID = ID.TalonFX.elevator;
     public static final boolean kIsInverted = true;
     public static final NeutralModeValue kNeutralMode = NeutralModeValue.Coast;
-    public static final double kStowPosition = 0;
+    public static final double kPositionTolerance = 0.05; //how close to be considered "at target"
 
     public static final double kGearRatio = 46.667; // 20:1 gearbox (0.05), 18t:42t -- this is between rotor and sensor
     public static final double kSensorGearRatio = 1.0; // no gearing between sensor and spool -- this is between sensor and spool

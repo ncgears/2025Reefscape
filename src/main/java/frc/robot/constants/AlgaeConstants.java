@@ -12,7 +12,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 public class AlgaeConstants {
     //Controller Setup
     public static final String canBus = "rio";
-    public static final boolean debugDashboard = false; //enable debugging dashboard
+    public static final boolean debugDashboard = true; //enable debugging dashboard
     public static final boolean isDisabled = false; //disable algae system
     public static final int kCANcoderID = ID.CANcoder.algae;
     public static final boolean kUseCANcoder = true;
@@ -24,6 +24,12 @@ public class AlgaeConstants {
         public static final boolean kIsInverted = true;
         public static final NeutralModeValue kNeutralMode = NeutralModeValue.Brake;
         public static final double kSpeed = 0.75;
+        public static final double kPositionTolerance = 0.05;
+        public class Positions {
+            public static final double up = 0.0;
+            public static final double down = 0.0;
+            public static final double stow = 0.0;
+        }
     }
     public class left {
         public static final int kMotorID = ID.TalonFXS.algae_left;

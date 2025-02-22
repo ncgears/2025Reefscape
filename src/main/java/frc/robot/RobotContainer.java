@@ -25,7 +25,6 @@ import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -53,6 +52,7 @@ import frc.robot.subsystems.ElevatorSubsystem;
 
 
 public class RobotContainer {
+    //#region Declarations
     public static final CTREConfigs ctreConfigs = new CTREConfigs();
     public static final Lighting lighting = Lighting.getInstance();
     public static final Gyro gyro = Gyro.getInstance();
@@ -93,6 +93,7 @@ public class RobotContainer {
     private final CommandStadiaController dj = new CommandStadiaController(OIConstants.JoyDriverID);
     private final CommandStadiaController oj = new CommandStadiaController(OIConstants.JoyOperID);
     private final CommandStadiaController pj = new CommandStadiaController(OIConstants.JoyProgID);
+    //#endregion Declarations
 
     public RobotContainer() {
         final InputAxis m_fieldX = new InputAxis("Forward", dj::getLeftY)
@@ -123,6 +124,7 @@ public class RobotContainer {
         configureBindings();
         buildDashboards();
 
+        //#region Default Commands
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
@@ -132,9 +134,13 @@ public class RobotContainer {
             )
         );
 
+        /**
+         * Handle manual control of the elevator
+         */
         if(!ElevatorConstants.isDisabled) {
             elevator.setDefaultCommand(elevator.ElevatorMoveC(m_elevatorAxis));
         }
+        //#endregion Default Commands
       
     }
     
@@ -178,6 +184,7 @@ public class RobotContainer {
     }
     
     private void configureBindings() {
+        //#region RobotMode Triggers
         // bind to the disabled() trigger which happens any time the robot is disabled
         RobotModeTriggers.disabled().onTrue(
             new InstantCommand(this::resetRobot).ignoringDisable(true)
@@ -204,7 +211,22 @@ public class RobotContainer {
             .andThen(() -> lighting.setColorCommand(Colors.OFF))
                 // .andThen(climber.runOnce(climber::ratchetLock)).andThen(new WaitCommand(0.5)).andThen(climber.runOnce(climber::ratchetFree))
         );
+        //#endregion
 
+        //#region Trigger Actions
+        if(!ClimberConstants.isDisabled) {
+            /**
+             * This monitors the hasCage trigger and immediately starts climbing until the climbComplete trigger, then goes to holding mode
+             * Once the climbComplete trigger fires, the climber stops after 2 seconds
+             */
+            climber.hasCage.and(climber.climbComplete.negate()).onTrue(climber.climberMoveC(() -> ClimberConstants.kClimbPower));
+            // .onFalse(climber.climberMoveC(() -> 0).andThen(new WaitCommand(2).andThen(climber.climberStopC())));
+            // climber.climbComplete.onTrue(climber.climberHoldC().andThen(new WaitCommand(2)).andThen(climber.climberStopC()));
+            climber.climbComplete.onTrue(climber.climberStopC());
+        }
+        //#endregion Trigger Actions
+
+        //#region Driver Joystick
         if(AudioConstants.isEnabled) {
             /** Manage Music - Song list
             *  Brawl-Theme.chrp
@@ -220,17 +242,6 @@ public class RobotContainer {
                 }
             }).ignoringDisable(true));
         }
-
-        if(!ClimberConstants.isDisabled) {
-            /**
-             * This monitors the hasCage trigger and immediately starts climbing until the climbComplete trigger, then goes to holding mode
-             * Once the climbComplete trigger fires, the climber stops after 2 seconds
-             */
-            climber.hasCage.and(climber.climbComplete.negate()).onTrue(climber.climberMoveC(() -> ClimberConstants.kClimbPower));
-                // .onFalse(climber.climberMoveC(() -> 0).andThen(new WaitCommand(2).andThen(climber.climberStopC())));
-            // climber.climbComplete.onTrue(climber.climberHoldC().andThen(new WaitCommand(2)).andThen(climber.climberStopC()));
-            climber.climbComplete.onTrue(climber.climberStopC());
-            }
 
         //POV left and right are robot-centric strafing
         dj.povLeft().whileTrue(drivetrain.applyRequest(() -> 
@@ -266,16 +277,22 @@ public class RobotContainer {
         
         // reset the field-centric heading on hamburger button press
         dj.hamburger().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+        //#endregion Driver Joystick
 
-        //oj
+        //#region Operator Joystick
+        oj.a().onTrue(elevator.ElevatorPositionC(ElevatorSubsystem.Position.L1)); //move to L1
+        oj.x().onTrue(elevator.ElevatorPositionC(ElevatorSubsystem.Position.L2)); //move to L2
+        oj.b().onTrue(elevator.ElevatorPositionC(ElevatorSubsystem.Position.L3)); //move to L3
+        oj.y().onTrue(elevator.ElevatorPositionC(ElevatorSubsystem.Position.L4)); //move to L4
+        oj.rightTrigger().onTrue(
+            elevator.ScoreC()
+            .until(elevator::isAtTarget)
+            .andThen(coral.CoralPositionC(CoralSubsystem.Position.SCORE))
+        ); //score the coral from L2..L4
+        oj.rightBumper().onTrue(elevator.LastPositionC());  //return to previous position L1..L4
 
-        // right stick elevator manual
-        // a L1
-        // x L2
-        // b L3
-        // y L4
-        // rtrig score coral
-        // rbumper back to previous
+        // Other OJ bindings
+        // right stick elevator manual (see setup section
         // lbump hp intake pos
         // ltrig algae outtake
         // ellipses start climb
@@ -288,13 +305,20 @@ public class RobotContainer {
         // frame - open
         // stadia - open
         // hamburg - open
+        //#endregion Operator Joystick
 
+        //#region Programmer Joystick
         // Run SysId routines when holding ellipses/google and X/Y.
         // Note that each routine should be run exactly once in a single log.
-        pj.ellipses().and(pj.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
-        pj.ellipses().and(pj.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
-        pj.google().and(pj.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
-        pj.google().and(pj.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
+        var m_mechanism = elevator; //drivetrain, elevator, coral, algae, climber
+        pj.ellipses().and(pj.a()).whileTrue(m_mechanism.runSysIdCommand());
+        
+        //seperately, but would need to use logic to see if we are atLimit
+        pj.ellipses().and(pj.y()).whileTrue(m_mechanism.sysIdDynamic(Direction.kForward));
+        pj.ellipses().and(pj.x()).whileTrue(m_mechanism.sysIdDynamic(Direction.kReverse));
+        pj.google().and(pj.y()).whileTrue(m_mechanism.sysIdQuasistatic(Direction.kForward));
+        pj.google().and(pj.x()).whileTrue(m_mechanism.sysIdQuasistatic(Direction.kReverse));
+        //#endregion Programmer Joystick
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }
@@ -313,6 +337,7 @@ public class RobotContainer {
         }
     }
 
+    //#region Dashboard
     //From here down is all used for building the shuffleboard
     public void buildDashboards(){
         //List of Widgets: https://github.com/Gold872/elastic-dashboard/wiki/Widgets-List-&-Properties-Reference
@@ -383,12 +408,14 @@ public class RobotContainer {
         //     .withWidget("Camera Stream");
     }
 
+    @SuppressWarnings({"unused"})
     private void buildDebugTab(){
         ShuffleboardTab debugTab = buildTab("Debug");
         debugTab.add("Command Scheduler", CommandScheduler.getInstance())
             .withPosition(0,2);      
     }
 
+    @SuppressWarnings({"unused"})
     private void buildPowerTab(){
         ShuffleboardTab powerTab = buildTab("Power");
         powerTab.add("Power", power)
@@ -399,5 +426,5 @@ public class RobotContainer {
     private ShuffleboardTab buildTab(String tabname) {
         return Shuffleboard.getTab(tabname);
     }
-
+    //#endregion Dashboard
 }

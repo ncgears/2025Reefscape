@@ -21,7 +21,7 @@ public class ElevatorConstants {
     public static final double kMagnetOffset = 1.690918; //Adjust magnet to sensor offset for CANcoder
     public static final int kMotorID = ID.TalonFX.elevator;
     public static final boolean kIsInverted = true;
-    public static final NeutralModeValue kNeutralMode = NeutralModeValue.Coast;
+    public static final NeutralModeValue kNeutralMode = NeutralModeValue.Brake;
     public static final double kPositionTolerance = 0.05; //how close to be considered "at target"
 
     public static final double kGearRatio = 9; // 20:1 gearbox (0.05), 18t:42t -- this is between rotor and sensor

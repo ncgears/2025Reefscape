@@ -1,7 +1,7 @@
 package frc.robot.utils;
 
 import edu.wpi.first.math.MathUtil;
-// import frc.robot.util.drive.AsymmetricSlewRateLimiter;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import java.util.function.DoubleSupplier;
 
 // ### slew rate limiter
@@ -11,8 +11,7 @@ import java.util.function.DoubleSupplier;
 public class InputAxis implements DoubleSupplier {
   DoubleSupplier m_supplier;
   double deadband = 0;
-//   AsymmetricSlewRateLimiter limiter =
-//       new AsymmetricSlewRateLimiter(Double.MAX_VALUE, Double.MAX_VALUE);
+  SlewRateLimiter limiter = new SlewRateLimiter(100,-100,0);
   boolean square;
   double multiplier = 1;
 
@@ -34,12 +33,12 @@ public class InputAxis implements DoubleSupplier {
   // }
 
   public InputAxis withSlewRate(double forward, double back) {
-    // limiter = new AsymmetricSlewRateLimiter(forward, back);
+    limiter = new SlewRateLimiter(forward, back,0);
     return this;
   }
 
   public InputAxis withSlewRate(double rate) {
-    // limiter = new AsymmetricSlewRateLimiter(rate);
+    limiter = new SlewRateLimiter(rate,-rate,0);
     return this;
   }
 
@@ -70,7 +69,7 @@ public class InputAxis implements DoubleSupplier {
     if (this.square) {
       value = Math.copySign(value * value, value);
     }
-    // limiter.reset(value);
+    limiter.reset(value);
   }
 
   @Override
@@ -81,7 +80,7 @@ public class InputAxis implements DoubleSupplier {
     if (this.square) {
       value = Math.copySign(value * value, value);
     }
-    // value = limiter.calculate(value);
+    value = limiter.calculate(value);
     outputValue = value;
     return value;
   }

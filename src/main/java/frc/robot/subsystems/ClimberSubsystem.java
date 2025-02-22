@@ -82,8 +82,8 @@ public class ClimberSubsystem extends SubsystemBase {
   
   public ClimberSubsystem() {
     //initialize values for private and public variables, etc.
-    m_encoder = new CANcoder(ClimberConstants.kCANcoderID, ClimberConstants.canBus);
-    RobotContainer.ctreConfigs.retryConfigApply(()->m_encoder.getConfigurator().apply(RobotContainer.ctreConfigs.climberCCConfig));
+    // m_encoder = new CANcoder(ClimberConstants.kCANcoderID, ClimberConstants.canBus);
+    // RobotContainer.ctreConfigs.retryConfigApply(()->m_encoder.getConfigurator().apply(RobotContainer.ctreConfigs.climberCCConfig));
 
     m_motor1 = new TalonFX(ClimberConstants.kMotorID, ClimberConstants.canBus);
     RobotContainer.ctreConfigs.retryConfigApply(()->m_motor1.getConfigurator().apply(RobotContainer.ctreConfigs.climberFXConfig));

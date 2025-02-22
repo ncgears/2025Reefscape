@@ -16,7 +16,8 @@ public class AlgaeConstants {
     public static final boolean isDisabled = false; //disable algae system
     public static final int kCANcoderID = ID.CANcoder.algae;
     public static final boolean kUseCANcoder = true;
-    public static final double kMagnetOffset = 0.0; //Adjust magnet to sensor offset for CANcoder
+    public static final double kMagnetOffset = 0.181396; //Adjust magnet to sensor offset for CANcoder
+    public static final boolean kSensorInverted = true;
     public static final double kGearRatio = 12.0; // this is between rotor and sensor
     public static final double kSensorGearRatio = 1.0; // no gearing between sensor and spool
     public class wrist {
@@ -26,8 +27,8 @@ public class AlgaeConstants {
         public static final double kSpeed = 0.75;
         public static final double kPositionTolerance = 0.05;
         public class Positions {
-            public static final double up = 0.0;
-            public static final double down = 0.0;
+            public static final double up = 0.01;
+            public static final double down = 0.2817;
             public static final double stow = 0.0;
         }
     }
@@ -58,8 +59,8 @@ public class AlgaeConstants {
     public static final double kCurrentLimitThresholdAmps = 30.0;
     public static final double kCurrentLimitThresholdSecs = 0.3;
     public class Positions {
-        public static final double kFwdLimit = 0.5; //Forward imit
-        public static final double kRevLimit = -0.01; //Reverse Limit
+        public static final double kFwdLimit = 0.28173; //Forward imit
+        public static final double kRevLimit = -0.001; //Reverse Limit
         public static final double kStow = 0.0; //all the way in
     }
     public static final boolean kSoftForwardLimitEnable = true;

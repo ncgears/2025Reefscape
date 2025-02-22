@@ -103,7 +103,7 @@ public final class CTREConfigs {
         //Algae Configuration
         //CANcoder
         algaeCCConfig.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 0.5;
-        algaeCCConfig.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
+        algaeCCConfig.MagnetSensor.SensorDirection = (AlgaeConstants.kSensorInverted) ? SensorDirectionValue.Clockwise_Positive : SensorDirectionValue.CounterClockwise_Positive;
         algaeCCConfig.MagnetSensor.MagnetOffset = AlgaeConstants.kMagnetOffset;
 
         Slot0Configs algaeSlot0Configs = new Slot0Configs()
@@ -160,7 +160,7 @@ public final class CTREConfigs {
         //Elevator
         //CANcoder
         elevatorCCConfig.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 0.5;
-        elevatorCCConfig.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
+        elevatorCCConfig.MagnetSensor.SensorDirection = (ElevatorConstants.kSensorInverted) ? SensorDirectionValue.Clockwise_Positive : SensorDirectionValue.CounterClockwise_Positive;
         elevatorCCConfig.MagnetSensor.MagnetOffset = ElevatorConstants.kMagnetOffset;
 
         Slot0Configs elevatorSlot0Configs = new Slot0Configs()

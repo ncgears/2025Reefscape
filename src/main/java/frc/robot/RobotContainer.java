@@ -109,6 +109,7 @@ public class RobotContainer {
             .withInvert(true);
         final InputAxis m_elevatorAxis = new InputAxis("Elevator", oj::getRightY)
             .withDeadband(OIConstants.kMinDeadband)
+            .withMultiplier(ElevatorConstants.kMaxSpeed)
             .withSquaring(true)
             .withInvert(true);
         autoFactory = new AutoFactory(

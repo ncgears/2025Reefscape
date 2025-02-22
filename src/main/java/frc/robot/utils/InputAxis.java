@@ -43,6 +43,11 @@ public class InputAxis implements DoubleSupplier {
     return this;
   }
 
+  public InputAxis withMultiplier(double multiplier) {
+    this.multiplier = multiplier;
+    return this;
+  }
+
   public InputAxis withDeadband(double deadband) {
     this.deadband = deadband;
     return this;

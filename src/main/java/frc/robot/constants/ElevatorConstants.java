@@ -18,14 +18,14 @@ public class ElevatorConstants {
     public static final int kCANcoderID = ID.CANcoder.elevator;
     public static final boolean kUseCANcoder = true;
     public static final boolean kSensorInverted = true;
-    public static final double kMagnetOffset = 1.690918; //Adjust magnet to sensor offset for CANcoder
+    public static final double kMagnetOffset = -0.3501552; //Adjust magnet to sensor offset for CANcoder
     public static final int kMotorID = ID.TalonFX.elevator;
     public static final boolean kIsInverted = true;
     public static final NeutralModeValue kNeutralMode = NeutralModeValue.Brake;
     public static final double kPositionTolerance = 0.05; //how close to be considered "at target"
-    public static final double kMaxSpeed = 0.25;
+    public static final double kMaxSpeed = 0.70;
 
-    public static final double kGearRatio = 9; // 20:1 gearbox (0.05), 18t:42t -- this is between rotor and sensor
+    public static final double kGearRatio = 9; // 9:1 gearbox
     public static final double kSensorGearRatio = 1.0; // no gearing between sensor and spool -- this is between sensor and spool
     //PID Control
     public static final double kS = 0.22; // add kS to overcome static friction: adjust first to start moving
@@ -43,7 +43,7 @@ public class ElevatorConstants {
     public static final double kCurrentLimitThresholdAmps = 60.0;
     public static final double kCurrentLimitThresholdSecs = 0.3;
     public class Positions {
-        public static final double kFwdLimit = 3.38; //Forward imit
+        public static final double kFwdLimit = 6.45; //Forward imit
         public static final double kRevLimit = -0.01; //Reverse Limit
         public static final double kStow = 0.0; //all the way down
         public static final double kL4 = 0.0; //Elevator up to L4

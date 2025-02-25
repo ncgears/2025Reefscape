@@ -15,10 +15,10 @@ public class CoralConstants {
     public static final boolean debugDashboard = true; //enable debugging dashboard
     public static final boolean isDisabled = false; //disable coral system
     public static final int kCANcoderID = ID.CANcoder.coral;
-    public static final boolean kUseCANcoder = true;
-    public static final double kMagnetOffset = -0.6903906; //Adjust magnet to sensor offset for CANcoder
+    public static final boolean kUseCANcoder = false;
+    public static final double kMagnetOffset = 0.0; //Adjust magnet to sensor offset for CANcoder
     public static final int kMotorID = ID.TalonFX.coral;
-    public static final boolean kIsInverted = true;
+    public static final boolean kIsInverted = false;
     public static final NeutralModeValue kNeutralMode = NeutralModeValue.Brake;
     public static final double kCurrentSpikeLimit = 15;
     public static final double kSpeed = 0.75;

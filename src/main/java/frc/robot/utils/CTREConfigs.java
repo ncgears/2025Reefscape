@@ -157,6 +157,24 @@ public final class CTREConfigs {
         //Audio
         algaewristFXConfig.Audio = new AudioConfigs().withAllowMusicDurDisable(true);
 
+        //Toros
+        Slot0Configs algaeleftSlot0Configs = new Slot0Configs()
+            .withKP(AlgaeConstants.kP)
+            .withKI(AlgaeConstants.kI)
+            .withKD(AlgaeConstants.kD)
+            .withKS(AlgaeConstants.kS)
+            .withKV(AlgaeConstants.kV)
+            .withKA(AlgaeConstants.kA);
+        algaeleftFXSConfig.Slot0 = algaeleftSlot0Configs;
+        algaerightFXSConfig.Slot0 = algaeleftSlot0Configs;
+        //Current Limits
+        CurrentLimitsConfigs algaeleftCurrentLimitsConfigs = new CurrentLimitsConfigs()
+            .withSupplyCurrentLimit(AlgaeConstants.kCurrentLimitAmps)
+            // .withSupplyCurrentLowerLimit(AlgaeConstants.kCurrentLimitThresholdAmps)
+            // .withSupplyCurrentLowerTime(AlgaeConstants.kCurrentLimitThresholdSecs)
+            .withSupplyCurrentLimitEnable(AlgaeConstants.kCurrentLimitEnable);
+        algaeleftFXSConfig.CurrentLimits = algaeleftCurrentLimitsConfigs;
+
         //Elevator
         //CANcoder
         elevatorCCConfig.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 0.7;

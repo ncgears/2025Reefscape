@@ -17,6 +17,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.units.Units;
+import edu.wpi.first.units.VelocityUnit;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -315,10 +316,10 @@ public class ElevatorSubsystem extends SubsystemBase {
   private final VoltageOut m_voltReq = new VoltageOut(0.0);
   private final SysIdRoutine m_sysIdRoutine = new SysIdRoutine(
     new SysIdRoutine.Config(
-      null, //default ramp rate 1V/s
-      Volts.of(4), //reduce dynamic step voltage to 4 to prevent brownout
+      Volts.per(Units.Second).of(0.75), //default ramp rate 1V/s
+      Volts.of(1.25), //reduce dynamic step voltage to 4 to prevent brownout
       null, //default timeout 10s
-      (state) -> SignalLogger.writeString("state", state.toString())
+      (state) -> SignalLogger.writeString("SysId_State", state.toString())
     ),
     new SysIdRoutine.Mechanism(
       (volts) -> m_motor1.setControl(m_voltReq.withOutput(volts.in(Volts))),

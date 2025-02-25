@@ -227,6 +227,26 @@ public class AlgaeSubsystem extends SubsystemBase {
       NCDebug.Debug.debug("Algae: Stop");
     }
   }
+
+  public void startToro() {
+    m_swizmotor_left.set(AlgaeConstants.kIntakeSpeed);
+    m_swizmotor_right.set(AlgaeConstants.kIntakeSpeed);
+    NCDebug.Debug.debug("Algae: Start Toro");
+  }
+
+  public void stopToro() {
+    m_swizmotor_left.set(0);
+    m_swizmotor_right.set(0);
+    NCDebug.Debug.debug("Algae: Stop Toro");
+  }
+
+  public Command startToroC() {
+    return runOnce(() -> startToro());
+  }
+
+  public Command stopToroC() {
+    return runOnce(() -> stopToro());
+  }
   //#endregion Controls
 
   //#region SysID Functions

@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
@@ -292,6 +293,7 @@ public class RobotContainer {
         ); //score the coral from L2..L4
         oj.rightBumper().onTrue(elevator.LastPositionC());  //return to previous position L1..L4
 
+        oj.povRight().onTrue(algae.startToroC()).onFalse(algae.stopToroC());
         // Other OJ bindings
         // right stick elevator manual (see setup section
         // lbump hp intake pos
@@ -312,9 +314,12 @@ public class RobotContainer {
         // Run SysId routines when holding ellipses/google and X/Y.
         // Note that each routine should be run exactly once in a single log.
         var m_mechanism = elevator; //drivetrain, elevator, coral, algae, climber
-        pj.ellipses().and(pj.a()).whileTrue(m_mechanism.runSysIdCommand());
+        // pj.ellipses().and(pj.a()).whileTrue(m_mechanism.runSysIdCommand());
         
         //seperately, but would need to use logic to see if we are atLimit
+        pj.leftBumper().onTrue(Commands.runOnce(SignalLogger::start)); 
+        pj.rightBumper().onTrue(Commands.runOnce(SignalLogger::stop));
+
         pj.ellipses().and(pj.y()).whileTrue(m_mechanism.sysIdDynamic(Direction.kForward));
         pj.ellipses().and(pj.x()).whileTrue(m_mechanism.sysIdDynamic(Direction.kReverse));
         pj.google().and(pj.y()).whileTrue(m_mechanism.sysIdQuasistatic(Direction.kForward));

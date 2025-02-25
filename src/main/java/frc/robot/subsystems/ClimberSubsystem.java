@@ -255,7 +255,7 @@ public class ClimberSubsystem extends SubsystemBase {
       null, //default ramp rate 1V/s
       Volts.of(4), //reduce dynamic step voltage to 4 to prevent brownout
       null, //default timeout 10s
-      (state) -> SignalLogger.writeString("state", state.toString())
+      (state) -> SignalLogger.writeString("SysId_State", state.toString())
     ),
     new SysIdRoutine.Mechanism(
       (volts) -> m_motor1.setControl(m_voltReq.withOutput(volts.in(Volts))),

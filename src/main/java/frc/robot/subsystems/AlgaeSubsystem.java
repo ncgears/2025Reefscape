@@ -154,7 +154,9 @@ public class AlgaeSubsystem extends SubsystemBase {
       dbgAlgaeList.addNumber("Target Pos", this::getTargetPosition);
       dbgAlgaeList.addNumber("Motor Pos", () -> { return NCDebug.General.roundDouble(getMotorPosition().in(Units.Rotations),6); });
       dbgAlgaeList.addNumber("Absolute", () -> { return NCDebug.General.roundDouble(getPositionAbsolute().in(Units.Rotations),6); });
-        // dbgAlgaeList.add("Algae In", new InstantCommand(this::AlgaeIn))
+      dbgAlgaeList.addNumber("L Toro Spd", this::getToroLeftSpeed);
+      dbgAlgaeList.addNumber("R Toro Spd", this::getToroRightSpeed);
+      // dbgAlgaeList.add("Algae In", new InstantCommand(this::AlgaeIn))
       //   .withProperties(Map.of("show_type",false));  
       // dbgAlgaeList.add("Algae Out", new InstantCommand(this::AlgaeOut))
       //   .withProperties(Map.of("show_type",false));  
@@ -174,7 +176,9 @@ public class AlgaeSubsystem extends SubsystemBase {
   public String getTargetPositionName() { return m_curPosition.toString(); }
   public double getTargetPosition() { return m_wristmotor1.getClosedLoopReference().getValue(); }
   public double getPositionError() { return m_wristmotor1.getClosedLoopError().getValue(); }
-
+  public double getToroLeftSpeed() { return m_swizmotor_left.getVelocity().getValueAsDouble(); }
+  public double getToroRightSpeed() { return m_swizmotor_right.getVelocity().getValueAsDouble(); }
+  
   private double getStatorCurrent() {
     return m_wristmotor1.getStatorCurrent().getValueAsDouble();
   }
@@ -256,7 +260,7 @@ public class AlgaeSubsystem extends SubsystemBase {
       null, //default ramp rate 1V/s
       Volts.of(4), //reduce dynamic step voltage to 4 to prevent brownout
       null, //default timeout 10s
-      (state) -> SignalLogger.writeString("state", state.toString())
+      (state) -> SignalLogger.writeString("SysId_State", state.toString())
     ),
     new SysIdRoutine.Mechanism(
       (volts) -> m_wristmotor1.setControl(m_voltReq.withOutput(volts.in(Volts))),

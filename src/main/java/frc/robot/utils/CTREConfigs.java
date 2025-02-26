@@ -7,12 +7,15 @@ import com.ctre.phoenix6.configs.AudioConfigs;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
+import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.TalonFXSConfiguration;
+import com.ctre.phoenix6.signals.ConnectedMotorValue;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.MotorArrangementValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 
 import frc.robot.constants.*; 
@@ -166,6 +169,8 @@ public final class CTREConfigs {
             .withKV(AlgaeConstants.kV)
             .withKA(AlgaeConstants.kA);
         algaeleftFXSConfig.Slot0 = algaeleftSlot0Configs;
+        algaeleftFXSConfig.Commutation.MotorArrangement = MotorArrangementValue.Minion_JST;
+
         algaerightFXSConfig.Slot0 = algaeleftSlot0Configs;
         //Current Limits
         CurrentLimitsConfigs algaeleftCurrentLimitsConfigs = new CurrentLimitsConfigs()
@@ -174,6 +179,15 @@ public final class CTREConfigs {
             // .withSupplyCurrentLowerTime(AlgaeConstants.kCurrentLimitThresholdSecs)
             .withSupplyCurrentLimitEnable(AlgaeConstants.kCurrentLimitEnable);
         algaeleftFXSConfig.CurrentLimits = algaeleftCurrentLimitsConfigs;
+        //Neutral and Direction
+        algaeleftFXSConfig.MotorOutput.NeutralMode = AlgaeConstants.left.kNeutralMode;
+        algaeleftFXSConfig.MotorOutput.Inverted = (AlgaeConstants.left.kIsInverted) ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
+        //Right Side
+        algaerightFXSConfig.Commutation.MotorArrangement = MotorArrangementValue.Minion_JST;
+        algaerightFXSConfig.CurrentLimits = algaeleftCurrentLimitsConfigs;
+        algaerightFXSConfig.MotorOutput.NeutralMode = AlgaeConstants.right.kNeutralMode;
+        algaerightFXSConfig.MotorOutput.Inverted = (AlgaeConstants.right.kIsInverted) ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
+
 
         //Elevator
         //CANcoder

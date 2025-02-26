@@ -293,7 +293,8 @@ public class RobotContainer {
         ); //score the coral from L2..L4
         oj.rightBumper().onTrue(elevator.LastPositionC());  //return to previous position L1..L4
 
-        oj.povRight().onTrue(algae.startToroC()).onFalse(algae.stopToroC());
+        oj.povRight().onTrue(algae.startToroC(false)).onFalse(algae.stopToroC());
+        oj.povLeft().onTrue(algae.startToroC(true)).onFalse(algae.stopToroC());
         // Other OJ bindings
         // right stick elevator manual (see setup section
         // lbump hp intake pos

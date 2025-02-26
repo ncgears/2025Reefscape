@@ -16,8 +16,7 @@
             "type": "Single Color View",
             "properties": {
               "topic": "/Shuffleboard/Driver/LED Color",
-              "period": 0.06,
-              "data_type": "string"
+              "period": 0.06
             }
           },
           {
@@ -29,8 +28,7 @@
             "type": "Single Color View",
             "properties": {
               "topic": "/Shuffleboard/Driver/Elevator",
-              "period": 0.06,
-              "data_type": "string"
+              "period": 0.06
             }
           },
           {
@@ -42,8 +40,7 @@
             "type": "Single Color View",
             "properties": {
               "topic": "/Shuffleboard/Driver/Climber",
-              "period": 0.06,
-              "data_type": "string"
+              "period": 0.06
             }
           },
           {
@@ -55,8 +52,7 @@
             "type": "Single Color View",
             "properties": {
               "topic": "/Shuffleboard/Driver/Coral",
-              "period": 0.06,
-              "data_type": "string"
+              "period": 0.06
             }
           },
           {
@@ -68,8 +64,7 @@
             "type": "Single Color View",
             "properties": {
               "topic": "/Shuffleboard/Driver/Algae",
-              "period": 0.06,
-              "data_type": "string"
+              "period": 0.06
             }
           },
           {
@@ -82,7 +77,6 @@
             "properties": {
               "topic": "/Shuffleboard/Driver/Match Time",
               "period": 0.06,
-              "data_type": "string",
               "time_display_mode": "Minutes and Seconds",
               "red_start_time": 15,
               "yellow_start_time": 30
@@ -119,7 +113,6 @@
             "properties": {
               "topic": "/Shuffleboard/DBG:Vision/Front Has Targets",
               "period": 0.06,
-              "data_type": "boolean",
               "true_color": 4283215696,
               "false_color": 4294198070,
               "true_icon": "None",
@@ -136,7 +129,6 @@
             "properties": {
               "topic": "/Shuffleboard/DBG:Vision/Back Has Targets",
               "period": 0.06,
-              "data_type": "boolean",
               "true_color": 4283215696,
               "false_color": 4294198070,
               "true_icon": "None",
@@ -153,7 +145,6 @@
             "properties": {
               "topic": "/Shuffleboard/DBG:Vision/Suppressed",
               "period": 0.06,
-              "data_type": "boolean",
               "true_color": 4283215696,
               "false_color": 4294198070,
               "true_icon": "None",
@@ -178,7 +169,6 @@
             "properties": {
               "topic": "/Shuffleboard/Swerve/FL Angle",
               "period": 0.06,
-              "data_type": "double",
               "show_submit_button": false
             }
           },
@@ -192,7 +182,6 @@
             "properties": {
               "topic": "/Shuffleboard/Swerve/FR Angle",
               "period": 0.06,
-              "data_type": "double",
               "show_submit_button": false
             }
           },
@@ -206,7 +195,6 @@
             "properties": {
               "topic": "/Shuffleboard/Swerve/BL Angle",
               "period": 0.06,
-              "data_type": "double",
               "show_submit_button": false
             }
           },
@@ -220,7 +208,6 @@
             "properties": {
               "topic": "/Shuffleboard/Swerve/BR Angle",
               "period": 0.06,
-              "data_type": "double",
               "show_submit_button": false
             }
           },
@@ -234,7 +221,6 @@
             "properties": {
               "topic": "/Shuffleboard/Swerve/FL Speed",
               "period": 0.06,
-              "data_type": "double",
               "show_submit_button": false
             }
           },
@@ -248,7 +234,6 @@
             "properties": {
               "topic": "/Shuffleboard/Swerve/FR Speed",
               "period": 0.06,
-              "data_type": "double",
               "show_submit_button": false
             }
           },
@@ -262,7 +247,6 @@
             "properties": {
               "topic": "/Shuffleboard/Swerve/BL Speed",
               "period": 0.06,
-              "data_type": "double",
               "show_submit_button": false
             }
           },
@@ -276,7 +260,6 @@
             "properties": {
               "topic": "/Shuffleboard/Swerve/BR Speed",
               "period": 0.06,
-              "data_type": "double",
               "show_submit_button": false
             }
           }
@@ -287,6 +270,44 @@
       "name": "System",
       "grid_layout": {
         "layouts": [
+          {
+            "title": "Coral",
+            "x": 256.0,
+            "y": 0.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "List Layout",
+            "properties": {
+              "label_position": "LEFT"
+            },
+            "children": [
+              {
+                "title": "Status",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Single Color View",
+                "properties": {
+                  "topic": "/Shuffleboard/System/Coral/Status",
+                  "period": 0.06
+                }
+              },
+              {
+                "title": "Direction",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/Shuffleboard/System/Coral/Direction",
+                  "period": 0.06,
+                  "show_submit_button": false
+                }
+              }
+            ]
+          },
           {
             "title": "theta Controller",
             "x": 1024.0,
@@ -307,8 +328,7 @@
                 "type": "Single Color View",
                 "properties": {
                   "topic": "/Shuffleboard/System/theta Controller/Heading Lock",
-                  "period": 0.06,
-                  "data_type": "string"
+                  "period": 0.06
                 }
               },
               {
@@ -321,7 +341,6 @@
                 "properties": {
                   "topic": "/Shuffleboard/System/theta Controller/Target Heading",
                   "period": 0.06,
-                  "data_type": "double",
                   "show_submit_button": false
                 }
               },
@@ -335,7 +354,6 @@
                 "properties": {
                   "topic": "/Shuffleboard/System/theta Controller/Current Heading",
                   "period": 0.06,
-                  "data_type": "double",
                   "show_submit_button": false
                 }
               },
@@ -349,7 +367,6 @@
                 "properties": {
                   "topic": "/Shuffleboard/System/theta Controller/Heading Error",
                   "period": 0.06,
-                  "data_type": "double",
                   "show_submit_button": false
                 }
               }
@@ -375,8 +392,7 @@
                 "type": "Single Color View",
                 "properties": {
                   "topic": "/Shuffleboard/System/Target Tracking/Tracking",
-                  "period": 0.06,
-                  "data_type": "string"
+                  "period": 0.06
                 }
               },
               {
@@ -389,7 +405,6 @@
                 "properties": {
                   "topic": "/Shuffleboard/System/Target Tracking/State",
                   "period": 0.06,
-                  "data_type": "string",
                   "show_submit_button": false
                 }
               },
@@ -403,7 +418,6 @@
                 "properties": {
                   "topic": "/Shuffleboard/System/Target Tracking/Target",
                   "period": 0.06,
-                  "data_type": "string",
                   "show_submit_button": false
                 }
               },
@@ -417,7 +431,6 @@
                 "properties": {
                   "topic": "/Shuffleboard/System/Target Tracking/Bearing",
                   "period": 0.06,
-                  "data_type": "double",
                   "show_submit_button": false
                 }
               },
@@ -431,7 +444,6 @@
                 "properties": {
                   "topic": "/Shuffleboard/System/Target Tracking/Distance",
                   "period": 0.06,
-                  "data_type": "double",
                   "show_submit_button": false
                 }
               },
@@ -445,47 +457,6 @@
                 "properties": {
                   "topic": "/Shuffleboard/System/Target Tracking/Angle",
                   "period": 0.06,
-                  "data_type": "double",
-                  "show_submit_button": false
-                }
-              }
-            ]
-          },
-          {
-            "title": "Coral",
-            "x": 256.0,
-            "y": 0.0,
-            "width": 256.0,
-            "height": 128.0,
-            "type": "List Layout",
-            "properties": {
-              "label_position": "LEFT"
-            },
-            "children": [
-              {
-                "title": "Status",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Single Color View",
-                "properties": {
-                  "topic": "/Shuffleboard/System/Coral/Status",
-                  "period": 0.06,
-                  "data_type": "string"
-                }
-              },
-              {
-                "title": "Direction",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/Shuffleboard/System/Coral/Direction",
-                  "period": 0.06,
-                  "data_type": "string",
                   "show_submit_button": false
                 }
               }
@@ -511,8 +482,7 @@
                 "type": "Single Color View",
                 "properties": {
                   "topic": "/Shuffleboard/System/Elevator/Status",
-                  "period": 0.06,
-                  "data_type": "string"
+                  "period": 0.06
                 }
               },
               {
@@ -525,7 +495,6 @@
                 "properties": {
                   "topic": "/Shuffleboard/System/Elevator/State",
                   "period": 0.06,
-                  "data_type": "string",
                   "show_submit_button": false
                 }
               },
@@ -539,7 +508,6 @@
                 "properties": {
                   "topic": "/Shuffleboard/System/Elevator/Target",
                   "period": 0.06,
-                  "data_type": "string",
                   "show_submit_button": false
                 }
               },
@@ -553,7 +521,6 @@
                 "properties": {
                   "topic": "/Shuffleboard/System/Elevator/Target Pos",
                   "period": 0.06,
-                  "data_type": "double",
                   "show_submit_button": false
                 }
               },
@@ -567,7 +534,6 @@
                 "properties": {
                   "topic": "/Shuffleboard/System/Elevator/Position",
                   "period": 0.06,
-                  "data_type": "double",
                   "show_submit_button": false
                 }
               },
@@ -581,7 +547,6 @@
                 "properties": {
                   "topic": "/Shuffleboard/System/Elevator/Absolute",
                   "period": 0.06,
-                  "data_type": "double",
                   "show_submit_button": false
                 }
               },
@@ -595,7 +560,6 @@
                 "properties": {
                   "topic": "/Shuffleboard/System/Elevator/Error",
                   "period": 0.06,
-                  "data_type": "double",
                   "show_submit_button": false
                 }
               }
@@ -621,8 +585,7 @@
                 "type": "Single Color View",
                 "properties": {
                   "topic": "/Shuffleboard/System/Climber/Status",
-                  "period": 0.06,
-                  "data_type": "string"
+                  "period": 0.06
                 }
               },
               {
@@ -635,7 +598,6 @@
                 "properties": {
                   "topic": "/Shuffleboard/System/Climber/Has Cage",
                   "period": 0.06,
-                  "data_type": "boolean",
                   "true_color": 4283215696,
                   "false_color": 4294198070,
                   "true_icon": "None",
@@ -652,7 +614,6 @@
                 "properties": {
                   "topic": "/Shuffleboard/System/Climber/Complete",
                   "period": 0.06,
-                  "data_type": "boolean",
                   "true_color": 4283215696,
                   "false_color": 4294198070,
                   "true_icon": "None",
@@ -669,7 +630,6 @@
                 "properties": {
                   "topic": "/Shuffleboard/System/Climber/State",
                   "period": 0.06,
-                  "data_type": "string",
                   "show_submit_button": false
                 }
               },
@@ -683,7 +643,6 @@
                 "properties": {
                   "topic": "/Shuffleboard/System/Climber/Position",
                   "period": 0.06,
-                  "data_type": "double",
                   "show_submit_button": false
                 }
               },
@@ -697,7 +656,6 @@
                 "properties": {
                   "topic": "/Shuffleboard/System/Climber/CageSw1",
                   "period": 0.06,
-                  "data_type": "boolean",
                   "true_color": 4283215696,
                   "false_color": 4294198070,
                   "true_icon": "None",
@@ -714,7 +672,6 @@
                 "properties": {
                   "topic": "/Shuffleboard/System/Climber/CageSw2",
                   "period": 0.06,
-                  "data_type": "boolean",
                   "true_color": 4283215696,
                   "false_color": 4294198070,
                   "true_icon": "None",
@@ -735,7 +692,6 @@
             "properties": {
               "topic": "/Shuffleboard/System/Bot Pose Hdg",
               "period": 0.06,
-              "data_type": "double",
               "show_submit_button": false
             }
           },
@@ -749,16 +705,15 @@
             "properties": {
               "topic": "/Shuffleboard/System/Shooter Hdg",
               "period": 0.06,
-              "data_type": "double",
               "show_submit_button": false
             }
           },
           {
             "title": "Field",
-            "x": 0.0,
-            "y": 256.0,
-            "width": 256.0,
-            "height": 576.0,
+            "x": 512.0,
+            "y": 0.0,
+            "width": 512.0,
+            "height": 256.0,
             "type": "Field",
             "properties": {
               "topic": "/Shuffleboard/System/Field",
@@ -768,7 +723,7 @@
               "robot_length": 0.9398,
               "show_other_objects": true,
               "show_trajectories": true,
-              "field_rotation": 270.0,
+              "field_rotation": 180.0,
               "robot_color": 4294198070,
               "trajectory_color": 4294967295
             }
@@ -780,130 +735,6 @@
       "name": "Debug",
       "grid_layout": {
         "layouts": [
-          {
-            "title": "Algae",
-            "x": 768.0,
-            "y": 0.0,
-            "width": 256.0,
-            "height": 640.0,
-            "type": "List Layout",
-            "properties": {
-              "label_position": "LEFT"
-            },
-            "children": [
-              {
-                "title": "Status",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Single Color View",
-                "properties": {
-                  "topic": "/Shuffleboard/Debug/Algae/Status",
-                  "period": 0.06,
-                  "data_type": "string"
-                }
-              },
-              {
-                "title": "Direction",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/Shuffleboard/Debug/Algae/Direction",
-                  "period": 0.06,
-                  "data_type": "string",
-                  "show_submit_button": false
-                }
-              },
-              {
-                "title": "Target",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/Shuffleboard/Debug/Algae/Target",
-                  "period": 0.06,
-                  "data_type": "string",
-                  "show_submit_button": false
-                }
-              },
-              {
-                "title": "Target Pos",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/Shuffleboard/Debug/Algae/Target Pos",
-                  "period": 0.06,
-                  "data_type": "double",
-                  "show_submit_button": false
-                }
-              },
-              {
-                "title": "Motor Pos",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/Shuffleboard/Debug/Algae/Motor Pos",
-                  "period": 0.06,
-                  "data_type": "double",
-                  "show_submit_button": false
-                }
-              },
-              {
-                "title": "Absolute",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/Shuffleboard/Debug/Algae/Absolute",
-                  "period": 0.06,
-                  "data_type": "double",
-                  "show_submit_button": false
-                }
-              },
-              {
-                "title": "L Toro Spd",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/Shuffleboard/Debug/Algae/L Toro Spd",
-                  "period": 0.06,
-                  "data_type": "double",
-                  "show_submit_button": false
-                }
-              },
-              {
-                "title": "R Toro Spd",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/Shuffleboard/Debug/Algae/R Toro Spd",
-                  "period": 0.06,
-                  "data_type": "double",
-                  "show_submit_button": false
-                }
-              }
-            ]
-          },
           {
             "title": "Coral",
             "x": 512.0,
@@ -924,8 +755,7 @@
                 "type": "Single Color View",
                 "properties": {
                   "topic": "/Shuffleboard/Debug/Coral/Status",
-                  "period": 0.06,
-                  "data_type": "string"
+                  "period": 0.06
                 }
               },
               {
@@ -938,7 +768,6 @@
                 "properties": {
                   "topic": "/Shuffleboard/Debug/Coral/Direction",
                   "period": 0.06,
-                  "data_type": "string",
                   "show_submit_button": false
                 }
               },
@@ -952,7 +781,6 @@
                 "properties": {
                   "topic": "/Shuffleboard/Debug/Coral/Target",
                   "period": 0.06,
-                  "data_type": "string",
                   "show_submit_button": false
                 }
               },
@@ -966,7 +794,6 @@
                 "properties": {
                   "topic": "/Shuffleboard/Debug/Coral/Target Pos",
                   "period": 0.06,
-                  "data_type": "double",
                   "show_submit_button": false
                 }
               },
@@ -980,7 +807,6 @@
                 "properties": {
                   "topic": "/Shuffleboard/Debug/Coral/Motor Pos",
                   "period": 0.06,
-                  "data_type": "double",
                   "show_submit_button": false
                 }
               },
@@ -1045,8 +871,7 @@
                 "type": "Single Color View",
                 "properties": {
                   "topic": "/Shuffleboard/Debug/Elevator/Status",
-                  "period": 0.06,
-                  "data_type": "string"
+                  "period": 0.06
                 }
               },
               {
@@ -1059,7 +884,6 @@
                 "properties": {
                   "topic": "/Shuffleboard/Debug/Elevator/State",
                   "period": 0.06,
-                  "data_type": "string",
                   "show_submit_button": false
                 }
               },
@@ -1073,7 +897,6 @@
                 "properties": {
                   "topic": "/Shuffleboard/Debug/Elevator/Target",
                   "period": 0.06,
-                  "data_type": "double",
                   "show_submit_button": false
                 }
               },
@@ -1087,7 +910,6 @@
                 "properties": {
                   "topic": "/Shuffleboard/Debug/Elevator/Position",
                   "period": 0.06,
-                  "data_type": "double",
                   "show_submit_button": false
                 }
               },
@@ -1101,7 +923,6 @@
                 "properties": {
                   "topic": "/Shuffleboard/Debug/Elevator/Absolute",
                   "period": 0.06,
-                  "data_type": "double",
                   "show_submit_button": false
                 }
               },
@@ -1115,7 +936,6 @@
                 "properties": {
                   "topic": "/Shuffleboard/Debug/Elevator/Error",
                   "period": 0.06,
-                  "data_type": "double",
                   "show_submit_button": false
                 }
               },
@@ -1193,8 +1013,7 @@
                 "type": "Single Color View",
                 "properties": {
                   "topic": "/Shuffleboard/Debug/Climber/Status",
-                  "period": 0.06,
-                  "data_type": "string"
+                  "period": 0.06
                 }
               },
               {
@@ -1207,7 +1026,6 @@
                 "properties": {
                   "topic": "/Shuffleboard/Debug/Climber/Has Cage",
                   "period": 0.06,
-                  "data_type": "boolean",
                   "true_color": 4283215696,
                   "false_color": 4294198070,
                   "true_icon": "None",
@@ -1224,7 +1042,6 @@
                 "properties": {
                   "topic": "/Shuffleboard/Debug/Climber/Complete",
                   "period": 0.06,
-                  "data_type": "boolean",
                   "true_color": 4283215696,
                   "false_color": 4294198070,
                   "true_icon": "None",
@@ -1241,7 +1058,6 @@
                 "properties": {
                   "topic": "/Shuffleboard/Debug/Climber/State",
                   "period": 0.06,
-                  "data_type": "string",
                   "show_submit_button": false
                 }
               },
@@ -1255,7 +1071,6 @@
                 "properties": {
                   "topic": "/Shuffleboard/Debug/Climber/Position",
                   "period": 0.06,
-                  "data_type": "double",
                   "show_submit_button": false
                 }
               },
@@ -1269,7 +1084,6 @@
                 "properties": {
                   "topic": "/Shuffleboard/Debug/Climber/CageSw1",
                   "period": 0.06,
-                  "data_type": "boolean",
                   "true_color": 4283215696,
                   "false_color": 4294198070,
                   "true_icon": "None",
@@ -1286,7 +1100,6 @@
                 "properties": {
                   "topic": "/Shuffleboard/Debug/Climber/CageSw2",
                   "period": 0.06,
-                  "data_type": "boolean",
                   "true_color": 4283215696,
                   "false_color": 4294198070,
                   "true_icon": "None",
@@ -1366,7 +1179,6 @@
             "properties": {
               "topic": "/Shuffleboard/DBG:Gyro/Pitch",
               "period": 0.06,
-              "data_type": "double",
               "show_submit_button": false
             }
           },

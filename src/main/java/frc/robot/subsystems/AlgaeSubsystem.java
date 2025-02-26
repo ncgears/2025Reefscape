@@ -279,8 +279,8 @@ public class AlgaeSubsystem extends SubsystemBase {
   //WRIST
   // private final SysIdRoutine m_sysIdRoutine = new SysIdRoutine(
   //   new SysIdRoutine.Config(
-  //     null, //default ramp rate 1V/s
-  //     Volts.of(4), //reduce dynamic step voltage to 4 to prevent brownout
+  //     Volts.per(Units.Second).of(0.75), //default ramp rate 1V/s
+  //     Volts.of(1), //reduce dynamic step voltage to 4 to prevent brownout
   //     null, //default timeout 10s
   //     (state) -> SignalLogger.writeString("SysId_State", state.toString())
   //   ),

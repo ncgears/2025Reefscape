@@ -234,8 +234,8 @@ public class AlgaeSubsystem extends SubsystemBase {
 
   public void startToro(boolean invert) {
     double inv = (invert) ? -1 : 1;
-    m_swizmotor_left.set(AlgaeConstants.kIntakeSpeed * inv);
-    m_swizmotor_right.set(AlgaeConstants.kIntakeSpeed * inv);
+    m_toro_left.set(AlgaeConstants.kIntakeSpeed * inv);
+    m_toro_right.set(AlgaeConstants.kIntakeSpeed * inv);
     if(invert) {
       NCDebug.Debug.debug("Algae: Start Toro Inverted");
      } else {

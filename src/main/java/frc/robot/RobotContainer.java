@@ -292,18 +292,28 @@ public class RobotContainer {
             .andThen(coral.CoralPositionC(CoralSubsystem.Position.SCORE))
         ); //score the coral from L2..L4
         oj.rightBumper().onTrue(elevator.LastPositionC());  //return to previous position L1..L4
+        // Operator Ellipses - hold for force climb, delay of 1 second
+        oj.ellipses().onTrue(
+            new WaitCommand(1.0).andThen(climber.climberMoveC(() -> ClimberConstants.kClimbPower))) //wait 1 second for manual override
+            .onFalse(climber.climberStopC());
 
         //Temp for testing
-        oj.povRight().onTrue(algae.startToroC(false)).onFalse(algae.stopToroC());
-        oj.povLeft().onTrue(algae.startToroC(true)).onFalse(algae.stopToroC());
-        oj.povUp().onTrue(algae.setAlgaePositionC(AlgaeSubsystem.Position.UP));
-        oj.povUp().onTrue(algae.setAlgaePositionC(AlgaeSubsystem.Position.FLOOR));
-       
+        oj.povRight().onTrue(algae.startToroC(false)).onFalse(algae.stopToroC()); //intake
+        oj.povLeft().onTrue(algae.startToroC(true)).onFalse(algae.stopToroC()); //outtake
+        oj.povUp().onTrue(algae.setAlgaePositionC(AlgaeSubsystem.Position.UP)); //wrist up
+        oj.povDown().onTrue(algae.setAlgaePositionC(AlgaeSubsystem.Position.FLOOR)); //wrist down
+
+        oj.leftStick().onTrue(
+            algae.setAlgaePositionC(AlgaeSubsystem.Position.FLOOR)
+            .alongWith(algae.startToroC(false))
+        ).onFalse(
+            algae.setAlgaePositionC(AlgaeSubsystem.Position.UP)
+        );
+
         // Other OJ bindings
         // right stick elevator manual (see setup section
         // lbump hp intake pos
         // ltrig algae outtake
-        // ellipses start climb
         // d-up algae barge pos
         // d-dn algae proc pos 
         // d-rt algae low intake
@@ -318,7 +328,7 @@ public class RobotContainer {
         //#region Programmer Joystick
         // Run SysId routines when holding ellipses/google and X/Y.
         // Note that each routine should be run exactly once in a single log.
-        var m_mechanism = elevator; //drivetrain, elevator, coral, algae, climber
+        var m_mechanism = algae; //drivetrain, elevator, coral, algae, climber
         // pj.ellipses().and(pj.a()).whileTrue(m_mechanism.runSysIdCommand());
         
         //seperately, but would need to use logic to see if we are atLimit

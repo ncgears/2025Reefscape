@@ -19,8 +19,10 @@ import java.util.Map;
 import java.util.Optional;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.net.WebServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -97,6 +99,7 @@ public class RobotContainer {
     //#endregion Declarations
 
     public RobotContainer() {
+        WebServer.start(5800, Filesystem.getDeployDirectory().getPath());
         final InputAxis m_fieldX = new InputAxis("Forward", dj::getLeftY)
             .withDeadband(OIConstants.kMinDeadband)
             .withInvert(false)
@@ -305,7 +308,7 @@ public class RobotContainer {
 
         oj.leftStick().onTrue(
             algae.setAlgaePositionC(AlgaeSubsystem.Position.FLOOR)
-            .alongWith(algae.startToroC(false))
+            .andThen(algae.startToroC(false))
         ).onFalse(
             algae.setAlgaePositionC(AlgaeSubsystem.Position.UP)
         );

@@ -50,9 +50,11 @@ public class AlgaeSubsystem extends SubsystemBase {
   }
   private Direction m_curDirection = Direction.STOP;
   public enum Position {
-    DOWN(AlgaeConstants.wrist.Positions.down, DashboardConstants.Colors.ORANGE),
+    DOWN(AlgaeConstants.wrist.Positions.down, DashboardConstants.Colors.RED),
+    FLOOR(AlgaeConstants.wrist.Positions.floor, DashboardConstants.Colors.RED),
+    PROC(AlgaeConstants.wrist.Positions.proc, DashboardConstants.Colors.ORANGE),
     UP(AlgaeConstants.wrist.Positions.up, DashboardConstants.Colors.GREEN),
-    STOW(AlgaeConstants.wrist.Positions.stow, DashboardConstants.Colors.RED);
+    STOW(AlgaeConstants.wrist.Positions.stow, DashboardConstants.Colors.BLACK);
     private final double position;
     private final String color;
     Position(double position, String color) { this.position = position; this.color = color; }
@@ -203,8 +205,8 @@ public class AlgaeSubsystem extends SubsystemBase {
     m_wristmotor1.setControl(m_mmVoltage.withPosition(position.getRotations()));
     NCDebug.Debug.debug("Elevator: Move to "+position.toString());
   }
-  public Command setAlgaePositionCommand(Position position) {
-    return run(() -> setPosition(position));
+  public Command setAlgaePositionC(Position position) {
+    return runOnce(() -> setPosition(position));
   }
   public boolean isAtTarget() {
     return m_wristmotor1.getClosedLoopError().getValueAsDouble() <= AlgaeConstants.wrist.kPositionTolerance;

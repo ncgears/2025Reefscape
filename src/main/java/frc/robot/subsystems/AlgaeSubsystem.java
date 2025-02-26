@@ -68,7 +68,7 @@ public class AlgaeSubsystem extends SubsystemBase {
 
   private CANcoder m_encoder;
   private TalonFX m_wristmotor1;
-  private TalonFXS m_swizmotor_left, m_swizmotor_right; 
+  private TalonFXS m_toro_left, m_toro_right; 
   //#endregion Declarations
 
   //#region Triggers
@@ -101,10 +101,10 @@ public class AlgaeSubsystem extends SubsystemBase {
     m_wristmotor1 = new TalonFX(AlgaeConstants.wrist.kMotorID, AlgaeConstants.canBus);
     RobotContainer.ctreConfigs.retryConfigApply(()->m_wristmotor1.getConfigurator().apply(RobotContainer.ctreConfigs.algaewristFXConfig));
 
-    m_swizmotor_left = new TalonFXS(AlgaeConstants.left.kMotorID, AlgaeConstants.canBus);
-    RobotContainer.ctreConfigs.retryConfigApply(()->m_swizmotor_left.getConfigurator().apply(RobotContainer.ctreConfigs.algaeleftFXSConfig));
-    m_swizmotor_right = new TalonFXS(AlgaeConstants.right.kMotorID, AlgaeConstants.canBus);
-    RobotContainer.ctreConfigs.retryConfigApply(()->m_swizmotor_right.getConfigurator().apply(RobotContainer.ctreConfigs.algaerightFXSConfig));
+    m_toro_left = new TalonFXS(AlgaeConstants.left.kMotorID, AlgaeConstants.canBus);
+    RobotContainer.ctreConfigs.retryConfigApply(()->m_toro_left.getConfigurator().apply(RobotContainer.ctreConfigs.algaeleftFXSConfig));
+    m_toro_right = new TalonFXS(AlgaeConstants.right.kMotorID, AlgaeConstants.canBus);
+    RobotContainer.ctreConfigs.retryConfigApply(()->m_toro_right.getConfigurator().apply(RobotContainer.ctreConfigs.algaerightFXSConfig));
 
     init();
     createDashboards();
@@ -176,8 +176,8 @@ public class AlgaeSubsystem extends SubsystemBase {
   public String getTargetPositionName() { return m_curPosition.toString(); }
   public double getTargetPosition() { return m_wristmotor1.getClosedLoopReference().getValue(); }
   public double getPositionError() { return m_wristmotor1.getClosedLoopError().getValue(); }
-  public double getToroLeftSpeed() { return m_swizmotor_left.getVelocity().getValueAsDouble(); }
-  public double getToroRightSpeed() { return m_swizmotor_right.getVelocity().getValueAsDouble(); }
+  public double getToroLeftSpeed() { return m_toro_left.getVelocity().getValueAsDouble(); }
+  public double getToroRightSpeed() { return m_toro_right.getVelocity().getValueAsDouble(); }
   
   private double getStatorCurrent() {
     return m_wristmotor1.getStatorCurrent().getValueAsDouble();
@@ -233,14 +233,14 @@ public class AlgaeSubsystem extends SubsystemBase {
   }
 
   public void startToro() {
-    m_swizmotor_left.set(AlgaeConstants.kIntakeSpeed);
-    m_swizmotor_right.set(AlgaeConstants.kIntakeSpeed);
+    m_toro_left.set(AlgaeConstants.kIntakeSpeed);
+    m_toro_right.set(AlgaeConstants.kIntakeSpeed);
     NCDebug.Debug.debug("Algae: Start Toro");
   }
 
   public void stopToro() {
-    m_swizmotor_left.set(0);
-    m_swizmotor_right.set(0);
+    m_toro_left.set(0);
+    m_toro_right.set(0);
     NCDebug.Debug.debug("Algae: Stop Toro");
   }
 
@@ -255,6 +255,7 @@ public class AlgaeSubsystem extends SubsystemBase {
 
   //#region SysID Functions
   private final VoltageOut m_voltReq = new VoltageOut(0.0);
+  //TOROs
   private final SysIdRoutine m_sysIdRoutine = new SysIdRoutine(
     new SysIdRoutine.Config(
       null, //default ramp rate 1V/s
@@ -263,11 +264,25 @@ public class AlgaeSubsystem extends SubsystemBase {
       (state) -> SignalLogger.writeString("SysId_State", state.toString())
     ),
     new SysIdRoutine.Mechanism(
-      (volts) -> m_wristmotor1.setControl(m_voltReq.withOutput(volts.in(Volts))),
+      (volts) -> m_toro_left.setControl(m_voltReq.withOutput(volts.in(Volts))),
       null,
       this
     )
   );
+  //WRIST
+  // private final SysIdRoutine m_sysIdRoutine = new SysIdRoutine(
+  //   new SysIdRoutine.Config(
+  //     null, //default ramp rate 1V/s
+  //     Volts.of(4), //reduce dynamic step voltage to 4 to prevent brownout
+  //     null, //default timeout 10s
+  //     (state) -> SignalLogger.writeString("SysId_State", state.toString())
+  //   ),
+  //   new SysIdRoutine.Mechanism(
+  //     (volts) -> m_wristmotor1.setControl(m_voltReq.withOutput(volts.in(Volts))),
+  //     null,
+  //     this
+  //   )
+  // );
   public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
       return m_sysIdRoutine.quasistatic(direction);
   }

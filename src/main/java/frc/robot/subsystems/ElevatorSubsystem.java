@@ -244,8 +244,7 @@ public class ElevatorSubsystem extends SubsystemBase {
       m_motor1.setControl(m_DutyCycle.withOutput(power));
     } else { //0 power
       if(m_curState != State.HOLD && m_curState != State.STOP) {
-        //set a new target of wherever we stopped
-        m_motor1.setControl(m_mmVoltage.withPosition(m_motor1.getPosition().getValueAsDouble()));
+        m_motor1.setControl(m_mmVoltage.withPosition(m_motor1.getPosition().getValueAsDouble())); //maintain this spot
         m_motor1.setControl(m_brake);
         m_curState = State.HOLD;
         NCDebug.Debug.debug("Elevator: Hold");
@@ -299,7 +298,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
   public void ElevatorStop() {
     m_motor1.setControl(m_neutral);
-    if(m_curState != State.HOLD) {
+    if(m_curState != State.STOP) {
       m_curState = State.STOP;
       NCDebug.Debug.debug("Elevator: Stop");
     }

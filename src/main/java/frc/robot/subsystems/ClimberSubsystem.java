@@ -202,13 +202,13 @@ public class ClimberSubsystem extends SubsystemBase {
   }
 
   public Command climberMoveC(DoubleSupplier power) {
-    return run(() -> climberMove(power.getAsDouble()));
+    return runOnce(() -> climberMove(power.getAsDouble()));
   }
   public Command climberStopC() {
-    return run(() -> climberStop());
+    return runOnce(() -> climberStop());
   }
   public Command climberHoldC() {
-    return run(() -> climberHold());
+    return runOnce(() -> climberHold());
   }
 
   public void climberUp() {

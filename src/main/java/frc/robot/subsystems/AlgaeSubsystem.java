@@ -232,10 +232,15 @@ public class AlgaeSubsystem extends SubsystemBase {
     }
   }
 
-  public void startToro() {
-    m_toro_left.set(AlgaeConstants.kIntakeSpeed);
-    m_toro_right.set(AlgaeConstants.kIntakeSpeed);
-    NCDebug.Debug.debug("Algae: Start Toro");
+  public void startToro(boolean invert) {
+    double inv = (invert) ? -1 : 1;
+    m_swizmotor_left.set(AlgaeConstants.kIntakeSpeed * inv);
+    m_swizmotor_right.set(AlgaeConstants.kIntakeSpeed * inv);
+    if(invert) {
+      NCDebug.Debug.debug("Algae: Start Toro Inverted");
+     } else {
+      NCDebug.Debug.debug("Algae: Start Toro");
+     }
   }
 
   public void stopToro() {
@@ -244,8 +249,8 @@ public class AlgaeSubsystem extends SubsystemBase {
     NCDebug.Debug.debug("Algae: Stop Toro");
   }
 
-  public Command startToroC() {
-    return runOnce(() -> startToro());
+  public Command startToroC(boolean invert) {
+    return runOnce(() -> startToro(invert));
   }
 
   public Command stopToroC() {

@@ -264,18 +264,18 @@ public class ElevatorSubsystem extends SubsystemBase {
   public Command ScoreC() { 
     switch (m_targetPosition) {
       case L4:
-        return run(() -> setPosition(Position.L4SCORE)); 
+        return runOnce(() -> setPosition(Position.L4SCORE)); 
       case L3:
-        return run(() -> setPosition(Position.L3SCORE)); 
+        return runOnce(() -> setPosition(Position.L3SCORE)); 
       case L2:
-        return run(() -> setPosition(Position.L2SCORE)); 
+        return runOnce(() -> setPosition(Position.L2SCORE)); 
       default:
         NCDebug.Debug.debug("Elevator: Not in a scoring configuration from "+m_targetPosition.toString());
     }
     return run(() -> {});
   }
   public Command LastPositionC() {
-    return run(
+    return runOnce(
       () -> setPosition(m_prevPosition)
     );
   }

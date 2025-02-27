@@ -304,7 +304,9 @@ public class RobotContainer {
         oj.povRight().onTrue(algae.startToroC(false)).onFalse(algae.stopToroC()); //intake
         oj.povLeft().onTrue(algae.startToroC(true)).onFalse(algae.stopToroC()); //outtake
         oj.povUp().onTrue(algae.setAlgaePositionC(AlgaeSubsystem.Position.UP)); //wrist up
-        oj.povDown().onTrue(algae.setAlgaePositionC(AlgaeSubsystem.Position.FLOOR)); //wrist down
+        oj.povDown().onTrue(algae.setAlgaePositionC(AlgaeSubsystem.Position.FLOOR)
+            .andThen(algae.startToroC(false))
+        ).onFalse(algae.stopToroC()); //wrist down
 
         oj.leftStick().onTrue(
             algae.setAlgaePositionC(AlgaeSubsystem.Position.FLOOR)

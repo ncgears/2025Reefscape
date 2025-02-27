@@ -256,7 +256,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
 
   public Command ElevatorPositionC(Position position) {
-    return run(
+    return runOnce(
       () -> setPosition(position)
     );
   }

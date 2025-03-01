@@ -1,5 +1,9 @@
 TODO:
     - Plot current during elevator stall, coral stall; set appropriate current limits so we can ignore the motors death screams.
+    - Update drivers station NI game tools and Elastic Dashboard
+    - Verify c:\users\public\public documents\frc\frc ds data storage.ini is pointing at correct elastic executable
+    - Set photon camera positions in VisionConstants
+    - Test AddVisionMeasurement into ctre pose estimator for photon readings when seeing ATs
     - Wire climber limit switches
     - Tune climber motor power, test limits
     - Characterize drivetrain

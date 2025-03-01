@@ -53,6 +53,7 @@ public class CoralSubsystem extends SubsystemBase {
   public enum Position {
     OUT(CoralConstants.Positions.kOut, DashboardConstants.Colors.GREEN),
     IN(CoralConstants.Positions.kIn, DashboardConstants.Colors.RED),
+    STOW(CoralConstants.Positions.kStow, DashboardConstants.Colors.BLACK),
     SCORE(CoralConstants.Positions.kScore, DashboardConstants.Colors.ORANGE);
     private final double position;
     private final String color;
@@ -60,7 +61,7 @@ public class CoralSubsystem extends SubsystemBase {
     public double getRotations() { return this.position; }
     public String getColor() { return this.color; }
   }
-  private Position m_targetPosition = Position.IN;
+  private Position m_targetPosition = Position.STOW;
 
   private final MotionMagicVoltage m_mmVoltage = new MotionMagicVoltage(0);
   private final DutyCycleOut m_DutyCycle = new DutyCycleOut(0);
@@ -152,13 +153,15 @@ public class CoralSubsystem extends SubsystemBase {
       dbgCoralList.addNumber("Target Pos", this::getTargetPosition);
       dbgCoralList.addNumber("Motor Pos", () -> { return NCDebug.General.roundDouble(getMotorPosition().in(Units.Rotations),6); });
       dbgCoralList.add("Coral In", CoralPositionC(Position.IN))
-         .withProperties(Map.of("show_type",false));  
+        .withProperties(Map.of("show_type",false));  
       dbgCoralList.add("Coral Out", CoralPositionC(Position.OUT))
-         .withProperties(Map.of("show_type",false));  
-         dbgCoralList.add("Coral Score", CoralPositionC(Position.SCORE))
-         .withProperties(Map.of("show_type",false));  
+        .withProperties(Map.of("show_type",false));  
+      dbgCoralList.add("Coral Score", CoralPositionC(Position.SCORE))
+        .withProperties(Map.of("show_type",false));  
+      dbgCoralList.add("Coral Stop", CoralStopC())
+        .withProperties(Map.of("show_type",false));  
       dbgCoralList.add("Pos Reset", resetMotorPosC())
-         .withProperties(Map.of("show_type",false));  
+        .withProperties(Map.of("show_type",false));  
     }
   }
   //#endregion Dashboard
@@ -194,9 +197,9 @@ public class CoralSubsystem extends SubsystemBase {
 
   public Command resetMotorPosC() {
     return runOnce(() -> {
-      m_motor1.setPosition(0);
-      NCDebug.Debug.debug("Coral: Reset relative encoder to 0");
-    });
+      m_motor1.setPosition(Position.IN.getRotations());
+      NCDebug.Debug.debug("Coral: Reset relative encoder to "+Position.IN.getRotations());
+    }).ignoringDisable(true);
   }
   //#endregion Setters
 
@@ -238,8 +241,8 @@ public class CoralSubsystem extends SubsystemBase {
   private final VoltageOut m_voltReq = new VoltageOut(0.0);
   private final SysIdRoutine m_sysIdRoutine = new SysIdRoutine(
     new SysIdRoutine.Config(
-      null, //default ramp rate 1V/s
-      Volts.of(4), //reduce dynamic step voltage to 4 to prevent brownout
+      Volts.per(Units.Second).of(0.75), //default ramp rate 1V/s
+      Volts.of(1), //reduce dynamic step voltage to 4 to prevent brownout
       null, //default timeout 10s
       (state) -> SignalLogger.writeString("SysId_State", state.toString())
     ),

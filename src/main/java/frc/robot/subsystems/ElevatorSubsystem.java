@@ -150,7 +150,8 @@ public class ElevatorSubsystem extends SubsystemBase {
       dbgElevatorList.addString("Status", this::getStateColor)
         .withWidget("Single Color View");
       dbgElevatorList.addString("State", this::getStateName);
-      dbgElevatorList.addNumber("Target", this::getTargetPosition);
+      dbgElevatorList.addString("Target", this::getTargetPositionName);
+      dbgElevatorList.addNumber("Target Pos", this::getTargetPosition);
       dbgElevatorList.addNumber("Position", () -> { return NCDebug.General.roundDouble(getPosition().in(Units.Rotations),6); });
       dbgElevatorList.addNumber("Absolute", () -> { return NCDebug.General.roundDouble(getPositionAbsolute().in(Units.Rotations),6); });
       dbgElevatorList.addNumber("Error", this::getPositionError);
@@ -205,6 +206,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   public void setPosition(Position position) {
     setPrevPosition(position);
+    m_targetPosition = position;
     m_motor1.setControl(m_mmVoltage.withPosition(position.getRotations()));
     NCDebug.Debug.debug("Elevator: Move to "+position.toString());
   }
@@ -261,18 +263,23 @@ public class ElevatorSubsystem extends SubsystemBase {
     );
   }
   public Command ScoreC() { 
-    switch (m_targetPosition) {
-      case L4:
-        return runOnce(() -> setPosition(Position.L4SCORE)); 
-      case L3:
-        return runOnce(() -> setPosition(Position.L3SCORE)); 
-      case L2:
-        return runOnce(() -> setPosition(Position.L2SCORE)); 
-      default:
-        NCDebug.Debug.debug("Elevator: Not in a scoring configuration from "+m_targetPosition.toString());
-    }
-    return run(() -> {});
+    return runOnce(() -> {
+      switch (m_targetPosition) {
+        case L4:
+          setPosition(Position.L4SCORE);
+          break;
+        case L3:
+          setPosition(Position.L3SCORE);
+          break;
+        case L2:
+          setPosition(Position.L2SCORE);
+          break; 
+        default:
+          NCDebug.Debug.debug("Elevator: Not in a scoring configuration from "+m_targetPosition.toString());
+      }
+    });
   }
+
   public Command LastPositionC() {
     return runOnce(
       () -> setPosition(m_prevPosition)

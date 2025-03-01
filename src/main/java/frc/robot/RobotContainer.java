@@ -285,18 +285,33 @@ public class RobotContainer {
         //#endregion Driver Joystick
 
         //#region Operator Joystick
-        oj.x().onTrue(elevator.ElevatorPositionC(ElevatorSubsystem.Position.L1)); //move to L1
-        oj.a().onTrue(elevator.ElevatorPositionC(ElevatorSubsystem.Position.L2)); //move to L2
-        oj.b().onTrue(elevator.ElevatorPositionC(ElevatorSubsystem.Position.L3)); //move to L3
+        oj.x().onTrue(
+            elevator.ElevatorPositionC(ElevatorSubsystem.Position.L1)
+            .andThen(coral.CoralPositionC(CoralSubsystem.Position.IN))
+            // .until(coral::atTarget)
+            .andThen(new WaitCommand(0.25))
+            .andThen(coral.CoralStopC())
+        ); //move to L1
+        oj.a().onTrue(
+            elevator.ElevatorPositionC(ElevatorSubsystem.Position.L2)
+            .andThen(coral.CoralPositionC(CoralSubsystem.Position.OUT))
+        ); //move to L2
+        oj.b().onTrue(
+            elevator.ElevatorPositionC(ElevatorSubsystem.Position.L3)
+            .andThen(coral.CoralPositionC(CoralSubsystem.Position.OUT))
+        ); //move to L3
         oj.y().onTrue(
             elevator.ElevatorPositionC(ElevatorSubsystem.Position.L4)
             .andThen(coral.CoralPositionC(CoralSubsystem.Position.OUT))
         ); //move to L4
         oj.rightTrigger().onTrue(
             elevator.ScoreC()
-            // .until(elevator::isAtTarget)
-            .andThen(new WaitCommand(0.5))
-            .andThen(coral.CoralPositionC(CoralSubsystem.Position.SCORE))
+            .until(elevator::isAtTarget)
+            .andThen(new WaitCommand(0.2))
+            .andThen(coral.CoralPositionC(CoralSubsystem.Position.IN))
+        ).onFalse(
+            new WaitCommand(0.2)
+            .andThen(coral.CoralStopC())
         ); //score the coral from L2..L4
         oj.rightBumper().onTrue(
             elevator.LastPositionC()
@@ -305,7 +320,8 @@ public class RobotContainer {
         // Operator Ellipses - hold for force climb, delay of 1 second
         oj.ellipses().onTrue(
             new WaitCommand(1.0).andThen(climber.climberMoveC(() -> ClimberConstants.kClimbPower))) //wait 1 second for manual override
-            .onFalse(climber.climberStopC());
+            .onFalse(climber.climberStopC()
+        );
 
         //Temp for testing
         oj.povRight().onTrue(algae.startToroC(false)).onFalse(algae.stopToroC()); //intake

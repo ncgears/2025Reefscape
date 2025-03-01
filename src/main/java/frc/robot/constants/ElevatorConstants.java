@@ -43,15 +43,16 @@ public class ElevatorConstants {
     public static final double kCurrentLimitThresholdAmps = 60.0;
     public static final double kCurrentLimitThresholdSecs = 0.3;
     public class Positions {
+        private static final double kScoreDelta = 0.25;
         public static final double kFwdLimit = 5.7; //Forward imit
         public static final double kRevLimit = -0.01; //Reverse Limit
         public static final double kStow = 0.0; //all the way down
         public static final double kL4 = 5.0; //Elevator up to L4
-        public static final double kL4Score = 0.0; //Elevator up to L4 Score
+        public static final double kL4Score = kL4 - kScoreDelta; //Elevator up to L4 Score
         public static final double kL3 = 4.0; //Elevator up to L3
-        public static final double kL3Score = 0.0; //Elevator up to L3 Score
+        public static final double kL3Score = kL3 - kScoreDelta; //Elevator up to L3 Score
         public static final double kL2 = 3.0; //Elevator up to L2
-        public static final double kL2Score = 0.0; //Elevator up to L2 Score
+        public static final double kL2Score = kL2 - kScoreDelta; //Elevator up to L2 Score
         public static final double kL1 = 0.0; //Elevator up to L1
     }
     public static final boolean kSoftForwardLimitEnable = true;

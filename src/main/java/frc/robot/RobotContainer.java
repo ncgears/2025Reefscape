@@ -285,16 +285,22 @@ public class RobotContainer {
         //#endregion Driver Joystick
 
         //#region Operator Joystick
-        oj.a().onTrue(elevator.ElevatorPositionC(ElevatorSubsystem.Position.L1)); //move to L1
-        oj.x().onTrue(elevator.ElevatorPositionC(ElevatorSubsystem.Position.L2)); //move to L2
+        oj.x().onTrue(elevator.ElevatorPositionC(ElevatorSubsystem.Position.L1)); //move to L1
+        oj.a().onTrue(elevator.ElevatorPositionC(ElevatorSubsystem.Position.L2)); //move to L2
         oj.b().onTrue(elevator.ElevatorPositionC(ElevatorSubsystem.Position.L3)); //move to L3
-        oj.y().onTrue(elevator.ElevatorPositionC(ElevatorSubsystem.Position.L4)); //move to L4
+        oj.y().onTrue(
+            elevator.ElevatorPositionC(ElevatorSubsystem.Position.L4)
+            .andThen(coral.CoralPositionC(CoralSubsystem.Position.OUT))
+        ); //move to L4
         oj.rightTrigger().onTrue(
             elevator.ScoreC()
             .until(elevator::isAtTarget)
             .andThen(coral.CoralPositionC(CoralSubsystem.Position.SCORE))
         ); //score the coral from L2..L4
-        oj.rightBumper().onTrue(elevator.LastPositionC());  //return to previous position L1..L4
+        oj.rightBumper().onTrue(
+            elevator.LastPositionC()
+            .andThen(coral.CoralPositionC(CoralSubsystem.Position.OUT))
+        );  //return to previous position L1..L4
         // Operator Ellipses - hold for force climb, delay of 1 second
         oj.ellipses().onTrue(
             new WaitCommand(1.0).andThen(climber.climberMoveC(() -> ClimberConstants.kClimbPower))) //wait 1 second for manual override

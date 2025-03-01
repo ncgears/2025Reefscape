@@ -112,6 +112,7 @@ public class CoralSubsystem extends SubsystemBase {
    * The init function resets and operational state of the subsystem
    */
   public void init() {
+    resetMotorPosC();
     coralStop();
     m_curDirection = Direction.STOP;
     NCDebug.Debug.debug("Coral: Initialized");
@@ -154,7 +155,9 @@ public class CoralSubsystem extends SubsystemBase {
          .withProperties(Map.of("show_type",false));  
       dbgCoralList.add("Coral Out", CoralPositionC(Position.OUT))
          .withProperties(Map.of("show_type",false));  
-      dbgCoralList.add("Coral Score", CoralPositionC(Position.SCORE))
+         dbgCoralList.add("Coral Score", CoralPositionC(Position.SCORE))
+         .withProperties(Map.of("show_type",false));  
+      dbgCoralList.add("Pos Reset", resetMotorPosC())
          .withProperties(Map.of("show_type",false));  
     }
   }
@@ -187,6 +190,13 @@ public class CoralSubsystem extends SubsystemBase {
     m_targetPosition = position;
     m_motor1.setControl(m_mmVoltage.withPosition(position.getRotations()));
     NCDebug.Debug.debug("Coral: Move to "+position.toString());
+  }
+
+  public Command resetMotorPosC() {
+    return runOnce(() -> {
+      m_motor1.setPosition(0);
+      NCDebug.Debug.debug("Coral: Reset relative encoder to 0");
+    });
   }
   //#endregion Setters
 

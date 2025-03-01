@@ -235,9 +235,9 @@ public class AlgaeSubsystem extends SubsystemBase {
   }
 
   public void startToro(boolean invert) {
-    double inv = (invert) ? -1 : 1;
-    m_toro_left.set(AlgaeConstants.kIntakeSpeed * inv);
-    m_toro_right.set(AlgaeConstants.kIntakeSpeed * inv);
+    double speed = (invert) ? -AlgaeConstants.kOuttakeSpeed : AlgaeConstants.kIntakeSpeed;
+    m_toro_left.set(speed);
+    m_toro_right.set(speed);
     if(invert) {
       NCDebug.Debug.debug("Algae: Start Toro Inverted");
      } else {
@@ -263,38 +263,38 @@ public class AlgaeSubsystem extends SubsystemBase {
   //#region SysID Functions
   private final VoltageOut m_voltReq = new VoltageOut(0.0);
   //TOROs
-  private final SysIdRoutine m_sysIdRoutine = new SysIdRoutine(
-    new SysIdRoutine.Config(
-      null, //default ramp rate 1V/s
-      Volts.of(4), //reduce dynamic step voltage to 4 to prevent brownout
-      null, //default timeout 10s
-      (state) -> SignalLogger.writeString("SysId_State", state.toString())
-    ),
-    new SysIdRoutine.Mechanism(
-      (volts) -> m_toro_left.setControl(m_voltReq.withOutput(volts.in(Volts))),
-      null,
-      this
-    )
-  );
-  //WRIST
   // private final SysIdRoutine m_sysIdRoutine = new SysIdRoutine(
   //   new SysIdRoutine.Config(
-  //     Volts.per(Units.Second).of(0.75), //default ramp rate 1V/s
-  //     Volts.of(1), //reduce dynamic step voltage to 4 to prevent brownout
+  //     null, //default ramp rate 1V/s
+  //     Volts.of(4), //reduce dynamic step voltage to 4 to prevent brownout
   //     null, //default timeout 10s
   //     (state) -> SignalLogger.writeString("SysId_State", state.toString())
   //   ),
   //   new SysIdRoutine.Mechanism(
-  //     (volts) -> m_wristmotor1.setControl(m_voltReq.withOutput(volts.in(Volts))),
+  //     (volts) -> m_toro_left.setControl(m_voltReq.withOutput(volts.in(Volts))),
   //     null,
   //     this
   //   )
   // );
+  //WRIST
+  private final SysIdRoutine m_sysIdRoutine = new SysIdRoutine(
+    new SysIdRoutine.Config(
+      Volts.per(Units.Second).of(0.2), //default ramp rate 1V/s
+      Volts.of(1), //reduce dynamic step voltage to 4 to prevent brownout
+      null, //default timeout 10s
+      (state) -> SignalLogger.writeString("SysId_State", state.toString())
+    ),
+    new SysIdRoutine.Mechanism(
+      (volts) -> m_wristmotor1.setControl(m_voltReq.withOutput(volts.in(Volts))),
+      null,
+      this
+    )
+  );
   public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
-      return m_sysIdRoutine.quasistatic(direction);
+      return m_sysIdRoutine.quasistatic(direction); //.until(this::atLimit);
   }
   public Command sysIdDynamic(SysIdRoutine.Direction direction) {
-      return m_sysIdRoutine.dynamic(direction);
+      return m_sysIdRoutine.dynamic(direction); //.until(this::atLimit);
   }
   public Command runSysIdCommand() {
     return Commands.sequence(

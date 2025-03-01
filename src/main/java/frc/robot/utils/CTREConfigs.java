@@ -6,12 +6,14 @@ import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.configs.AudioConfigs;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
+import com.ctre.phoenix6.configs.HardwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.TalonFXSConfiguration;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
+import com.ctre.phoenix6.signals.ForwardLimitTypeValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorArrangementValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
@@ -169,7 +171,14 @@ public final class CTREConfigs {
         algaeleftFXSConfig.Slot0 = algaeleftSlot0Configs;
         algaeleftFXSConfig.Commutation.MotorArrangement = MotorArrangementValue.Minion_JST;
 
-        algaerightFXSConfig.Slot0 = algaeleftSlot0Configs;
+        HardwareLimitSwitchConfigs algaeleftHardwareLimitsConfigs = new HardwareLimitSwitchConfigs()
+            // .withReverseLimitEnable(false)
+            // .withReverseLimitType(ReverseLimitTypeValue.NormallyOpen)
+            // .withReverseLimitAutosetPositionEnable(true)
+            // .withReverseLimitAutosetPositionValue(0.0)
+            .withForwardLimitEnable(true)
+            .withForwardLimitType(ForwardLimitTypeValue.NormallyOpen);
+        algaeleftFXSConfig.HardwareLimitSwitch = algaeleftHardwareLimitsConfigs;
         //Current Limits
         CurrentLimitsConfigs algaeleftCurrentLimitsConfigs = new CurrentLimitsConfigs()
             .withSupplyCurrentLimit(AlgaeConstants.kCurrentLimitAmps)
@@ -181,7 +190,9 @@ public final class CTREConfigs {
         algaeleftFXSConfig.MotorOutput.NeutralMode = AlgaeConstants.left.kNeutralMode;
         algaeleftFXSConfig.MotorOutput.Inverted = (AlgaeConstants.left.kIsInverted) ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
         //Right Side
+        algaerightFXSConfig.Slot0 = algaeleftSlot0Configs;
         algaerightFXSConfig.Commutation.MotorArrangement = MotorArrangementValue.Minion_JST;
+        algaerightFXSConfig.HardwareLimitSwitch = algaeleftHardwareLimitsConfigs;
         algaerightFXSConfig.CurrentLimits = algaeleftCurrentLimitsConfigs;
         algaerightFXSConfig.MotorOutput.NeutralMode = AlgaeConstants.right.kNeutralMode;
         algaerightFXSConfig.MotorOutput.Inverted = (AlgaeConstants.right.kIsInverted) ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;

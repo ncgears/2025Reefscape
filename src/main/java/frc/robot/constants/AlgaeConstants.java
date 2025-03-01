@@ -21,9 +21,10 @@ public class AlgaeConstants {
     public static final double kGearRatio = 12.0; // this is between rotor and sensor
     public static final double kSensorGearRatio = 1.0; // no gearing between sensor and spool
     public static final double kIntakeSpeed = 0.5; 
+    public static final double kOuttakeSpeed = 1.0;
     public class wrist {
         public static final int kMotorID = ID.TalonFX.algae_wrist;
-        public static final boolean kIsInverted = true;
+        public static final boolean kIsInverted = false;
         public static final NeutralModeValue kNeutralMode = NeutralModeValue.Brake;
         public static final double kSpeed = 0.75;
         public static final double kPositionTolerance = 0.05;
@@ -48,13 +49,13 @@ public class AlgaeConstants {
     }
 
     //PID Control
-    public static final double kS = 0.22; // add kS to overcome static friction: adjust first to start moving
-    public static final double kV = 0.0; // add kV for velocity target: voltage(12) / velocity target.. 1 rps results in 0.12v output
+    public static final double kS = 0.68911; // add kS to overcome static friction: adjust first to start moving
+    public static final double kV = 0.12; //0.074776; // add kV for velocity target: voltage(12) / velocity target.. 1 rps results in 0.12v output
     public static final double kA = 0.0; // add kA for acceleration: 0.01 = 1 rps/s requires 0.01v output
-    public static final double kP = 32.0; // add kP per rotation of error: error of 1 rotation results in 12v output (this might be low for aimer)
-    public static final double kI = 0.01; // no integral
+    public static final double kP = 10; // add kP per rotation of error: error of 1 rotation results in 12v output (this might be low for aimer)
+    public static final double kI = 0.0; // no integral
     public static final double kD = 0.0; // 0.1 = velocity error of 1rps results in 0.1v output
-    public static final double kMotionMagicCruise = 30; // Motor Max / Gear Ratio
+    public static final double kMotionMagicCruise = 200; // Motor Max / Gear Ratio
     public static final double kMotionMagicAccel = 200; // Acceleration: Cruise / Accel = time to cruise
     public static final double kMotionMagicJerk = 0; //0=disabled; 10-20x accel for smooth; lower for smoother motion at the cost of time: accel / jerk = jerk time
     //Current Limiting

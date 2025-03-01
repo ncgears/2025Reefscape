@@ -18,3 +18,4 @@ TODO:
 Mechanical:
     - Fix green rope anchor washer clearance to elevator CF spring 
     - Finish reassembly of algae wrist with 5:1 gearbox
+    - Add protection panel across PDH/battery box

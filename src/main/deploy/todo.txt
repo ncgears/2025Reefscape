@@ -1,0 +1,16 @@
+TODO:
+    - Plot current during elevator stall, coral stall; set appropriate current limits so we can ignore the motors death screams.
+    - Wire climber limit switches
+    - Tune climber motor power, test limits
+    - Characterize drivetrain
+    - Update Choreo moi to 8
+    - Bind remaining OJ buttons per Simons limits
+    - Build sequence for Algae handler
+    - Build auton paths
+    - Update theta controller for heading lock (ref: FieldCentricFacingAngle HeadingController)
+    - Reef side targeting math
+    - "In Position" from odometry for algae scoring (while holding scoring button, move elevator at appropriate time)
+
+Mechanical:
+    - Fix green rope anchor washer clearance to elevator CF spring 
+    - Finish reassembly of algae wrist with 5:1 gearbox

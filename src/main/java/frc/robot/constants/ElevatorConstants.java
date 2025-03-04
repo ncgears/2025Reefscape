@@ -34,6 +34,15 @@ public class ElevatorConstants {
     public static final double kP = 15.0; //3.596; // add kP per rotation of error: error of 1 rotation results in 12v output (this might be low for aimer)
     public static final double kI = 0.01; // no integral
     public static final double kD = 0.0; // 0.1 = velocity error of 1rps results in 0.1v output
+    public static final double kG = 0.0; // increase until start to move up
+
+    /** finding kS and kG
+    * up = Increase output to find when it just starts moving up (from stalled)
+    * dn = Decrease output to find when it just starts moving down (from stalled)
+    * kG = (up + dn) / 2
+    * kS = (up - dn) / 2
+    */
+
     public static final double kMotionMagicCruise = 400; // Motor Max / Gear Ratio
     public static final double kMotionMagicAccel = 200; // Acceleration: Cruise / Accel = time to cruise
     public static final double kMotionMagicJerk = 1000; //0=disabled; 10-20x accel for smooth; lower for smoother motion at the cost of time: accel / jerk = jerk time

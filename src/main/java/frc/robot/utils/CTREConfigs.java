@@ -210,7 +210,8 @@ public final class CTREConfigs {
             .withKD(ElevatorConstants.kD)
             .withKS(ElevatorConstants.kS)
             .withKV(ElevatorConstants.kV)
-            .withKA(ElevatorConstants.kA);
+            .withKA(ElevatorConstants.kA)
+            .withKG(ElevatorConstants.kG);
         elevatorFXConfig.Slot0 = elevatorSlot0Configs;
         //Current Limits
         CurrentLimitsConfigs elevatorCurrentLimitsConfigs = new CurrentLimitsConfigs()

@@ -28,14 +28,14 @@ public class ElevatorConstants {
     public static final double kGearRatio = 9; // 9:1 gearbox
     public static final double kSensorGearRatio = 1.0; // no gearing between sensor and spool -- this is between sensor and spool
     //PID Control
-    public static final double kS = 0.55; //0.34327; // add kS to overcome static friction: adjust first to start moving
+    public static final double kS = 0.75; //0.34327; // add kS to overcome static friction: adjust first to start moving
     public static final double kV = 1.25; //1.178; // add kV for velocity target: voltage(12) / velocity target.. 1 rps results in 0.12v output
     public static final double kA = 0.0; // add kA for acceleration: 0.01 = 1 rps/s requires 0.01v output
-    public static final double kP = 3.5; //3.596; // add kP per rotation of error: error of 1 rotation results in 12v output (this might be low for aimer)
+    public static final double kP = 15.0; //3.596; // add kP per rotation of error: error of 1 rotation results in 12v output (this might be low for aimer)
     public static final double kI = 0.01; // no integral
     public static final double kD = 0.0; // 0.1 = velocity error of 1rps results in 0.1v output
-    public static final double kMotionMagicCruise = 300; // Motor Max / Gear Ratio
-    public static final double kMotionMagicAccel = 100; // Acceleration: Cruise / Accel = time to cruise
+    public static final double kMotionMagicCruise = 400; // Motor Max / Gear Ratio
+    public static final double kMotionMagicAccel = 200; // Acceleration: Cruise / Accel = time to cruise
     public static final double kMotionMagicJerk = 1000; //0=disabled; 10-20x accel for smooth; lower for smoother motion at the cost of time: accel / jerk = jerk time
     //Current Limiting
     public static final boolean kCurrentLimitEnable = false; // TODO: Test current limits
@@ -43,15 +43,15 @@ public class ElevatorConstants {
     public static final double kCurrentLimitThresholdAmps = 60.0;
     public static final double kCurrentLimitThresholdSecs = 0.3;
     public class Positions {
-        private static final double kScoreDelta = 0.3;
+        private static final double kScoreDelta = 0.75;
         public static final double kFwdLimit = 5.7; //Forward imit
         public static final double kRevLimit = -0.01; //Reverse Limit
         public static final double kStow = 0.0; //all the way down
-        public static final double kL4 = 5.0; //Elevator up to L4
-        public static final double kL4Score = kL4 - kScoreDelta; //Elevator up to L4 Score
-        public static final double kL3 = 4.0; //Elevator up to L3
+        public static final double kL4 = 5.05; //Elevator up to L4
+        public static final double kL4Score = kL4 - 1.0; //Elevator up to L4 Score
+        public static final double kL3 = 2.93; //Elevator up to L3
         public static final double kL3Score = kL3 - kScoreDelta; //Elevator up to L3 Score
-        public static final double kL2 = 3.0; //Elevator up to L2
+        public static final double kL2 = 1.6; //Elevator up to L2
         public static final double kL2Score = kL2 - kScoreDelta; //Elevator up to L2 Score
         public static final double kL1 = 0.0; //Elevator up to L1
     }

@@ -286,22 +286,26 @@ public class RobotContainer {
 
         //#region Operator Joystick
         oj.x().onTrue(
-            elevator.ElevatorPositionC(ElevatorSubsystem.Position.L1)
-            .andThen(coral.CoralPositionC(CoralSubsystem.Position.IN))
-            // .until(coral::atTarget)
-            .andThen(new WaitCommand(0.25))
+            coral.CoralPositionC(CoralSubsystem.Position.IN)
+            .andThen(new WaitCommand(0.4))
+            .andThen(
+                elevator.ElevatorPositionC(ElevatorSubsystem.Position.L1)
+            ).until(elevator::isAtTarget)
             .andThen(coral.CoralStopC())
         ); //move to L1
         oj.a().onTrue(
             elevator.ElevatorPositionC(ElevatorSubsystem.Position.L2)
+            .andThen(new WaitCommand(1.2))
             .andThen(coral.CoralPositionC(CoralSubsystem.Position.OUT))
         ); //move to L2
         oj.b().onTrue(
             elevator.ElevatorPositionC(ElevatorSubsystem.Position.L3)
+            .andThen(new WaitCommand(1.2))
             .andThen(coral.CoralPositionC(CoralSubsystem.Position.OUT))
         ); //move to L3
         oj.y().onTrue(
             elevator.ElevatorPositionC(ElevatorSubsystem.Position.L4)
+            .andThen(new WaitCommand(1.2))
             .andThen(coral.CoralPositionC(CoralSubsystem.Position.OUT))
         ); //move to L4
         oj.rightTrigger().onTrue(
@@ -356,7 +360,7 @@ public class RobotContainer {
         //#region Programmer Joystick
         // Run SysId routines when holding ellipses/google and X/Y.
         // Note that each routine should be run exactly once in a single log.
-        var m_mechanism = coral; //drivetrain, elevator, coral, algae, climber
+        var m_mechanism = algae; //drivetrain, elevator, coral, algae, climber
         // pj.ellipses().and(pj.a()).whileTrue(m_mechanism.runSysIdCommand());
         
         //seperately, but would need to use logic to see if we are atLimit

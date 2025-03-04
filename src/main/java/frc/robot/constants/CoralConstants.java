@@ -30,7 +30,7 @@ public class CoralConstants {
     public static final double kS = 0.3; // add kS to overcome static friction: adjust first to start moving
     public static final double kV = 1.75; // add kV for velocity target: voltage(12) / velocity target.. 1 rps results in 0.12v output
     public static final double kA = 0.0; // add kA for acceleration: 0.01 = 1 rps/s requires 0.01v output
-    public static final double kP = 100.0; // add kP per rotation of error: error of 1 rotation results in 12v output (this might be low for aimer)
+    public static final double kP = 120.0; // add kP per rotation of error: error of 1 rotation results in 12v output (this might be low for aimer)
     public static final double kI = 0.01; // no integral
     public static final double kD = 0.0; // 0.1 = velocity error of 1rps results in 0.1v output
     public static final double kMotionMagicCruise = 30; // Motor Max / Gear Ratio
@@ -46,8 +46,8 @@ public class CoralConstants {
         public static final double kRevLimit = -0.01; //Reverse Limit
         public static final double kStow = 0.015137; //all the way in (home)
         public static final double kOut = 0.050293; //out ready for scoring
-        public static final double kScore = 0.022043; //retracted to score
-        public static final double kIn = 0.015137; //retracted for transit
+        public static final double kScore = 0.018043; //retracted to score
+        public static final double kIn = 0.01; //0.015137; //retracted for transit
     }
     public static final boolean kSoftForwardLimitEnable = true;
     public static final double kSoftForwardLimit = Positions.kFwdLimit;

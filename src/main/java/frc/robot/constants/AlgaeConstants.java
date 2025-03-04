@@ -18,19 +18,20 @@ public class AlgaeConstants {
     public static final boolean kUseCANcoder = true;
     public static final double kMagnetOffset = 0.176025; //Adjust magnet to sensor offset for CANcoder
     public static final boolean kSensorInverted = true;
-    public static final double kGearRatio = 12.0; // this is between rotor and sensor
+    public static final double kGearRatio = 60.0; // this is between rotor and sensor
     public static final double kSensorGearRatio = 1.0; // no gearing between sensor and spool
     public static final double kIntakeSpeed = 0.5; 
     public static final double kOuttakeSpeed = 1.0;
     public class wrist {
         public static final int kMotorID = ID.TalonFX.algae_wrist;
         public static final boolean kIsInverted = false;
-        public static final NeutralModeValue kNeutralMode = NeutralModeValue.Brake;
+        public static final NeutralModeValue kNeutralMode = NeutralModeValue.Coast;
         public static final double kSpeed = 0.75;
         public static final double kPositionTolerance = 0.05;
         public class Positions {
             public static final double stow = 0.0;
             public static final double up = 0.01;
+            public static final double transit = 0.05;
             public static final double down = 0.285;
             public static final double proc = 0.08;
             public static final double reef = 0.143;
@@ -49,14 +50,14 @@ public class AlgaeConstants {
     }
 
     //PID Control
-    public static final double kS = 0.68911; // add kS to overcome static friction: adjust first to start moving
-    public static final double kV = 0.12; //0.074776; // add kV for velocity target: voltage(12) / velocity target.. 1 rps results in 0.12v output
-    public static final double kA = 0.0; // add kA for acceleration: 0.01 = 1 rps/s requires 0.01v output
-    public static final double kP = 10; // add kP per rotation of error: error of 1 rotation results in 12v output (this might be low for aimer)
+    public static final double kS = 0.6; // add kS to overcome static friction: adjust first to start moving
+    public static final double kV = 3.596; //0.14; // add kV for velocity target: voltage(12) / velocity target.. 1 rps results in 0.12v output
+    public static final double kA = 1.1036; // add kA for acceleration: 0.01 = 1 rps/s requires 0.01v output
+    public static final double kP = 40; // add kP per rotation of error: error of 1 rotation results in 12v output (this might be low for aimer)
     public static final double kI = 0.0; // no integral
     public static final double kD = 0.0; // 0.1 = velocity error of 1rps results in 0.1v output
-    public static final double kMotionMagicCruise = 200; // Motor Max / Gear Ratio
-    public static final double kMotionMagicAccel = 200; // Acceleration: Cruise / Accel = time to cruise
+    public static final double kMotionMagicCruise = 500; // Motor Max / Gear Ratio
+    public static final double kMotionMagicAccel = 1000; // Acceleration: Cruise / Accel = time to cruise
     public static final double kMotionMagicJerk = 0; //0=disabled; 10-20x accel for smooth; lower for smoother motion at the cost of time: accel / jerk = jerk time
     //Current Limiting
     public static final boolean kCurrentLimitEnable = false; // TODO: Test current limits

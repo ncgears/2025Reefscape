@@ -68,6 +68,8 @@ public class ElevatorSubsystem extends SubsystemBase {
     L4SCORE(ElevatorConstants.Positions.kL4Score),
     L4(ElevatorConstants.Positions.kL4),
     BARGE(ElevatorConstants.Positions.kBarge),
+    ALGAEHIGH(ElevatorConstants.Positions.kAlgaeHigh),
+    ALGAELOW(ElevatorConstants.Positions.kAlgaeLow),
     PROC(ElevatorConstants.Positions.kProcessor);
 
     private final double position;

@@ -87,6 +87,9 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     private final SwerveRequest.SysIdSwerveSteerGains m_steerCharacterization = new SwerveRequest.SysIdSwerveSteerGains();
     private final SwerveRequest.SysIdSwerveRotation m_rotationCharacterization = new SwerveRequest.SysIdSwerveRotation();
 
+    /* Theta controller for normal heading lock */
+    private final PIDController m_thetaController = new PIDController(7,0,0);
+
     /* SysId routine for characterizing translation. This is used to find PID gains for the drive motors. */
     private final SysIdRoutine m_sysIdRoutineTranslation = new SysIdRoutine(
         new SysIdRoutine.Config(
@@ -373,7 +376,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 	}
 	public boolean isVisionSuppressed() { return m_suppressVision; }
 
-    public boolean getHeadingLocked() { return heading_locked; }
+  public boolean getHeadingLocked() { return heading_locked; }
 	public String getHeadingLockedColor() {
 		return (heading_locked) ?
 			(isTrackingTarget()) ? DashboardConstants.Colors.ORANGE : DashboardConstants.Colors.GREEN

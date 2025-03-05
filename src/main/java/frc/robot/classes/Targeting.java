@@ -181,7 +181,8 @@ public class Targeting {
 	}
 
 	public Rotation2d getAngleOfTarget(Targets target) {
-		return Rotation2d.fromDegrees(0.0);
+		// return Rotation2d.fromDegrees(0.0);
+    return target.getAngle();
 	}
 
 	// /**

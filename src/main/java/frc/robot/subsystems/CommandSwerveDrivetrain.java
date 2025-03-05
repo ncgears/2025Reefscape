@@ -59,8 +59,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     public Field2d field = new Field2d();
 	
     private double target_heading = 0.0;
-	private boolean heading_locked = false;
-	private boolean m_suppressVision = false;
+    private boolean heading_locked = false;
+    private boolean m_suppressVision = false;
 
     /* Blue alliance sees forward as 0 degrees (toward red alliance wall) */
     private static final Rotation2d kBlueAlliancePerspectiveRotation = Rotation2d.kZero;
@@ -523,7 +523,10 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     }
 
     public Command resetGyroC() {
-      return runOnce(() -> seedFieldCentric());
+      return runOnce(() -> {
+        seedFieldCentric();
+        NCDebug.Debug.debug("Drive: Reset Gyro");
+      });
     }
 
     private void startSimThread() {

@@ -1,15 +1,20 @@
 TODO:
-    - Plot current during elevator stall, coral stall; set appropriate current limits so we can ignore the motors death screams.
-    - Update drivers station NI game tools and Elastic Dashboard
-    - Verify c:\users\public\public documents\frc\frc ds data storage.ini is pointing at correct elastic executable
+  Vision:
+    - Mark centerlines of robot left/right, front/back, and refresh "FRONT" mark of robot on frame
+    - Identify X,Y,Z,angle of front camera
+    - Identify X,Y,Z,angle of back camera
     - Set photon camera positions in VisionConstants
     - Test AddVisionMeasurement into ctre pose estimator for photon readings when seeing ATs
+  Elevator:
+    - Plot current during elevator stall, coral stall; set appropriate current limits so we can ignore the motors death screams.
+  Drivers Station:
+    - Update drivers station NI game tools and Elastic Dashboard
+    - Verify c:\users\public\public documents\frc\frc ds data storage.ini is pointing at correct elastic executable
+  Climber:
     - Wire climber limit switches
     - Tune climber motor power, test limits
+  Drivetrain:
     - Characterize drivetrain
-    - Update Choreo moi to 8
-    - Bind remaining OJ buttons per Simons limits
-    - Build sequence for Algae handler
     - Build auton paths
     - Update theta controller for heading lock (ref: FieldCentricFacingAngle HeadingController)
     - Reef side targeting math
@@ -17,5 +22,5 @@ TODO:
 
 Mechanical:
     - Fix green rope anchor washer clearance to elevator CF spring 
-    - Finish reassembly of algae wrist with 5:1 gearbox
     - Add protection panel across PDH/battery box
+    - Limit switches for Algae intake

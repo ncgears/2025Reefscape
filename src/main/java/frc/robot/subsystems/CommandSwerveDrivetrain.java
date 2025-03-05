@@ -522,6 +522,10 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         field.setRobotPose(this.getState().Pose);
     }
 
+    public Command resetGyroC() {
+      return runOnce(() -> seedFieldCentric());
+    }
+
     private void startSimThread() {
         m_lastSimTime = Utils.getCurrentTimeSeconds();
 

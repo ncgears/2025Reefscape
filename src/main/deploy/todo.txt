@@ -14,8 +14,8 @@ TODO:
     - Update theta controller for heading lock (ref: FieldCentricFacingAngle HeadingController)
     - Reef side targeting math
     - "In Position" from odometry for algae scoring (while holding scoring button, move elevator at appropriate time)
+    - Re-init robot on disable
 
 Mechanical:
     - Fix green rope anchor washer clearance to elevator CF spring 
-    - Finish reassembly of algae wrist with 5:1 gearbox
     - Add protection panel across PDH/battery box

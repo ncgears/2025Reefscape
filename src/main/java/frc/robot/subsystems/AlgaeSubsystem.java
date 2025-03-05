@@ -116,7 +116,9 @@ public class AlgaeSubsystem extends SubsystemBase {
    * The init function resets and operational state of the subsystem
    */
   public void init() {
-    AlgaeStop();
+    AlgaeBrake();
+    setPosition(Position.STOW);
+    // AlgaeStop();
     m_curDirection = Direction.STOP;
     NCDebug.Debug.debug("Algae: Initialized");
   }
@@ -226,8 +228,16 @@ public class AlgaeSubsystem extends SubsystemBase {
   //#endregion Limits
 
   //#region Controls
+  public Command AlgaeNeutral() {
+    return runOnce(() -> {m_wristmotor1.setControl(m_neutral); });
+  }
+
+  public Command AlgaeBrake() {
+    return runOnce(() -> {m_wristmotor1.setControl(m_brake); });
+  }
+
   public void AlgaeStop() {
-    m_wristmotor1.setControl(m_neutral);
+    // m_wristmotor1.setControl(m_neutral);
     if(m_curDirection != Direction.HOLD) {
       m_curDirection = Direction.STOP;
       NCDebug.Debug.debug("Algae: Stop");

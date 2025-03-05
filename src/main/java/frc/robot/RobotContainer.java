@@ -182,7 +182,11 @@ public class RobotContainer {
         coral.init();
         algae.init();
     }
-    
+
+    public void neutralRobot() {
+        algae.AlgaeNeutral().ignoringDisable(true);
+    }
+
     // Returns true if the alliance is red, otherwise false (blue)
     public static boolean isAllianceRed() {
         return DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red;
@@ -288,9 +292,7 @@ public class RobotContainer {
         oj.x().onTrue(
             coral.CoralPositionC(CoralSubsystem.Position.IN)
             .andThen(new WaitCommand(0.4))
-            .andThen(
-                elevator.ElevatorPositionC(ElevatorSubsystem.Position.L1)
-            ).until(elevator::isAtTarget)
+            .andThen(elevator.ElevatorPositionC(ElevatorSubsystem.Position.L1))//.until(elevator::isAtTarget)
             .andThen(coral.CoralStopC())
         ); //move to L1
         oj.a().onTrue(
@@ -338,8 +340,10 @@ public class RobotContainer {
         oj.leftStick().onTrue(
             algae.setAlgaePositionC(AlgaeSubsystem.Position.FLOOR)
             .andThen(algae.startToroC(false))
-        ).onFalse(
-            algae.setAlgaePositionC(AlgaeSubsystem.Position.UP)
+            .andThen(new WaitCommand(0.5))
+            .andThen(algae.stopToroC())
+        // ).onFalse(
+        //     algae.setAlgaePositionC(AlgaeSubsystem.Position.UP)
         );
 
         // Other OJ bindings

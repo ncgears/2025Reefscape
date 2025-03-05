@@ -11,6 +11,7 @@ import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.StaticBrake;
 import com.ctre.phoenix6.controls.VoltageOut;
+import com.ctre.phoenix6.hardware.CANcoder;
 // import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 
@@ -68,7 +69,7 @@ public class CoralSubsystem extends SubsystemBase {
   private final NeutralOut m_neutral = new NeutralOut();
   private final StaticBrake m_brake = new StaticBrake();
 
-  // private final CANcoder m_encoder;
+  private final CANcoder m_encoder;
   private TalonFX m_motor1;
   private final LinearFilter curSpikeFilter = LinearFilter.highPass(0.1, 0.02);
   private static final double curSpikeLimit = CoralConstants.kCurrentSpikeLimit;
@@ -99,8 +100,8 @@ public class CoralSubsystem extends SubsystemBase {
     // m_config.apply(m_fxsConfigs);
 
     //initialize values for private and public variables, etc.
-    // m_encoder = new CANcoder(CoralConstants.kCANcoderID, CoralConstants.canBus);
-    // RobotContainer.ctreConfigs.retryConfigApply(()->m_encoder.getConfigurator().apply(RobotContainer.ctreConfigs.coralCCConfig));
+    m_encoder = new CANcoder(CoralConstants.kCANcoderID, CoralConstants.canBus);
+    RobotContainer.ctreConfigs.retryConfigApply(()->m_encoder.getConfigurator().apply(RobotContainer.ctreConfigs.coralCCConfig));
 
     m_motor1 = new TalonFX(CoralConstants.kMotorID, CoralConstants.canBus);
     RobotContainer.ctreConfigs.retryConfigApply(()->m_motor1.getConfigurator().apply(RobotContainer.ctreConfigs.coralFXConfig));
@@ -152,6 +153,7 @@ public class CoralSubsystem extends SubsystemBase {
       dbgCoralList.addString("Target", this::getTargetPositionName);
       dbgCoralList.addNumber("Target Pos", this::getTargetPosition);
       dbgCoralList.addNumber("Motor Pos", () -> { return NCDebug.General.roundDouble(getMotorPosition().in(Units.Rotations),6); });
+      dbgCoralList.addNumber("Absolute", () -> { return NCDebug.General.roundDouble(getPositionAbsolute().in(Units.Rotations),6); });
       dbgCoralList.add("Coral In", CoralPositionC(Position.IN))
         .withProperties(Map.of("show_type",false));  
       dbgCoralList.add("Coral Out", CoralPositionC(Position.OUT))
@@ -180,6 +182,10 @@ public class CoralSubsystem extends SubsystemBase {
 
   public Angle getMotorPosition() {
     return m_motor1.getPosition().getValue();
+  }
+
+  public Angle getPositionAbsolute() {
+    return m_encoder.getPosition().getValue();
   }
 
   public TalonFX[] getMotors() {

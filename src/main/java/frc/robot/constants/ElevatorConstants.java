@@ -67,6 +67,7 @@ public class ElevatorConstants {
         public static final double kL2 = 1.6; //Elevator up to L2
         public static final double kL2Score = kL2 - kScoreDelta; //Elevator up to L2 Score
         public static final double kL1 = 0.0; //Elevator up to L1
+        public static final double kHP = kStow; //all the way down
     }
     public static final boolean kSoftForwardLimitEnable = true;
     public static final double kSoftForwardLimit = Positions.kFwdLimit;

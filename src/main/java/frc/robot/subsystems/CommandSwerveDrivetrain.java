@@ -59,8 +59,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     public Field2d field = new Field2d();
 	
     private double target_heading = 0.0;
-	private boolean heading_locked = false;
-	private boolean m_suppressVision = false;
+    private boolean heading_locked = false;
+    private boolean m_suppressVision = false;
 
     /* Blue alliance sees forward as 0 degrees (toward red alliance wall) */
     private static final Rotation2d kBlueAlliancePerspectiveRotation = Rotation2d.kZero;
@@ -86,6 +86,9 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     private final SwerveRequest.SysIdSwerveTranslation m_translationCharacterization = new SwerveRequest.SysIdSwerveTranslation();
     private final SwerveRequest.SysIdSwerveSteerGains m_steerCharacterization = new SwerveRequest.SysIdSwerveSteerGains();
     private final SwerveRequest.SysIdSwerveRotation m_rotationCharacterization = new SwerveRequest.SysIdSwerveRotation();
+
+    /* Theta controller for normal heading lock */
+    private final PIDController m_thetaController = new PIDController(7,0,0);
 
     /* SysId routine for characterizing translation. This is used to find PID gains for the drive motors. */
     private final SysIdRoutine m_sysIdRoutineTranslation = new SysIdRoutine(
@@ -373,7 +376,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 	}
 	public boolean isVisionSuppressed() { return m_suppressVision; }
 
-    public boolean getHeadingLocked() { return heading_locked; }
+  public boolean getHeadingLocked() { return heading_locked; }
 	public String getHeadingLockedColor() {
 		return (heading_locked) ?
 			(isTrackingTarget()) ? DashboardConstants.Colors.ORANGE : DashboardConstants.Colors.GREEN
@@ -520,6 +523,13 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         }
         if(!m_suppressVision) RobotContainer.targeting.correctPoseWithVision();
         field.setRobotPose(this.getState().Pose);
+    }
+
+    public Command resetGyroC() {
+      return runOnce(() -> {
+        seedFieldCentric();
+        NCDebug.Debug.debug("Drive: Reset Gyro");
+      });
     }
 
     private void startSimThread() {

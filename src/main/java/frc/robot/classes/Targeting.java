@@ -146,7 +146,7 @@ public class Targeting {
 		m_trackingTarget = Targets.HP_LEFT;
 		resetPose(
 			(RobotContainer.isAllianceRed()) //more realistic starting position
-				? new Pose2d(m_fieldLength - 7.2439,4.0082,new Rotation2d(Math.PI)) 
+				? new Pose2d(m_fieldLength - 7.2439,4.0082,new Rotation2d()) 
 				: new Pose2d(7.2439,4.0082,new Rotation2d(Math.PI))
 		);
 		NCDebug.Debug.debug("Pose: Initialized");
@@ -181,7 +181,8 @@ public class Targeting {
 	}
 
 	public Rotation2d getAngleOfTarget(Targets target) {
-		return Rotation2d.fromDegrees(0.0);
+		// return Rotation2d.fromDegrees(0.0);
+    return target.getAngle();
 	}
 
 	// /**

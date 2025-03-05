@@ -14,7 +14,7 @@ public class SwerveConstants {
     public static final String kCANbus = "drivetrain"; //canbus name for drivetrain systems
     public static final boolean kInvertLeftSide = false;
     public static final boolean kInvertRightSide = true;
-    public static final double kAlignStrafeSpeed = 0.25; //when using pov alignment buttons, this is the requested strafe speed percentage
+    public static final double kAlignStrafeSpeed = 0.5; //when using pov alignment buttons, this is the requested strafe speed percentage
     public static final boolean debugDashboard = false;
     public class steer {
         public static final double kP = 21.739;

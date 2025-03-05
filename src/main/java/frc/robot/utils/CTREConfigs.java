@@ -49,7 +49,7 @@ public final class CTREConfigs {
         //Intake Configuration
         //CANcoder
         coralCCConfig.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 0.5;
-        coralCCConfig.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
+        coralCCConfig.MagnetSensor.SensorDirection = (CoralConstants.kSensorInverted) ? SensorDirectionValue.Clockwise_Positive : SensorDirectionValue.CounterClockwise_Positive;
         coralCCConfig.MagnetSensor.MagnetOffset = CoralConstants.kMagnetOffset;
 
         Slot0Configs coralSlot0Configs = new Slot0Configs()

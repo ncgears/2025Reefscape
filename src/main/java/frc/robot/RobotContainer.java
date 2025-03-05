@@ -83,11 +83,10 @@ public class RobotContainer {
     private double MaxAngularRate = RotationsPerSecond.of(SwerveConstants.kMaxAngularRate).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
 
     private final Telemetry logger = new Telemetry(MaxSpeed);
-    // public static final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
         .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
-        .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
+        .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors    
     private final SwerveRequest.RobotCentric robotdrive = new SwerveRequest.RobotCentric()
         .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
@@ -102,11 +101,11 @@ public class RobotContainer {
         WebServer.start(5800, Filesystem.getDeployDirectory().getPath());
         final InputAxis m_fieldX = new InputAxis("Forward", dj::getLeftY)
             .withDeadband(OIConstants.kMinDeadband)
-            .withInvert(false)
+            .withInvert(true)
             .withSquaring(false);
         final InputAxis m_fieldY = new InputAxis("Strafe", dj::getLeftX)
             .withDeadband(OIConstants.kMinDeadband)
-            .withInvert(false)
+            .withInvert(true)
             .withSquaring(false);
         final InputAxis m_rotate = new InputAxis("Rotate", dj::getRightX)
             .withDeadband(OIConstants.kMinDeadband)
@@ -285,76 +284,116 @@ public class RobotContainer {
         dj.rightTrigger().and(dj.leftTrigger()).onTrue(targeting.setTrackingRBRC());
         
         // reset the field-centric heading on hamburger button press
-        dj.hamburger().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+        dj.hamburger().onTrue(drivetrain.resetGyroC());
         //#endregion Driver Joystick
 
         //#region Operator Joystick
+        // CORAL STUFF
+        /** OJ X - L1 Position (currently stow?) */
         oj.x().onTrue(
             coral.CoralPositionC(CoralSubsystem.Position.IN)
-            .andThen(new WaitCommand(0.4))
-            .andThen(elevator.ElevatorPositionC(ElevatorSubsystem.Position.L1))//.until(elevator::isAtTarget)
+            .andThen(wait(0.4))
+            .andThen(
+                elevator.ElevatorPositionC(ElevatorSubsystem.Position.L1)
+            ).until(elevator::isAtTarget)
             .andThen(coral.CoralStopC())
-        ); //move to L1
+        );
+        /** OJ A - L2 Scoring Position */
         oj.a().onTrue(
             elevator.ElevatorPositionC(ElevatorSubsystem.Position.L2)
-            .andThen(new WaitCommand(1.2))
+            .andThen(wait(1.2))
             .andThen(coral.CoralPositionC(CoralSubsystem.Position.OUT))
-        ); //move to L2
+        );
+        /** OJ B - L3 Scoring Position */
         oj.b().onTrue(
             elevator.ElevatorPositionC(ElevatorSubsystem.Position.L3)
-            .andThen(new WaitCommand(1.2))
+            .andThen(wait(1.2))
             .andThen(coral.CoralPositionC(CoralSubsystem.Position.OUT))
-        ); //move to L3
+        );
+        /** OJ Y - L4 Scoring Position */
         oj.y().onTrue(
             elevator.ElevatorPositionC(ElevatorSubsystem.Position.L4)
-            .andThen(new WaitCommand(1.2))
+            .andThen(wait(1.2))
             .andThen(coral.CoralPositionC(CoralSubsystem.Position.OUT))
-        ); //move to L4
+        );
+        /** OJ Right Trigger - Score Coral sequence (from L2, L3, and L4) (hold trigger) */
         oj.rightTrigger().onTrue(
             elevator.ScoreC()
             .until(elevator::isAtTarget)
-            .andThen(new WaitCommand(0.2))
+            .andThen(wait(0.2))
             .andThen(coral.CoralPositionC(CoralSubsystem.Position.IN))
         ).onFalse(
-            new WaitCommand(0.2)
+            wait(0.2)
             .andThen(coral.CoralStopC())
-        ); //score the coral from L2..L4
+        );
+        /** OJ Right Bumper - Return to previous position */
         oj.rightBumper().onTrue(
             elevator.LastPositionC()
             .andThen(coral.CoralPositionC(CoralSubsystem.Position.OUT))
-        );  //return to previous position L1..L4
-        // Operator Ellipses - hold for force climb, delay of 1 second
-        oj.ellipses().onTrue(
-            new WaitCommand(1.0).andThen(climber.climberMoveC(() -> ClimberConstants.kClimbPower))) //wait 1 second for manual override
-            .onFalse(climber.climberStopC()
+        );
+        /** OJ Left Bumper - Human Player Intake */
+        oj.leftBumper().onTrue(
+            elevator.ElevatorPositionC(ElevatorSubsystem.Position.HP)
+            .andThen(coral.CoralPositionC(CoralSubsystem.Position.OUT))
         );
 
-        //Temp for testing
-        oj.povRight().onTrue(algae.startToroC(false)).onFalse(algae.stopToroC()); //intake
-        oj.povLeft().onTrue(algae.startToroC(true)).onFalse(algae.stopToroC()); //outtake
-        oj.povUp().onTrue(algae.setAlgaePositionC(AlgaeSubsystem.Position.UP)); //wrist up
-        oj.povDown().onTrue(algae.setAlgaePositionC(AlgaeSubsystem.Position.FLOOR)
-            .andThen(algae.startToroC(false))
-        ).onFalse(algae.stopToroC()); //wrist down
+        // CLIMBER STUFF
+        // OJ Ellipses - Manual climb override, hold for at least 1 second
+        oj.ellipses().onTrue(
+            wait(1.0).andThen(climber.climberMoveC(() -> ClimberConstants.kClimbPower))) //wait 1 second for manual override
+        .onFalse(
+          climber.climberStopC()
+        );
 
+        // ALGAE STUFF
+        //Temp for testing
+        // oj.povRight().onTrue(algae.startToroC(false)).onFalse(algae.stopToroC()); //intake
+        // oj.povLeft().onTrue(algae.startToroC(true)).onFalse(algae.stopToroC()); //outtake
+        // oj.povUp().onTrue(algae.setAlgaePositionC(AlgaeSubsystem.Position.UP)); //wrist up
+        // oj.povDown().onTrue(algae.setAlgaePositionC(AlgaeSubsystem.Position.FLOOR)
+        //     .andThen(algae.startToroC(false))
+        // ).onFalse(algae.stopToroC()); //wrist down
+
+        /** OJ POV Up - Barge scoring position */
+        oj.povUp().onTrue(
+          elevator.ElevatorPositionC(ElevatorSubsystem.Position.BARGE)
+        );
+        /** OJ POV Down - Processor scoring position */
+        oj.povDown().onTrue(
+          elevator.ElevatorPositionC(ElevatorSubsystem.Position.PROC)
+          .andThen(wait(0.25))
+          .andThen(algae.setAlgaePositionC(AlgaeSubsystem.Position.PROC))
+        );
+        /** OJ POV Left - Reef High Algae Pickup (do not stop toros, use limits) */
+        oj.povLeft().onTrue(
+          elevator.ElevatorPositionC(ElevatorSubsystem.Position.ALGAEHIGH)
+          .andThen(wait(0.25))
+          .andThen(algae.setAlgaePositionC(AlgaeSubsystem.Position.REEF))
+        );
+        /** OJ POV Left - Reef High Algae Pickup (do not stop toros, use limits) */
+        oj.povRight().onTrue(
+          elevator.ElevatorPositionC(ElevatorSubsystem.Position.ALGAELOW)
+          .andThen(wait(0.25))
+          .andThen(algae.setAlgaePositionC(AlgaeSubsystem.Position.REEF))
+        );
+        /** OJ L3 - Floor Algae Pickup (do not stop toros, use limits) */
         oj.leftStick().onTrue(
             algae.setAlgaePositionC(AlgaeSubsystem.Position.FLOOR)
             .andThen(algae.startToroC(false))
-            .andThen(new WaitCommand(0.5))
-            .andThen(algae.stopToroC())
-        // ).onFalse(
-        //     algae.setAlgaePositionC(AlgaeSubsystem.Position.UP)
+            .andThen(wait(0.5)).andThen(algae.stopToroC()) //this line is temporary until limit switches installed
+        ).onFalse(
+            algae.setAlgaePositionC(AlgaeSubsystem.Position.UP)
         );
+        /** OJ Left Trigger - Outtake Algae then stop toros */
+        oj.leftTrigger().onTrue(
+          algae.startToroC(true))
+        .onFalse(
+          algae.stopToroC()
+        );
+        
 
         // Other OJ bindings
-        // right stick elevator manual (see setup section
-        // lbump hp intake pos
-        // ltrig algae outtake
-        // d-up algae barge pos
-        // d-dn algae proc pos 
-        // d-rt algae low intake
-        // d-lt algae high intake
-        // l3 algae floor intake
+        // right stick elevator manual (see setup section)
         // google - open
         // frame - open
         // stadia - open
@@ -484,4 +523,10 @@ public class RobotContainer {
         return Shuffleboard.getTab(tabname);
     }
     //#endregion Dashboard
+
+    //#region Convenience
+    private Command wait(double seconds) {
+      return new WaitCommand(seconds);
+    }
+    //#endregion
 }

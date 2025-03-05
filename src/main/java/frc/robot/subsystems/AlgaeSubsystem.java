@@ -64,6 +64,7 @@ public class AlgaeSubsystem extends SubsystemBase {
     DOWN(AlgaeConstants.wrist.Positions.down, DashboardConstants.Colors.RED),
     FLOOR(AlgaeConstants.wrist.Positions.floor, DashboardConstants.Colors.RED),
     PROC(AlgaeConstants.wrist.Positions.proc, DashboardConstants.Colors.ORANGE),
+    REEF(AlgaeConstants.wrist.Positions.reef, DashboardConstants.Colors.BLUE),
     UP(AlgaeConstants.wrist.Positions.up, DashboardConstants.Colors.GREEN),
     STOW(AlgaeConstants.wrist.Positions.stow, DashboardConstants.Colors.BLACK);
 

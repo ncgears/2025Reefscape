@@ -28,7 +28,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import frc.robot.constants.*; 
+import frc.robot.constants.*;
 import frc.robot.utils.NCDebug;
 import frc.robot.RobotContainer;
 
@@ -37,8 +37,8 @@ import frc.robot.RobotContainer;
  * It is responsible for extending and retracting the elevator/climber.
  */
 public class ClimberSubsystem extends SubsystemBase {
-	private static ClimberSubsystem instance;
-  //private and public variables defined here
+  private static ClimberSubsystem instance;
+  // private and public variables defined here
 
   private DigitalInput m_cageSwitch1 = new DigitalInput(ClimberConstants.kCageSwitch1ID);
   private DigitalInput m_cageSwitch2 = new DigitalInput(ClimberConstants.kCageSwitch2ID);
@@ -49,10 +49,18 @@ public class ClimberSubsystem extends SubsystemBase {
     DOWN(DashboardConstants.Colors.RED),
     HOLD(DashboardConstants.Colors.GREEN),
     STOP(DashboardConstants.Colors.BLACK);
+
     private final String color;
-    State(String color) { this.color = color; }
-    public String getColor() { return this.color; }
+
+    State(String color) {
+      this.color = color;
+    }
+
+    public String getColor() {
+      return this.color;
+    }
   }
+
   private final DutyCycleOut m_DutyCycle = new DutyCycleOut(0);
   private final NeutralOut m_neutral = new NeutralOut();
   private final StaticBrake m_brake = new StaticBrake();
@@ -70,28 +78,32 @@ public class ClimberSubsystem extends SubsystemBase {
   public final Trigger climbComplete = new Trigger(this::getClimbComplete);
 
   /**
-	 * Returns the instance of the ClimberSubsystem subsystem.
-	 * The purpose of this is to only create an instance if one does not already exist.
-	 * @return ClimberSubsystem instance
-	 */
+   * Returns the instance of the ClimberSubsystem subsystem.
+   * The purpose of this is to only create an instance if one does not already
+   * exist.
+   * 
+   * @return ClimberSubsystem instance
+   */
   public static ClimberSubsystem getInstance() {
-		if (instance == null)
-			instance = new ClimberSubsystem();
-		return instance;
-	}
-  
+    if (instance == null)
+      instance = new ClimberSubsystem();
+    return instance;
+  }
+
   public ClimberSubsystem() {
-    //initialize values for private and public variables, etc.
-    // m_encoder = new CANcoder(ClimberConstants.kCANcoderID, ClimberConstants.canBus);
+    // initialize values for private and public variables, etc.
+    // m_encoder = new CANcoder(ClimberConstants.kCANcoderID,
+    // ClimberConstants.canBus);
     // RobotContainer.ctreConfigs.retryConfigApply(()->m_encoder.getConfigurator().apply(RobotContainer.ctreConfigs.climberCCConfig));
 
     m_motor1 = new TalonFX(ClimberConstants.kMotorID, ClimberConstants.canBus);
-    RobotContainer.ctreConfigs.retryConfigApply(()->m_motor1.getConfigurator().apply(RobotContainer.ctreConfigs.climberFXConfig));
+    RobotContainer.ctreConfigs
+      .retryConfigApply(() -> m_motor1.getConfigurator().apply(RobotContainer.ctreConfigs.climberFXConfig));
 
     init();
     createDashboards();
   }
-  
+
   /**
    * The init function resets and operational state of the subsystem
    */
@@ -99,7 +111,7 @@ public class ClimberSubsystem extends SubsystemBase {
     climberStop();
     NCDebug.Debug.debug("Climber: Initialized");
   }
-  
+
   @Override
   public void periodic() {
   }
@@ -109,50 +121,60 @@ public class ClimberSubsystem extends SubsystemBase {
     driverTab.addString("Climber", this::getStateColor)
       .withSize(2, 2)
       .withWidget("Single Color View")
-      .withPosition(14, 7);  
+      .withPosition(14, 7);
 
     ShuffleboardTab systemTab = Shuffleboard.getTab("System");
     ShuffleboardLayout climberList = systemTab.getLayout("Climber", BuiltInLayouts.kList)
-      .withSize(4,6)
-      .withPosition(20,0)
-      .withProperties(Map.of("Label position","LEFT"));
+      .withSize(4, 6)
+      .withPosition(20, 0)
+      .withProperties(Map.of("Label position", "LEFT"));
     climberList.addString("Status", this::getStateColor)
       .withWidget("Single Color View");
     climberList.addBoolean("Has Cage", this::getHasCage);
     climberList.addBoolean("Complete", this::getClimbComplete);
     climberList.addString("State", this::getStateName);
-    climberList.addNumber("Position", () -> NCDebug.General.roundDouble(getPosition().in(Units.Rotations),7));
+    climberList.addNumber("Position", () -> NCDebug.General.roundDouble(getPosition().in(Units.Rotations), 7));
     climberList.addBoolean("CageSw1", this::getCageSwitch1);
     climberList.addBoolean("CageSw2", this::getCageSwitch2);
 
-    if(ClimberConstants.debugDashboard) {
+    if (ClimberConstants.debugDashboard) {
       ShuffleboardTab debugTab = Shuffleboard.getTab("Debug");
-			ShuffleboardLayout dbgClimberList = debugTab.getLayout("Climber", BuiltInLayouts.kList)
-				.withSize(4,10)
-				.withPosition(4,0)
-				.withProperties(Map.of("Label position","LEFT"));
+      ShuffleboardLayout dbgClimberList = debugTab.getLayout("Climber", BuiltInLayouts.kList)
+        .withSize(4, 10)
+        .withPosition(4, 0)
+        .withProperties(Map.of("Label position", "LEFT"));
       dbgClimberList.addString("Status", this::getStateColor)
         .withWidget("Single Color View");
       dbgClimberList.addBoolean("Has Cage", this::getHasCage);
       dbgClimberList.addBoolean("Complete", this::getClimbComplete);
       dbgClimberList.addString("State", this::getStateName);
-      dbgClimberList.addNumber("Position", () -> { return NCDebug.General.roundDouble(getPosition().in(Units.Rotations),6); });
+      dbgClimberList.addNumber("Position", () -> {
+        return NCDebug.General.roundDouble(getPosition().in(Units.Rotations), 6);
+      });
       dbgClimberList.addBoolean("CageSw1", this::getCageSwitch1);
       dbgClimberList.addBoolean("CageSw2", this::getCageSwitch2);
       dbgClimberList.add("Climber Up", new InstantCommand(this::climberUp))
-        .withProperties(Map.of("show_type",false));  
+        .withProperties(Map.of("show_type", false));
       dbgClimberList.add("Climber Down", new InstantCommand(this::climberDown))
-        .withProperties(Map.of("show_type",false));  
+        .withProperties(Map.of("show_type", false));
       dbgClimberList.add("Climber Hold", new InstantCommand(this::climberHold))
-        .withProperties(Map.of("show_type",false));  
+        .withProperties(Map.of("show_type", false));
       dbgClimberList.add("Climber Stop", new InstantCommand(this::climberStop))
-        .withProperties(Map.of("show_type",false));  
+        .withProperties(Map.of("show_type", false));
     }
   }
 
-  public State getState() { return m_curState; }
-  public String getStateName() { return m_curState.toString(); }
-  public String getStateColor() { return m_curState.getColor(); }
+  public State getState() {
+    return m_curState;
+  }
+
+  public String getStateName() {
+    return m_curState.toString();
+  }
+
+  public String getStateColor() {
+    return m_curState.getColor();
+  }
 
   public boolean getHasCage() {
     return getCageSwitch1() && getCageSwitch2();
@@ -161,6 +183,7 @@ public class ClimberSubsystem extends SubsystemBase {
   public boolean getClimbComplete() {
     return getClimbSwitch();
   }
+
   public boolean atLimit() {
     return getClimbComplete();
   }
@@ -168,9 +191,11 @@ public class ClimberSubsystem extends SubsystemBase {
   private boolean getCageSwitch1() {
     return !m_cageSwitch1.get();
   }
+
   private boolean getCageSwitch2() {
     return !m_cageSwitch2.get();
   }
+
   private boolean getClimbSwitch() {
     return !m_climbSwitch.get();
   }
@@ -180,20 +205,20 @@ public class ClimberSubsystem extends SubsystemBase {
   }
 
   public void climberMove(double power) {
-    if(power>0) {
-      if(m_curState != State.UP) {
-        NCDebug.Debug.debug("Climber: Up ("+power+")");
+    if (power > 0) {
+      if (m_curState != State.UP) {
+        NCDebug.Debug.debug("Climber: Up (" + power + ")");
         m_curState = State.UP;
       }
       m_motor1.setControl(m_DutyCycle.withOutput(power));
-    } else if(power<0) {
-      if(m_curState != State.DOWN) {
-        NCDebug.Debug.debug("Climber: Down ("+power+")");
+    } else if (power < 0) {
+      if (m_curState != State.DOWN) {
+        NCDebug.Debug.debug("Climber: Down (" + power + ")");
         m_curState = State.DOWN;
       }
       m_motor1.setControl(m_DutyCycle.withOutput(power));
-    } else { //0 power
-      if(m_curState != State.HOLD && m_curState != State.STOP) {
+    } else { // 0 power
+      if (m_curState != State.HOLD && m_curState != State.STOP) {
         m_motor1.setControl(m_brake);
         m_curState = State.HOLD;
         NCDebug.Debug.debug("Climber: Hold");
@@ -204,9 +229,11 @@ public class ClimberSubsystem extends SubsystemBase {
   public Command climberMoveC(DoubleSupplier power) {
     return runOnce(() -> climberMove(power.getAsDouble()));
   }
+
   public Command climberStopC() {
     return runOnce(() -> climberStop());
   }
+
   public Command climberHoldC() {
     return runOnce(() -> climberHold());
   }
@@ -225,14 +252,15 @@ public class ClimberSubsystem extends SubsystemBase {
 
   public void climberHold() {
     m_motor1.setControl(m_brake);
-    if(m_curState != State.HOLD) {
+    if (m_curState != State.HOLD) {
       m_curState = State.HOLD;
       NCDebug.Debug.debug("Climber: Hold");
     }
   }
+
   public void climberStop() {
     m_motor1.setControl(m_neutral);
-    if(m_curState != State.STOP) {
+    if (m_curState != State.STOP) {
       m_curState = State.STOP;
       NCDebug.Debug.debug("Climber: Stop");
     }
@@ -248,35 +276,34 @@ public class ClimberSubsystem extends SubsystemBase {
     NCDebug.Debug.debug("Climber: Switch to Brake");
   }
 
-  //#region SysID Functions
+  // #region SysID Functions
   private final VoltageOut m_voltReq = new VoltageOut(0.0);
   private final SysIdRoutine m_sysIdRoutine = new SysIdRoutine(
     new SysIdRoutine.Config(
-      null, //default ramp rate 1V/s
-      Volts.of(4), //reduce dynamic step voltage to 4 to prevent brownout
-      null, //default timeout 10s
-      (state) -> SignalLogger.writeString("SysId_State", state.toString())
-    ),
+      null, // default ramp rate 1V/s
+      Volts.of(4), // reduce dynamic step voltage to 4 to prevent brownout
+      null, // default timeout 10s
+      (state) -> SignalLogger.writeString("SysId_State", state.toString())),
     new SysIdRoutine.Mechanism(
       (volts) -> m_motor1.setControl(m_voltReq.withOutput(volts.in(Volts))),
       null,
-      this
-    )
-  );
+      this));
+
   public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
-      return m_sysIdRoutine.quasistatic(direction);
+    return m_sysIdRoutine.quasistatic(direction);
   }
+
   public Command sysIdDynamic(SysIdRoutine.Direction direction) {
-      return m_sysIdRoutine.dynamic(direction);
+    return m_sysIdRoutine.dynamic(direction);
   }
+
   public Command runSysIdCommand() {
     return Commands.sequence(
       sysIdQuasistatic(SysIdRoutine.Direction.kForward).until(this::atLimit),
       sysIdQuasistatic(SysIdRoutine.Direction.kReverse).until(this::atLimit),
       sysIdDynamic(SysIdRoutine.Direction.kForward).until(this::atLimit),
-      sysIdDynamic(SysIdRoutine.Direction.kReverse).until(this::atLimit)
-    );
+      sysIdDynamic(SysIdRoutine.Direction.kReverse).until(this::atLimit));
   }
-  //#endregion
+  // #endregion
 
 }

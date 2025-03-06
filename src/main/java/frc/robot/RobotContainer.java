@@ -407,8 +407,6 @@ public class RobotContainer {
 
         // Other OJ bindings
         // right stick elevator manual (see setup section)
-        // google - open
-        // frame - open
         // stadia - open
         // hamburg - open
         //#endregion Operator Joystick

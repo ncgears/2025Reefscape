@@ -142,7 +142,7 @@ public class CoralSubsystem extends SubsystemBase {
    * The init function resets and operational state of the subsystem
    */
   public void init() {
-    resetMotorPosC();
+    // resetMotorPosC();
     coralStop();
     m_curDirection = Direction.STOP;
     NCDebug.Debug.debug("Coral: Initialized");

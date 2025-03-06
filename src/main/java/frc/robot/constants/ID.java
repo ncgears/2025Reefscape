@@ -82,7 +82,7 @@ public class ID {
         public static int swerve_fr_cc = 4;
         public static int swerve_bl_cc = 2;
         public static int swerve_br_cc = 1;
-        public static int coral = 0; //not in use
+        public static int coral = 23; //not in use
         public static int algae = 25;
         public static int climber = 0; //not in use
         public static int elevator = 22;

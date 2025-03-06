@@ -335,11 +335,15 @@ public class RobotContainer {
         oj.leftBumper().onTrue(
             elevator.ElevatorPositionC(ElevatorSubsystem.Position.HP)
             .andThen(coral.CoralPositionC(CoralSubsystem.Position.OUT))
+        ).onFalse(
+            coral.CoralPositionC(CoralSubsystem.Position.SCORE)
+            .andThen(wait(0.5))
+            .andThen(coral.CoralStopC())
         );
 
         // CLIMBER STUFF
-        // OJ Ellipses - Manual climb override, hold for at least 1 second
-        oj.ellipses().onTrue(
+        // OJ Frame - Manual climb override, hold for at least 1 second
+        oj.frame().onTrue(
             wait(1.0).andThen(climber.climberMoveC(() -> ClimberConstants.kClimbPower))) //wait 1 second for manual override
         .onFalse(
           climber.climberStopC()
@@ -370,7 +374,7 @@ public class RobotContainer {
           .andThen(wait(0.25))
           .andThen(algae.setAlgaePositionC(AlgaeSubsystem.Position.REEF))
         );
-        /** OJ POV Left - Reef High Algae Pickup (do not stop toros, use limits) */
+        /** OJ POV Right - Reef High Algae Pickup (do not stop toros, use limits) */
         oj.povRight().onTrue(
           elevator.ElevatorPositionC(ElevatorSubsystem.Position.ALGAELOW)
           .andThen(wait(0.25))
@@ -390,7 +394,10 @@ public class RobotContainer {
         .onFalse(
           algae.stopToroC()
         );
-        
+        /** OJ Ellipses - Stop toros */
+        oj.ellipses().onTrue(
+            algae.stopToroC()
+        );
 
         // Other OJ bindings
         // right stick elevator manual (see setup section)

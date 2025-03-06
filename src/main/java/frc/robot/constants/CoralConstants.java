@@ -17,7 +17,7 @@ public class CoralConstants {
     public static final int kCANcoderID = ID.CANcoder.coral;
     public static final boolean kUseCANcoder = true;
     public static final double kMagnetOffset = 0.0; //Adjust magnet to sensor offset for CANcoder
-    public static final boolean kSensorInverted = true;
+    public static final boolean kSensorInverted = false;
     public static final int kMotorID = ID.TalonFX.coral;
     public static final boolean kIsInverted = false;
     public static final NeutralModeValue kNeutralMode = NeutralModeValue.Brake;
@@ -43,11 +43,11 @@ public class CoralConstants {
     public static final double kCurrentLimitThresholdAmps = 30.0;
     public static final double kCurrentLimitThresholdSecs = 0.3;
     public class Positions {
-        public static final double kFwdLimit = 3.38; //Forward imit
+        public static final double kFwdLimit = 2.82; //Forward imit
         public static final double kRevLimit = -0.01; //Reverse Limit
-        public static final double kStow = 0.015137; //all the way in (home)
-        public static final double kOut = 0.050293; //out ready for scoring
-        public static final double kScore = 0.018043; //retracted to score
+        public static final double kStow = 0.07; //all the way in (home)
+        public static final double kOut = 2.75; //out ready for scoring
+        public static final double kScore = 0.47; //retracted to score
         public static final double kIn = 0.01; //0.015137; //retracted for transit
     }
     public static final boolean kSoftForwardLimitEnable = true;

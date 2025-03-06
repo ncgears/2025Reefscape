@@ -373,18 +373,19 @@ public class RobotContainer {
           elevator.ElevatorPositionC(ElevatorSubsystem.Position.ALGAEHIGH)
           .andThen(wait(0.25))
           .andThen(algae.setAlgaePositionC(AlgaeSubsystem.Position.REEF))
+          .andThen(algae.startToroC(false))
         );
         /** OJ POV Right - Reef High Algae Pickup (do not stop toros, use limits) */
         oj.povRight().onTrue(
           elevator.ElevatorPositionC(ElevatorSubsystem.Position.ALGAELOW)
           .andThen(wait(0.25))
           .andThen(algae.setAlgaePositionC(AlgaeSubsystem.Position.REEF))
+          .andThen(algae.startToroC(false))
         );
         /** OJ L3 - Floor Algae Pickup (do not stop toros, use limits) */
         oj.leftStick().onTrue(
             algae.setAlgaePositionC(AlgaeSubsystem.Position.FLOOR)
             .andThen(algae.startToroC(false))
-            .andThen(wait(0.5)).andThen(algae.stopToroC()) //this line is temporary until limit switches installed
         ).onFalse(
             algae.setAlgaePositionC(AlgaeSubsystem.Position.UP)
         );
@@ -396,6 +397,11 @@ public class RobotContainer {
         );
         /** OJ Ellipses - Stop toros */
         oj.ellipses().onTrue(
+            algae.stopToroC()
+        );
+        oj.google().onTrue(
+            algae.startToroC(false)
+        ).onFalse(
             algae.stopToroC()
         );
 
@@ -410,7 +416,7 @@ public class RobotContainer {
         //#region Programmer Joystick
         // Run SysId routines when holding ellipses/google and X/Y.
         // Note that each routine should be run exactly once in a single log.
-        var m_mechanism = algae; //drivetrain, elevator, coral, algae, climber
+        var m_mechanism = drivetrain; //drivetrain, elevator, coral, algae, climber
         // pj.ellipses().and(pj.a()).whileTrue(m_mechanism.runSysIdCommand());
         
         //seperately, but would need to use logic to see if we are atLimit

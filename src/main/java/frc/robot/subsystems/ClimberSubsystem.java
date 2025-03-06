@@ -126,7 +126,7 @@ public class ClimberSubsystem extends SubsystemBase {
     ShuffleboardTab systemTab = Shuffleboard.getTab("System");
     ShuffleboardLayout climberList = systemTab.getLayout("Climber", BuiltInLayouts.kList)
       .withSize(4, 6)
-      .withPosition(20, 0)
+      .withPosition(16, 0)
       .withProperties(Map.of("Label position", "LEFT"));
     climberList.addString("Status", this::getStateColor)
       .withWidget("Single Color View");
@@ -140,7 +140,7 @@ public class ClimberSubsystem extends SubsystemBase {
     if (ClimberConstants.debugDashboard) {
       ShuffleboardTab debugTab = Shuffleboard.getTab("Debug");
       ShuffleboardLayout dbgClimberList = debugTab.getLayout("Climber", BuiltInLayouts.kList)
-        .withSize(4, 10)
+        .withSize(4, 11)
         .withPosition(4, 0)
         .withProperties(Map.of("Label position", "LEFT"));
       dbgClimberList.addString("Status", this::getStateColor)

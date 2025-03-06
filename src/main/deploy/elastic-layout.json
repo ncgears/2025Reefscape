@@ -16,7 +16,8 @@
             "type": "Single Color View",
             "properties": {
               "topic": "/Shuffleboard/Driver/LED Color",
-              "period": 0.06
+              "period": 0.06,
+              "data_type": "string"
             }
           },
           {
@@ -28,7 +29,8 @@
             "type": "Single Color View",
             "properties": {
               "topic": "/Shuffleboard/Driver/Elevator",
-              "period": 0.06
+              "period": 0.06,
+              "data_type": "string"
             }
           },
           {
@@ -40,7 +42,8 @@
             "type": "Single Color View",
             "properties": {
               "topic": "/Shuffleboard/Driver/Climber",
-              "period": 0.06
+              "period": 0.06,
+              "data_type": "string"
             }
           },
           {
@@ -52,7 +55,8 @@
             "type": "Single Color View",
             "properties": {
               "topic": "/Shuffleboard/Driver/Coral",
-              "period": 0.06
+              "period": 0.06,
+              "data_type": "string"
             }
           },
           {
@@ -64,7 +68,8 @@
             "type": "Single Color View",
             "properties": {
               "topic": "/Shuffleboard/Driver/Algae",
-              "period": 0.06
+              "period": 0.06,
+              "data_type": "string"
             }
           },
           {
@@ -77,6 +82,7 @@
             "properties": {
               "topic": "/Shuffleboard/Driver/Match Time",
               "period": 0.06,
+              "data_type": "string",
               "time_display_mode": "Minutes and Seconds",
               "red_start_time": 15,
               "yellow_start_time": 30
@@ -113,6 +119,7 @@
             "properties": {
               "topic": "/Shuffleboard/DBG:Vision/Front Has Targets",
               "period": 0.06,
+              "data_type": "boolean",
               "true_color": 4283215696,
               "false_color": 4294198070,
               "true_icon": "None",
@@ -129,6 +136,7 @@
             "properties": {
               "topic": "/Shuffleboard/DBG:Vision/Back Has Targets",
               "period": 0.06,
+              "data_type": "boolean",
               "true_color": 4283215696,
               "false_color": 4294198070,
               "true_icon": "None",
@@ -145,6 +153,7 @@
             "properties": {
               "topic": "/Shuffleboard/DBG:Vision/Suppressed",
               "period": 0.06,
+              "data_type": "boolean",
               "true_color": 4283215696,
               "false_color": 4294198070,
               "true_icon": "None",
@@ -169,6 +178,7 @@
             "properties": {
               "topic": "/Shuffleboard/Swerve/FL Angle",
               "period": 0.06,
+              "data_type": "double",
               "show_submit_button": false
             }
           },
@@ -182,6 +192,7 @@
             "properties": {
               "topic": "/Shuffleboard/Swerve/FR Angle",
               "period": 0.06,
+              "data_type": "double",
               "show_submit_button": false
             }
           },
@@ -195,6 +206,7 @@
             "properties": {
               "topic": "/Shuffleboard/Swerve/BL Angle",
               "period": 0.06,
+              "data_type": "double",
               "show_submit_button": false
             }
           },
@@ -208,6 +220,7 @@
             "properties": {
               "topic": "/Shuffleboard/Swerve/BR Angle",
               "period": 0.06,
+              "data_type": "double",
               "show_submit_button": false
             }
           },
@@ -221,6 +234,7 @@
             "properties": {
               "topic": "/Shuffleboard/Swerve/FL Speed",
               "period": 0.06,
+              "data_type": "double",
               "show_submit_button": false
             }
           },
@@ -234,6 +248,7 @@
             "properties": {
               "topic": "/Shuffleboard/Swerve/FR Speed",
               "period": 0.06,
+              "data_type": "double",
               "show_submit_button": false
             }
           },
@@ -247,6 +262,7 @@
             "properties": {
               "topic": "/Shuffleboard/Swerve/BL Speed",
               "period": 0.06,
+              "data_type": "double",
               "show_submit_button": false
             }
           },
@@ -260,472 +276,8 @@
             "properties": {
               "topic": "/Shuffleboard/Swerve/BR Speed",
               "period": 0.06,
+              "data_type": "double",
               "show_submit_button": false
-            }
-          }
-        ]
-      }
-    },
-    {
-      "name": "System",
-      "grid_layout": {
-        "layouts": [
-          {
-            "title": "Coral",
-            "x": 256.0,
-            "y": 0.0,
-            "width": 256.0,
-            "height": 128.0,
-            "type": "List Layout",
-            "properties": {
-              "label_position": "LEFT"
-            },
-            "children": [
-              {
-                "title": "Status",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Single Color View",
-                "properties": {
-                  "topic": "/Shuffleboard/System/Coral/Status",
-                  "period": 0.06
-                }
-              },
-              {
-                "title": "Direction",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/Shuffleboard/System/Coral/Direction",
-                  "period": 0.06,
-                  "show_submit_button": false
-                }
-              }
-            ]
-          },
-          {
-            "title": "theta Controller",
-            "x": 1024.0,
-            "y": 384.0,
-            "width": 256.0,
-            "height": 256.0,
-            "type": "List Layout",
-            "properties": {
-              "label_position": "LEFT"
-            },
-            "children": [
-              {
-                "title": "Heading Lock",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Single Color View",
-                "properties": {
-                  "topic": "/Shuffleboard/System/theta Controller/Heading Lock",
-                  "period": 0.06
-                }
-              },
-              {
-                "title": "Target Heading",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/Shuffleboard/System/theta Controller/Target Heading",
-                  "period": 0.06,
-                  "show_submit_button": false
-                }
-              },
-              {
-                "title": "Current Heading",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/Shuffleboard/System/theta Controller/Current Heading",
-                  "period": 0.06,
-                  "show_submit_button": false
-                }
-              },
-              {
-                "title": "Heading Error",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/Shuffleboard/System/theta Controller/Heading Error",
-                  "period": 0.06,
-                  "show_submit_button": false
-                }
-              }
-            ]
-          },
-          {
-            "title": "Target Tracking",
-            "x": 768.0,
-            "y": 320.0,
-            "width": 256.0,
-            "height": 320.0,
-            "type": "List Layout",
-            "properties": {
-              "label_position": "LEFT"
-            },
-            "children": [
-              {
-                "title": "Tracking",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Single Color View",
-                "properties": {
-                  "topic": "/Shuffleboard/System/Target Tracking/Tracking",
-                  "period": 0.06
-                }
-              },
-              {
-                "title": "State",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/Shuffleboard/System/Target Tracking/State",
-                  "period": 0.06,
-                  "show_submit_button": false
-                }
-              },
-              {
-                "title": "Target",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/Shuffleboard/System/Target Tracking/Target",
-                  "period": 0.06,
-                  "show_submit_button": false
-                }
-              },
-              {
-                "title": "Bearing",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/Shuffleboard/System/Target Tracking/Bearing",
-                  "period": 0.06,
-                  "show_submit_button": false
-                }
-              },
-              {
-                "title": "Distance",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/Shuffleboard/System/Target Tracking/Distance",
-                  "period": 0.06,
-                  "show_submit_button": false
-                }
-              },
-              {
-                "title": "Angle",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/Shuffleboard/System/Target Tracking/Angle",
-                  "period": 0.06,
-                  "show_submit_button": false
-                }
-              }
-            ]
-          },
-          {
-            "title": "Elevator",
-            "x": 1024.0,
-            "y": 0.0,
-            "width": 256.0,
-            "height": 384.0,
-            "type": "List Layout",
-            "properties": {
-              "label_position": "LEFT"
-            },
-            "children": [
-              {
-                "title": "Status",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Single Color View",
-                "properties": {
-                  "topic": "/Shuffleboard/System/Elevator/Status",
-                  "period": 0.06
-                }
-              },
-              {
-                "title": "State",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/Shuffleboard/System/Elevator/State",
-                  "period": 0.06,
-                  "show_submit_button": false
-                }
-              },
-              {
-                "title": "Target",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/Shuffleboard/System/Elevator/Target",
-                  "period": 0.06,
-                  "show_submit_button": false
-                }
-              },
-              {
-                "title": "Target Pos",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/Shuffleboard/System/Elevator/Target Pos",
-                  "period": 0.06,
-                  "show_submit_button": false
-                }
-              },
-              {
-                "title": "Position",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/Shuffleboard/System/Elevator/Position",
-                  "period": 0.06,
-                  "show_submit_button": false
-                }
-              },
-              {
-                "title": "Absolute",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/Shuffleboard/System/Elevator/Absolute",
-                  "period": 0.06,
-                  "show_submit_button": false
-                }
-              },
-              {
-                "title": "Error",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/Shuffleboard/System/Elevator/Error",
-                  "period": 0.06,
-                  "show_submit_button": false
-                }
-              }
-            ]
-          },
-          {
-            "title": "Climber",
-            "x": 1280.0,
-            "y": 0.0,
-            "width": 256.0,
-            "height": 384.0,
-            "type": "List Layout",
-            "properties": {
-              "label_position": "LEFT"
-            },
-            "children": [
-              {
-                "title": "Status",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Single Color View",
-                "properties": {
-                  "topic": "/Shuffleboard/System/Climber/Status",
-                  "period": 0.06
-                }
-              },
-              {
-                "title": "Has Cage",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Boolean Box",
-                "properties": {
-                  "topic": "/Shuffleboard/System/Climber/Has Cage",
-                  "period": 0.06,
-                  "true_color": 4283215696,
-                  "false_color": 4294198070,
-                  "true_icon": "None",
-                  "false_icon": "None"
-                }
-              },
-              {
-                "title": "Complete",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Boolean Box",
-                "properties": {
-                  "topic": "/Shuffleboard/System/Climber/Complete",
-                  "period": 0.06,
-                  "true_color": 4283215696,
-                  "false_color": 4294198070,
-                  "true_icon": "None",
-                  "false_icon": "None"
-                }
-              },
-              {
-                "title": "State",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/Shuffleboard/System/Climber/State",
-                  "period": 0.06,
-                  "show_submit_button": false
-                }
-              },
-              {
-                "title": "Position",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/Shuffleboard/System/Climber/Position",
-                  "period": 0.06,
-                  "show_submit_button": false
-                }
-              },
-              {
-                "title": "CageSw1",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Boolean Box",
-                "properties": {
-                  "topic": "/Shuffleboard/System/Climber/CageSw1",
-                  "period": 0.06,
-                  "true_color": 4283215696,
-                  "false_color": 4294198070,
-                  "true_icon": "None",
-                  "false_icon": "None"
-                }
-              },
-              {
-                "title": "CageSw2",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Boolean Box",
-                "properties": {
-                  "topic": "/Shuffleboard/System/Climber/CageSw2",
-                  "period": 0.06,
-                  "true_color": 4283215696,
-                  "false_color": 4294198070,
-                  "true_icon": "None",
-                  "false_icon": "None"
-                }
-              }
-            ]
-          }
-        ],
-        "containers": [
-          {
-            "title": "Bot Pose Hdg",
-            "x": 0.0,
-            "y": 128.0,
-            "width": 256.0,
-            "height": 128.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "/Shuffleboard/System/Bot Pose Hdg",
-              "period": 0.06,
-              "show_submit_button": false
-            }
-          },
-          {
-            "title": "Shooter Hdg",
-            "x": 256.0,
-            "y": 128.0,
-            "width": 256.0,
-            "height": 128.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "/Shuffleboard/System/Shooter Hdg",
-              "period": 0.06,
-              "show_submit_button": false
-            }
-          },
-          {
-            "title": "Field",
-            "x": 512.0,
-            "y": 0.0,
-            "width": 512.0,
-            "height": 256.0,
-            "type": "Field",
-            "properties": {
-              "topic": "/Shuffleboard/System/Field",
-              "period": 0.06,
-              "field_game": "Reefscape",
-              "robot_width": 0.889,
-              "robot_length": 0.9398,
-              "show_other_objects": true,
-              "show_trajectories": true,
-              "field_rotation": 180.0,
-              "robot_color": 4294198070,
-              "trajectory_color": 4294967295
             }
           }
         ]
@@ -736,8 +288,8 @@
       "grid_layout": {
         "layouts": [
           {
-            "title": "Coral",
-            "x": 512.0,
+            "title": "Algae",
+            "x": 768.0,
             "y": 0.0,
             "width": 256.0,
             "height": 640.0,
@@ -754,8 +306,9 @@
                 "height": 128.0,
                 "type": "Single Color View",
                 "properties": {
-                  "topic": "/Shuffleboard/Debug/Coral/Status",
-                  "period": 0.06
+                  "topic": "/Shuffleboard/Debug/Algae/Status",
+                  "period": 0.06,
+                  "data_type": "string"
                 }
               },
               {
@@ -766,8 +319,9 @@
                 "height": 128.0,
                 "type": "Text Display",
                 "properties": {
-                  "topic": "/Shuffleboard/Debug/Coral/Direction",
+                  "topic": "/Shuffleboard/Debug/Algae/Direction",
                   "period": 0.06,
+                  "data_type": "string",
                   "show_submit_button": false
                 }
               },
@@ -779,8 +333,9 @@
                 "height": 128.0,
                 "type": "Text Display",
                 "properties": {
-                  "topic": "/Shuffleboard/Debug/Coral/Target",
+                  "topic": "/Shuffleboard/Debug/Algae/Target",
                   "period": 0.06,
+                  "data_type": "string",
                   "show_submit_button": false
                 }
               },
@@ -792,8 +347,9 @@
                 "height": 128.0,
                 "type": "Text Display",
                 "properties": {
-                  "topic": "/Shuffleboard/Debug/Coral/Target Pos",
+                  "topic": "/Shuffleboard/Debug/Algae/Target Pos",
                   "period": 0.06,
+                  "data_type": "double",
                   "show_submit_button": false
                 }
               },
@@ -805,48 +361,52 @@
                 "height": 128.0,
                 "type": "Text Display",
                 "properties": {
-                  "topic": "/Shuffleboard/Debug/Coral/Motor Pos",
+                  "topic": "/Shuffleboard/Debug/Algae/Motor Pos",
                   "period": 0.06,
+                  "data_type": "double",
                   "show_submit_button": false
                 }
               },
               {
-                "title": "Coral In",
+                "title": "Absolute",
                 "x": 0.0,
                 "y": 0.0,
-                "width": 256.0,
+                "width": 128.0,
                 "height": 128.0,
-                "type": "Command",
+                "type": "Text Display",
                 "properties": {
-                  "topic": "/Shuffleboard/Debug/Coral/Coral In",
+                  "topic": "/Shuffleboard/Debug/Algae/Absolute",
                   "period": 0.06,
-                  "show_type": false
+                  "data_type": "double",
+                  "show_submit_button": false
                 }
               },
               {
-                "title": "Coral Out",
+                "title": "L Toro Spd",
                 "x": 0.0,
                 "y": 0.0,
-                "width": 256.0,
+                "width": 128.0,
                 "height": 128.0,
-                "type": "Command",
+                "type": "Text Display",
                 "properties": {
-                  "topic": "/Shuffleboard/Debug/Coral/Coral Out",
+                  "topic": "/Shuffleboard/Debug/Algae/L Toro Spd",
                   "period": 0.06,
-                  "show_type": false
+                  "data_type": "double",
+                  "show_submit_button": false
                 }
               },
               {
-                "title": "Coral Score",
+                "title": "R Toro Spd",
                 "x": 0.0,
                 "y": 0.0,
-                "width": 256.0,
+                "width": 128.0,
                 "height": 128.0,
-                "type": "Command",
+                "type": "Text Display",
                 "properties": {
-                  "topic": "/Shuffleboard/Debug/Coral/Coral Score",
+                  "topic": "/Shuffleboard/Debug/Algae/R Toro Spd",
                   "period": 0.06,
-                  "show_type": false
+                  "data_type": "double",
+                  "show_submit_button": false
                 }
               }
             ]
@@ -871,7 +431,8 @@
                 "type": "Single Color View",
                 "properties": {
                   "topic": "/Shuffleboard/Debug/Elevator/Status",
-                  "period": 0.06
+                  "period": 0.06,
+                  "data_type": "string"
                 }
               },
               {
@@ -884,6 +445,7 @@
                 "properties": {
                   "topic": "/Shuffleboard/Debug/Elevator/State",
                   "period": 0.06,
+                  "data_type": "string",
                   "show_submit_button": false
                 }
               },
@@ -897,6 +459,21 @@
                 "properties": {
                   "topic": "/Shuffleboard/Debug/Elevator/Target",
                   "period": 0.06,
+                  "data_type": "string",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Target Pos",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/Shuffleboard/Debug/Elevator/Target Pos",
+                  "period": 0.06,
+                  "data_type": "double",
                   "show_submit_button": false
                 }
               },
@@ -910,6 +487,7 @@
                 "properties": {
                   "topic": "/Shuffleboard/Debug/Elevator/Position",
                   "period": 0.06,
+                  "data_type": "double",
                   "show_submit_button": false
                 }
               },
@@ -923,6 +501,7 @@
                 "properties": {
                   "topic": "/Shuffleboard/Debug/Elevator/Absolute",
                   "period": 0.06,
+                  "data_type": "double",
                   "show_submit_button": false
                 }
               },
@@ -936,6 +515,7 @@
                 "properties": {
                   "topic": "/Shuffleboard/Debug/Elevator/Error",
                   "period": 0.06,
+                  "data_type": "double",
                   "show_submit_button": false
                 }
               },
@@ -1013,7 +593,8 @@
                 "type": "Single Color View",
                 "properties": {
                   "topic": "/Shuffleboard/Debug/Climber/Status",
-                  "period": 0.06
+                  "period": 0.06,
+                  "data_type": "string"
                 }
               },
               {
@@ -1026,6 +607,7 @@
                 "properties": {
                   "topic": "/Shuffleboard/Debug/Climber/Has Cage",
                   "period": 0.06,
+                  "data_type": "boolean",
                   "true_color": 4283215696,
                   "false_color": 4294198070,
                   "true_icon": "None",
@@ -1042,6 +624,7 @@
                 "properties": {
                   "topic": "/Shuffleboard/Debug/Climber/Complete",
                   "period": 0.06,
+                  "data_type": "boolean",
                   "true_color": 4283215696,
                   "false_color": 4294198070,
                   "true_icon": "None",
@@ -1058,6 +641,7 @@
                 "properties": {
                   "topic": "/Shuffleboard/Debug/Climber/State",
                   "period": 0.06,
+                  "data_type": "string",
                   "show_submit_button": false
                 }
               },
@@ -1071,6 +655,7 @@
                 "properties": {
                   "topic": "/Shuffleboard/Debug/Climber/Position",
                   "period": 0.06,
+                  "data_type": "double",
                   "show_submit_button": false
                 }
               },
@@ -1084,6 +669,7 @@
                 "properties": {
                   "topic": "/Shuffleboard/Debug/Climber/CageSw1",
                   "period": 0.06,
+                  "data_type": "boolean",
                   "true_color": 4283215696,
                   "false_color": 4294198070,
                   "true_icon": "None",
@@ -1100,6 +686,7 @@
                 "properties": {
                   "topic": "/Shuffleboard/Debug/Climber/CageSw2",
                   "period": 0.06,
+                  "data_type": "boolean",
                   "true_color": 4283215696,
                   "false_color": 4294198070,
                   "true_icon": "None",
@@ -1159,40 +746,727 @@
                 }
               }
             ]
+          },
+          {
+            "title": "Coral",
+            "x": 512.0,
+            "y": 0.0,
+            "width": 256.0,
+            "height": 640.0,
+            "type": "List Layout",
+            "properties": {
+              "label_position": "LEFT"
+            },
+            "children": [
+              {
+                "title": "Status",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Single Color View",
+                "properties": {
+                  "topic": "/Shuffleboard/Debug/Coral/Status",
+                  "period": 0.06,
+                  "data_type": "string"
+                }
+              },
+              {
+                "title": "Direction",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/Shuffleboard/Debug/Coral/Direction",
+                  "period": 0.06,
+                  "data_type": "string",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Target",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/Shuffleboard/Debug/Coral/Target",
+                  "period": 0.06,
+                  "data_type": "string",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Target Pos",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/Shuffleboard/Debug/Coral/Target Pos",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Motor Pos",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/Shuffleboard/Debug/Coral/Motor Pos",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Absolute",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/Shuffleboard/Debug/Coral/Absolute",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Coral In",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/Shuffleboard/Debug/Coral/Coral In",
+                  "period": 0.06,
+                  "show_type": false
+                }
+              },
+              {
+                "title": "Coral Out",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/Shuffleboard/Debug/Coral/Coral Out",
+                  "period": 0.06,
+                  "show_type": false
+                }
+              },
+              {
+                "title": "Coral Score",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/Shuffleboard/Debug/Coral/Coral Score",
+                  "period": 0.06,
+                  "show_type": false
+                }
+              },
+              {
+                "title": "Coral Stop",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/Shuffleboard/Debug/Coral/Coral Stop",
+                  "period": 0.06,
+                  "show_type": false
+                }
+              },
+              {
+                "title": "Pos Reset",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/Shuffleboard/Debug/Coral/Pos Reset",
+                  "period": 0.06,
+                  "show_type": false
+                }
+              }
+            ]
           }
         ],
         "containers": []
       }
     },
     {
-      "name": "DBG:Gyro",
+      "name": "System",
       "grid_layout": {
-        "layouts": [],
+        "layouts": [
+          {
+            "title": "Target Tracking",
+            "x": 768.0,
+            "y": 320.0,
+            "width": 256.0,
+            "height": 320.0,
+            "type": "List Layout",
+            "properties": {
+              "label_position": "LEFT"
+            },
+            "children": [
+              {
+                "title": "Tracking",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Single Color View",
+                "properties": {
+                  "topic": "/Shuffleboard/System/Target Tracking/Tracking",
+                  "period": 0.06,
+                  "data_type": "string"
+                }
+              },
+              {
+                "title": "State",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/Shuffleboard/System/Target Tracking/State",
+                  "period": 0.06,
+                  "data_type": "string",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Target",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/Shuffleboard/System/Target Tracking/Target",
+                  "period": 0.06,
+                  "data_type": "string",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Bearing",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/Shuffleboard/System/Target Tracking/Bearing",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Distance",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/Shuffleboard/System/Target Tracking/Distance",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Angle",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/Shuffleboard/System/Target Tracking/Angle",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              }
+            ]
+          },
+          {
+            "title": "theta Controller",
+            "x": 0.0,
+            "y": 384.0,
+            "width": 256.0,
+            "height": 256.0,
+            "type": "List Layout",
+            "properties": {
+              "label_position": "LEFT"
+            },
+            "children": [
+              {
+                "title": "Heading Lock",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Single Color View",
+                "properties": {
+                  "topic": "/Shuffleboard/System/theta Controller/Heading Lock",
+                  "period": 0.06,
+                  "data_type": "string"
+                }
+              },
+              {
+                "title": "Target Heading",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/Shuffleboard/System/theta Controller/Target Heading",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Current Heading",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/Shuffleboard/System/theta Controller/Current Heading",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Heading Error",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/Shuffleboard/System/theta Controller/Heading Error",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              }
+            ]
+          },
+          {
+            "title": "Algae",
+            "x": 512.0,
+            "y": 0.0,
+            "width": 256.0,
+            "height": 320.0,
+            "type": "List Layout",
+            "properties": {
+              "label_position": "LEFT"
+            },
+            "children": [
+              {
+                "title": "Status",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Single Color View",
+                "properties": {
+                  "topic": "/Shuffleboard/System/Algae/Status",
+                  "period": 0.06,
+                  "data_type": "string"
+                }
+              },
+              {
+                "title": "Position",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/Shuffleboard/System/Algae/Position",
+                  "period": 0.06,
+                  "data_type": "string",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Direction",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/Shuffleboard/System/Algae/Direction",
+                  "period": 0.06,
+                  "data_type": "string",
+                  "show_submit_button": false
+                }
+              }
+            ]
+          },
+          {
+            "title": "Elevator",
+            "x": 768.0,
+            "y": 0.0,
+            "width": 256.0,
+            "height": 320.0,
+            "type": "List Layout",
+            "properties": {
+              "label_position": "LEFT"
+            },
+            "children": [
+              {
+                "title": "Status",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Single Color View",
+                "properties": {
+                  "topic": "/Shuffleboard/System/Elevator/Status",
+                  "period": 0.06,
+                  "data_type": "string"
+                }
+              },
+              {
+                "title": "State",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/Shuffleboard/System/Elevator/State",
+                  "period": 0.06,
+                  "data_type": "string",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Target",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/Shuffleboard/System/Elevator/Target",
+                  "period": 0.06,
+                  "data_type": "string",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Target Pos",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/Shuffleboard/System/Elevator/Target Pos",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Position",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/Shuffleboard/System/Elevator/Position",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              }
+            ]
+          },
+          {
+            "title": "Climber",
+            "x": 1024.0,
+            "y": 0.0,
+            "width": 256.0,
+            "height": 384.0,
+            "type": "List Layout",
+            "properties": {
+              "label_position": "LEFT"
+            },
+            "children": [
+              {
+                "title": "Status",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Single Color View",
+                "properties": {
+                  "topic": "/Shuffleboard/System/Climber/Status",
+                  "period": 0.06,
+                  "data_type": "string"
+                }
+              },
+              {
+                "title": "Has Cage",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Boolean Box",
+                "properties": {
+                  "topic": "/Shuffleboard/System/Climber/Has Cage",
+                  "period": 0.06,
+                  "data_type": "boolean",
+                  "true_color": 4283215696,
+                  "false_color": 4294198070,
+                  "true_icon": "None",
+                  "false_icon": "None"
+                }
+              },
+              {
+                "title": "Complete",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Boolean Box",
+                "properties": {
+                  "topic": "/Shuffleboard/System/Climber/Complete",
+                  "period": 0.06,
+                  "data_type": "boolean",
+                  "true_color": 4283215696,
+                  "false_color": 4294198070,
+                  "true_icon": "None",
+                  "false_icon": "None"
+                }
+              },
+              {
+                "title": "State",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/Shuffleboard/System/Climber/State",
+                  "period": 0.06,
+                  "data_type": "string",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Position",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/Shuffleboard/System/Climber/Position",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "CageSw1",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Boolean Box",
+                "properties": {
+                  "topic": "/Shuffleboard/System/Climber/CageSw1",
+                  "period": 0.06,
+                  "data_type": "boolean",
+                  "true_color": 4283215696,
+                  "false_color": 4294198070,
+                  "true_icon": "None",
+                  "false_icon": "None"
+                }
+              },
+              {
+                "title": "CageSw2",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Boolean Box",
+                "properties": {
+                  "topic": "/Shuffleboard/System/Climber/CageSw2",
+                  "period": 0.06,
+                  "data_type": "boolean",
+                  "true_color": 4283215696,
+                  "false_color": 4294198070,
+                  "true_icon": "None",
+                  "false_icon": "None"
+                }
+              }
+            ]
+          },
+          {
+            "title": "Coral",
+            "x": 512.0,
+            "y": 320.0,
+            "width": 256.0,
+            "height": 320.0,
+            "type": "List Layout",
+            "properties": {
+              "label_position": "LEFT"
+            },
+            "children": [
+              {
+                "title": "Status",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Single Color View",
+                "properties": {
+                  "topic": "/Shuffleboard/System/Coral/Status",
+                  "period": 0.06,
+                  "data_type": "string"
+                }
+              },
+              {
+                "title": "Direction",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/Shuffleboard/System/Coral/Direction",
+                  "period": 0.06,
+                  "data_type": "string",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Target",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/Shuffleboard/System/Coral/Target",
+                  "period": 0.06,
+                  "data_type": "string",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Target Pos",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/Shuffleboard/System/Coral/Target Pos",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Pos",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/Shuffleboard/System/Coral/Pos",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              }
+            ]
+          }
+        ],
         "containers": [
           {
-            "title": "Pitch",
+            "title": "Bot Pose Hdg",
             "x": 0.0,
             "y": 256.0,
-            "width": 320.0,
+            "width": 256.0,
             "height": 128.0,
             "type": "Text Display",
             "properties": {
-              "topic": "/Shuffleboard/DBG:Gyro/Pitch",
+              "topic": "/Shuffleboard/System/Bot Pose Hdg",
               "period": 0.06,
+              "data_type": "double",
               "show_submit_button": false
             }
           },
           {
-            "title": "Value",
+            "title": "Gyro",
             "x": 0.0,
             "y": 0.0,
-            "width": 320.0,
+            "width": 256.0,
             "height": 256.0,
             "type": "Gyro",
             "properties": {
-              "topic": "/Shuffleboard/DBG:Gyro/Value",
+              "topic": "/Shuffleboard/System/Gyro",
               "period": 0.06,
               "counter_clockwise_positive": true
+            }
+          },
+          {
+            "title": "Field",
+            "x": 256.0,
+            "y": 0.0,
+            "width": 256.0,
+            "height": 640.0,
+            "type": "Field",
+            "properties": {
+              "topic": "/Shuffleboard/System/Field",
+              "period": 0.06,
+              "field_game": "Reefscape",
+              "robot_width": 0.889,
+              "robot_length": 0.9398,
+              "show_other_objects": true,
+              "show_trajectories": true,
+              "field_rotation": 270.0,
+              "robot_color": 4294198070,
+              "trajectory_color": 4294967295
             }
           }
         ]

@@ -155,22 +155,20 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     ShuffleboardTab systemTab = Shuffleboard.getTab("System");
     ShuffleboardLayout ElevatorList = systemTab.getLayout("Elevator", BuiltInLayouts.kList)
-      .withSize(4, 6)
-      .withPosition(16, 0)
+      .withSize(4, 5)
+      .withPosition(12, 0)
       .withProperties(Map.of("Label position", "LEFT"));
     ElevatorList.addString("Status", this::getStateColor)
       .withWidget("Single Color View");
     ElevatorList.addString("State", this::getStateName);
     ElevatorList.addString("Target", this::getTargetPositionName);
     ElevatorList.addNumber("Target Pos", this::getTargetPosition);
-    ElevatorList.addNumber("Position", () -> NCDebug.General.roundDouble(getPosition().in(Units.Rotations), 7));
-    ElevatorList.addNumber("Absolute", () -> NCDebug.General.roundDouble(getPositionAbsolute().in(Units.Rotations), 7));
-    ElevatorList.addNumber("Error", () -> NCDebug.General.roundDouble(getPositionError(), 7));
+    ElevatorList.addNumber("Position", () -> NCDebug.General.roundDouble(getPosition().in(Units.Rotations), 6));
 
     if (ElevatorConstants.debugDashboard) {
       ShuffleboardTab debugTab = Shuffleboard.getTab("Debug");
       ShuffleboardLayout dbgElevatorList = debugTab.getLayout("Elevator", BuiltInLayouts.kList)
-        .withSize(4, 10)
+        .withSize(4, 11)
         .withPosition(16, 0)
         .withProperties(Map.of("Label position", "LEFT"));
       dbgElevatorList.addString("Status", this::getStateColor)

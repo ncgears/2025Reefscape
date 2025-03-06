@@ -9,6 +9,6 @@ package frc.robot.constants;
 public class GyroConstants {
     public static final int kPigeonID = ID.Pigeon2.gyro;
     public static final String kCANbus = "drivetrain"; 
-    public static final boolean debugDashboard = true; //enable debugging dashboard
+    public static final boolean debugDashboard = false; //enable debugging dashboard
     public static final boolean kGyroReversed = false; //true for NAVx
 }

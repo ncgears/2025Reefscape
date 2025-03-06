@@ -2,6 +2,7 @@
 package frc.robot.classes;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.photonvision.EstimatedRobotPose;
@@ -24,7 +25,9 @@ import frc.robot.constants.*;
 import frc.robot.utils.NCDebug;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 
@@ -130,15 +133,17 @@ public class Vision {
     //   .withWidget("Single Color View")
     //   .withPosition(19, 0);  
 		if(VisionConstants.debugDashboard) {
-      ShuffleboardTab debugTab = Shuffleboard.getTab("DBG:Vision");
-      debugTab.addBoolean("Front Has Targets", () -> getLatestResult(front_camera).hasTargets())
-        .withSize(3, 2)
-        .withWidget("Boolean Box")
-        .withPosition(0, 0);  
-        debugTab.addBoolean("Back Has Targets", () -> getLatestResult(back_camera).hasTargets())
-        .withSize(3, 2)
-        .withWidget("Boolean Box")
-        .withPosition(3, 0);  
+      ShuffleboardTab debugTab = Shuffleboard.getTab("Debug");
+      ShuffleboardLayout dbgVisionList = debugTab.getLayout("Vision", BuiltInLayouts.kList)
+        .withSize(4, 3)
+        .withPosition(0, 0)
+        .withProperties(Map.of("Label position", "LEFT"));
+      dbgVisionList.addBoolean("Front Targets", () -> getLatestResult(front_camera).hasTargets())
+        .withWidget("Boolean Box");
+      dbgVisionList.addBoolean("Back Targets", () -> getLatestResult(back_camera).hasTargets())
+        .withWidget("Boolean Box");
+      dbgVisionList.addBoolean("Suppressed", () -> RobotContainer.drivetrain.isVisionSuppressed())
+        .withWidget("Boolean Box");
     }
   }
 

@@ -297,8 +297,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
 		ShuffleboardTab systemTab = Shuffleboard.getTab("System");
 		systemTab.add("Field", getField())
-			.withSize(4,9)
-			.withPosition(0,4)
+			.withSize(4,10)
+			.withPosition(4,0)
 			.withWidget("Field")
 			.withProperties(Map.of(
                 "field_game","Reefscape",
@@ -309,7 +309,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             ));
 		ShuffleboardLayout systemThetaList = systemTab.getLayout("theta Controller", BuiltInLayouts.kList)
 			.withSize(4,4)
-			.withPosition(16,6)
+			.withPosition(0,6)
 			.withProperties(Map.of("Label position","LEFT"));
 		systemThetaList.addString("Heading Lock", this::getHeadingLockedColor)
 			.withWidget("Single Color View");
@@ -320,13 +320,13 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 		if(SwerveConstants.debugDashboard) {
 		}
 
-		if(VisionConstants.debugDashboard) {
-			ShuffleboardTab debugTab = Shuffleboard.getTab("DBG:Vision");
-			debugTab.addBoolean("Suppressed", this::isVisionSuppressed)
-			  .withSize(2, 2)
-			  .withWidget("Boolean Box")
-			  .withPosition(0, 2);  
-		}
+		// if(VisionConstants.debugDashboard) {
+		// 	ShuffleboardTab debugTab = Shuffleboard.getTab("DBG:Vision");
+		// 	debugTab.addBoolean("Suppressed", this::isVisionSuppressed)
+		// 	  .withSize(2, 2)
+		// 	  .withWidget("Boolean Box")
+		// 	  .withPosition(0, 2);  
+		// }
 	}
 
 	public Rotation2d getHeading() {

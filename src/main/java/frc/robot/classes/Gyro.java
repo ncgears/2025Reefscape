@@ -37,7 +37,14 @@ public class Gyro implements Sendable {
     }
 
 	public void buildDashboards() {
-		if(GyroConstants.debugDashboard) {
+    if(true) { //false to disable gyro on system dashboard
+			ShuffleboardTab systemTab = Shuffleboard.getTab("System");
+			systemTab.add("Gyro", this)
+				.withSize(4, 4)
+				.withPosition(0, 0)  
+				.withProperties(Map.of("counter_clockwise_positive",true));
+    }
+	  if(GyroConstants.debugDashboard) {
 			ShuffleboardTab debugTab = Shuffleboard.getTab("DBG:Gyro");
 			debugTab.add("Value", this)
 				.withSize(5, 4)

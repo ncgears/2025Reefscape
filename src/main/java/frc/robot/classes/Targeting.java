@@ -254,10 +254,10 @@ public class Targeting {
 			ShuffleboardTab systemTab = Shuffleboard.getTab("System");
 			systemTab.addNumber("Bot Pose Hdg", () -> NCDebug.General.roundDouble(getPose().get().getRotation().getDegrees(),2))
 				.withSize(4,2)
-				.withPosition(0,2);
-			systemTab.addNumber("Shooter Hdg", () -> NCDebug.General.roundDouble(getPose().get().rotateBy(new Rotation2d(Math.PI)).getRotation().getDegrees(),2))
-				.withSize(4,2)
-				.withPosition(4,2);
+				.withPosition(0,4);
+			// systemTab.addNumber("Shooter Hdg", () -> NCDebug.General.roundDouble(getPose().get().rotateBy(new Rotation2d(Math.PI)).getRotation().getDegrees(),2))
+			// 	.withSize(4,2)
+			// 	.withPosition(4,2);
 			ShuffleboardLayout trackingList = systemTab.getLayout("Target Tracking", BuiltInLayouts.kList)
 				.withSize(4,5)
 				.withPosition(12,5)

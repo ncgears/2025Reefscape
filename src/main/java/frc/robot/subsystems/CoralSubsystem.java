@@ -162,17 +162,20 @@ public class CoralSubsystem extends SubsystemBase {
       .withPosition(8, 7);
     ShuffleboardTab systemTab = Shuffleboard.getTab("System");
     ShuffleboardLayout CoralList = systemTab.getLayout("Coral", BuiltInLayouts.kList)
-      .withSize(4, 2)
-      .withPosition(4, 0)
+      .withSize(4, 5)
+      .withPosition(8, 5)
       .withProperties(Map.of("Label position", "LEFT"));
     CoralList.addString("Status", this::getColor)
       .withWidget("Single Color View");
     CoralList.addString("Direction", this::getDirectionName);
+    CoralList.addString("Target", this::getTargetPositionName);
+    CoralList.addNumber("Target Pos", this::getTargetPosition);
+    CoralList.addNumber("Pos", () -> { return NCDebug.General.roundDouble(getMotorPosition().in(Units.Rotations),6); });
 
     if (CoralConstants.debugDashboard) {
       ShuffleboardTab debugTab = Shuffleboard.getTab("Debug");
       ShuffleboardLayout dbgCoralList = debugTab.getLayout("Coral", BuiltInLayouts.kList)
-        .withSize(4, 10)
+        .withSize(4, 11)
         .withPosition(8, 0)
         .withProperties(Map.of("Label position", "LEFT"));
       dbgCoralList.addString("Status", this::getColor)

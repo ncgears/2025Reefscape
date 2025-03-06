@@ -169,8 +169,8 @@ public class AlgaeSubsystem extends SubsystemBase {
       .withPosition(10, 7);
     ShuffleboardTab systemTab = Shuffleboard.getTab("System");
     ShuffleboardLayout AlgaeList = systemTab.getLayout("Algae", BuiltInLayouts.kList)
-      .withSize(4, 2)
-      .withPosition(4, 0)
+      .withSize(4, 5)
+      .withPosition(8, 0)
       .withProperties(Map.of("Label position", "LEFT"));
     AlgaeList.addString("Status", this::getDirectionColor)
       .withWidget("Single Color View");
@@ -180,7 +180,7 @@ public class AlgaeSubsystem extends SubsystemBase {
     if (AlgaeConstants.debugDashboard) {
       ShuffleboardTab debugTab = Shuffleboard.getTab("Debug");
       ShuffleboardLayout dbgAlgaeList = debugTab.getLayout("Algae", BuiltInLayouts.kList)
-        .withSize(4, 10)
+        .withSize(4, 11)
         .withPosition(12, 0)
         .withProperties(Map.of("Label position", "LEFT"));
       dbgAlgaeList.addString("Status", this::getDirectionColor)

@@ -19,6 +19,8 @@ import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import frc.robot.constants.*; 
@@ -290,4 +292,50 @@ public class Vision {
   public void updateResults() {
     
   }
+
+  /**
+   * addVisionMeasurement fuses the Pose2d from the vision system into the robot pose
+   * @param visionMeasurement
+   * @param timestampSeconds
+   */
+	public void addVisionMeasurement(Pose2d visionMeasurement, double timestampSeconds) {
+		RobotContainer.drivetrain.addVisionMeasurement(visionMeasurement, timestampSeconds);
+	}
+	public void addVisionMeasurement(Pose2d visionMeasurement, double timestampSeconds, Matrix<N3, N1> stdDevs) {
+		RobotContainer.drivetrain.addVisionMeasurement(visionMeasurement, timestampSeconds, stdDevs);
+	}
+
+	/**
+	 * Corrects the bot pose based on information from the vision system
+	 */
+  @SuppressWarnings({"unused"})
+	public void correctPoseWithVision() {
+		if(VisionConstants.kUseVisionForPose && VisionConstants.Front.kUseForPose) {
+			var visionEstFront = RobotContainer.vision.getFrontEstimatedGlobalPose();
+			visionEstFront.ifPresent(
+				est -> {
+					var estPose = est.estimatedPose.toPose2d();
+					//workaround for remove camera to robot center
+					estPose = estPose.transformBy(new Transform2d(new Translation2d(-0.44,0.0), new Rotation2d())); 
+					// Change our trust in the measurement based on the tags we can see
+					var estStdDevs = RobotContainer.vision.getFrontEstimationStdDevs(estPose);
+					RobotContainer.drivetrain.addVisionMeasurement(estPose, est.timestampSeconds, estStdDevs);
+				}
+			);
+		}
+		if(VisionConstants.kUseVisionForPose && VisionConstants.Back.kUseForPose) {
+			var visionEstBack = RobotContainer.vision.getBackEstimatedGlobalPose();
+			visionEstBack.ifPresent(
+				est -> {
+					var estPose = est.estimatedPose.toPose2d();
+					//workaround for remove camera to robot center
+					estPose = estPose.transformBy(new Transform2d(new Translation2d(0.44,0.0), new Rotation2d())); 
+					// Change our trust in the measurement based on the tags we can see
+					var estStdDevs = RobotContainer.vision.getBackEstimationStdDevs(estPose);
+					RobotContainer.drivetrain.addVisionMeasurement(estPose, est.timestampSeconds, estStdDevs);
+				}
+			);
+		}
+	}
+
 }

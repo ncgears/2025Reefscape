@@ -320,13 +320,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 		if(SwerveConstants.debugDashboard) {
 		}
 
-		// if(VisionConstants.debugDashboard) {
-		// 	ShuffleboardTab debugTab = Shuffleboard.getTab("DBG:Vision");
-		// 	debugTab.addBoolean("Suppressed", this::isVisionSuppressed)
-		// 	  .withSize(2, 2)
-		// 	  .withWidget("Boolean Box")
-		// 	  .withPosition(0, 2);  
-		// }
 	}
 
 	public Rotation2d getHeading() {
@@ -521,7 +514,9 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 m_hasAppliedOperatorPerspective = true;
             });
         }
-        if(!m_suppressVision) RobotContainer.targeting.correctPoseWithVision();
+        if(!m_suppressVision) {
+          RobotContainer.vision.correctPoseWithVision();
+        }
         field.setRobotPose(this.getState().Pose);
     }
 

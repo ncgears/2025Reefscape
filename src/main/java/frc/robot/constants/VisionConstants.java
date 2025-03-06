@@ -22,6 +22,7 @@ import edu.wpi.first.math.numbers.N3;
  */
 public class VisionConstants {
     public static final boolean debugDashboard = true; //enable debugging dashboard
+    public static final boolean kUseVisionForPose = true; //enable vision measurements to pose correction
     public static final boolean kUseAutoSuppress = false; //enable suppressing vision measurements based on speed
     public static final double kAutosuppressSpeedMetersPerSecond = 2.5; //speed at which to suppress vision addition
     public static final AprilTagFieldLayout kTagLayout = AprilTagFields.kDefaultField.loadAprilTagLayoutField();

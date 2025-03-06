@@ -13,7 +13,7 @@ public class CoralConstants {
     //Controller Setup
     public static final String canBus = "rio";
     public static final boolean debugDashboard = true; //enable debugging dashboard
-    public static final boolean isDisabled = false; //disable coral system
+    public static final boolean isDisabled = true; //disable coral system
     public static final int kCANcoderID = ID.CANcoder.coral;
     public static final boolean kUseCANcoder = true;
     public static final double kMagnetOffset = 0.0; //Adjust magnet to sensor offset for CANcoder

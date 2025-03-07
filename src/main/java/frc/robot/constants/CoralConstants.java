@@ -31,10 +31,10 @@ public class CoralConstants {
     public static final double kS = 0.2; // add kS to overcome static friction: adjust first to start moving
     public static final double kV = 1.75; // add kV for velocity target: voltage(12) / velocity target.. 1 rps results in 0.12v output
     public static final double kA = 0.0; // add kA for acceleration: 0.01 = 1 rps/s requires 0.01v output
-    public static final double kP = 0.2; // add kP per rotation of error: error of 1 rotation results in 12v output (this might be low for aimer)
+    public static final double kP = 0.01; // add kP per rotation of error: error of 1 rotation results in 12v output (this might be low for aimer)
     public static final double kI = 0.01; // no integral
     public static final double kD = 0.0; // 0.1 = velocity error of 1rps results in 0.1v output
-    public static final double kMotionMagicCruise = 5; // Motor Max / Gear Ratio
+    public static final double kMotionMagicCruise = 2; // Motor Max / Gear Ratio
     public static final double kMotionMagicAccel = 50; // Acceleration: Cruise / Accel = time to cruise
     public static final double kMotionMagicJerk = 500; //0=disabled; 10-20x accel for smooth; lower for smoother motion at the cost of time: accel / jerk = jerk time
     //Current Limiting

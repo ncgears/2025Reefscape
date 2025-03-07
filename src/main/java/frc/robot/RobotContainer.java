@@ -217,7 +217,9 @@ public class RobotContainer {
         RobotModeTriggers.autonomous().or(RobotModeTriggers.teleop()).onTrue(
             new InstantCommand(orchestra::stop).ignoringDisable(true)
             .andThen(() -> lighting.setColorCommand(Colors.OFF))
-                // .andThen(climber.runOnce(climber::ratchetLock)).andThen(new WaitCommand(0.5)).andThen(climber.runOnce(climber::ratchetFree))
+            .andThen(coral.CoralPositionC(CoralSubsystem.Position.SCORE))
+            .andThen(wait(0.2))
+            .andThen(coral.CoralStopC())
         );
         //#endregion
 

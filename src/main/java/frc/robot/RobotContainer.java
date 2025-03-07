@@ -335,6 +335,7 @@ public class RobotContainer {
         oj.leftBumper().onTrue(
             elevator.ElevatorPositionC(ElevatorSubsystem.Position.HP)
             .andThen(coral.CoralPositionC(CoralSubsystem.Position.OUT))
+            .andThen(algae.setAlgaePositionC(AlgaeSubsystem.Position.STOW))
         ).onFalse(
             coral.CoralPositionC(CoralSubsystem.Position.SCORE)
             .andThen(wait(0.5))

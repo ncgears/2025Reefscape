@@ -13,6 +13,7 @@ import com.ctre.phoenix6.controls.StaticBrake;
 import com.ctre.phoenix6.controls.VoltageOut;
 // import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.ForwardLimitValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.units.Units;
@@ -197,7 +198,8 @@ public class ClimberSubsystem extends SubsystemBase {
   }
 
   private boolean getClimbSwitch() {
-    return !m_climbSwitch.get();
+    // return !m_climbSwitch.get();
+    return (m_motor1.getForwardLimit().getValue() == ForwardLimitValue.Open);
   }
 
   public Angle getPosition() {

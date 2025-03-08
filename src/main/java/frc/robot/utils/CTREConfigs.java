@@ -290,14 +290,14 @@ public final class CTREConfigs {
             .withForwardSoftLimitEnable(ClimberConstants.kSoftForwardLimitEnable)
             .withForwardSoftLimitThreshold(ClimberConstants.kSoftForwardLimit);
         climberFXConfig.SoftwareLimitSwitch = climberSoftwareLimitSwitchConfigs;
-        // HardwareLimitSwitchConfigs climberHardwareLimitsConfigs = new HardwareLimitSwitchConfigs()
+        HardwareLimitSwitchConfigs climberHardwareLimitsConfigs = new HardwareLimitSwitchConfigs()
         //     .withReverseLimitEnable(false)
         //     .withReverseLimitType(ReverseLimitTypeValue.NormallyOpen)
         //     .withReverseLimitAutosetPositionEnable(true)
         //     .withReverseLimitAutosetPositionValue(0.0)
-        //     .withForwardLimitEnable(false)
-        //     .withForwardLimitType(ForwardLimitTypeValue.NormallyOpen); //Add autoset position on forward limit to appropriate number also.
-        // climberFXConfig.HardwareLimitSwitch = climberHardwareLimitsConfigs;
+            .withForwardLimitEnable(true)
+            .withForwardLimitType(ForwardLimitTypeValue.NormallyClosed);
+        climberFXConfig.HardwareLimitSwitch = climberHardwareLimitsConfigs;
         //Encoder
         if(ClimberConstants.kUseCANcoder) {
             climberFXConfig.Feedback.FeedbackRemoteSensorID = ClimberConstants.kCANcoderID;

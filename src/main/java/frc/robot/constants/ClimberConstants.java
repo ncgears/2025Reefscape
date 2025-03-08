@@ -54,8 +54,8 @@ public class ClimberConstants {
         public static final double kShallowCapture = 0.0; //Climber up to capture Shallow Cage
         public static final double kShallowClimb = 0.0; //Climber down to climb Shallow Cage
     }
-    public static final boolean kSoftForwardLimitEnable = true;
+    public static final boolean kSoftForwardLimitEnable = false;
     public static final double kSoftForwardLimit = Positions.kFwdLimit;
-    public static final boolean kSoftReverseLimitEnable = true;
+    public static final boolean kSoftReverseLimitEnable = false;
     public static final double kSoftReverseLimit = Positions.kRevLimit;
 }

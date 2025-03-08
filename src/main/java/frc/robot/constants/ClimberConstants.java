@@ -22,7 +22,7 @@ public class ClimberConstants {
     public static final boolean kIsInverted = true;
     public static final NeutralModeValue kNeutralMode = NeutralModeValue.Coast;
     public static final double kStowPosition = 0;
-    public static final double kClimbPower = 0.5;
+    public static final double kClimbPower = 0.6;
 
     public static final int kCageSwitch1ID = ID.DIO.climber_cageSwitch1;
     public static final int kCageSwitch2ID = ID.DIO.climber_cageSwitch2;

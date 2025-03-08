@@ -24,4 +24,3 @@ TODO:
 Mechanical:
     - Fix green rope anchor washer clearance to elevator CF spring 
     - Add protection panel across PDH/battery box
-    - Limit switches for Algae intake

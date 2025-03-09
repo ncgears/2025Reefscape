@@ -340,7 +340,7 @@ public class RobotContainer {
         oj.leftBumper().onTrue(
             elevator.ElevatorPositionC(ElevatorSubsystem.Position.HP)
             .andThen(coral.CoralPositionC(CoralSubsystem.Position.OUT))
-            .andThen(algae.setAlgaePositionC(AlgaeSubsystem.Position.STOW))
+            .andThen(algae.setAlgaePositionC(AlgaeSubsystem.Position.UP))
         ).onFalse(
             coral.CoralPositionC(CoralSubsystem.Position.SCORE)
             .andThen(wait(0.5))
@@ -377,14 +377,14 @@ public class RobotContainer {
         /** OJ POV Left - Reef High Algae Pickup (do not stop toros, use limits) */
         oj.povLeft().onTrue(
           elevator.ElevatorPositionC(ElevatorSubsystem.Position.ALGAEHIGH)
-          .andThen(wait(0.25))
+          .andThen(wait(0.5))
           .andThen(algae.setAlgaePositionC(AlgaeSubsystem.Position.REEF))
           .andThen(algae.startToroC(false))
         );
         /** OJ POV Right - Reef High Algae Pickup (do not stop toros, use limits) */
         oj.povRight().onTrue(
           elevator.ElevatorPositionC(ElevatorSubsystem.Position.ALGAELOW)
-          .andThen(wait(0.25))
+          .andThen(wait(0.5))
           .andThen(algae.setAlgaePositionC(AlgaeSubsystem.Position.REEF))
           .andThen(algae.startToroC(false))
         );

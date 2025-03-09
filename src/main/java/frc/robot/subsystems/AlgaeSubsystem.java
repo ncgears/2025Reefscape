@@ -236,7 +236,7 @@ public class AlgaeSubsystem extends SubsystemBase {
   }
 
   public double getTargetPosition() {
-    return m_wristmotor1.getClosedLoopReference().getValue();
+    return NCDebug.General.roundDouble(m_wristmotor1.getClosedLoopReference().getValue(),6);
   }
 
   public double getPositionError() {

@@ -215,7 +215,7 @@ public class CoralSubsystem extends SubsystemBase {
   }
 
   public double getTargetPosition() {
-    return m_motor1.getClosedLoopReference().getValue();
+    return NCDebug.General.roundDouble(m_motor1.getClosedLoopReference().getValue(),6);
   }
 
   public String getTargetPositionName() {

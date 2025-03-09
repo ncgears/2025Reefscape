@@ -212,6 +212,7 @@ public class RobotContainer {
                     .andThen(new WaitCommand(0.25))
                 ).until(RobotModeTriggers.disabled().negate())
             )
+            .alongWith(elevator.ElevatorStopC().ignoringDisable(true))
         );
         // bind to the autonomous() and teleop() trigger which happens any time the robot is enabled in either of those modes
         RobotModeTriggers.autonomous().or(RobotModeTriggers.teleop()).onTrue(
@@ -297,25 +298,26 @@ public class RobotContainer {
             .andThen(wait(0.4))
             .andThen(
                 elevator.ElevatorPositionC(ElevatorSubsystem.Position.L1)
-            ).until(elevator::isAtTarget)
+            )
+            // .until(elevator::isAtTarget)
             .andThen(coral.CoralStopC())
         );
         /** OJ A - L2 Scoring Position */
         oj.a().onTrue(
             elevator.ElevatorPositionC(ElevatorSubsystem.Position.L2)
-            .andThen(wait(1.2))
+            .andThen(wait(1.0))
             .andThen(coral.CoralPositionC(CoralSubsystem.Position.OUT))
         );
         /** OJ B - L3 Scoring Position */
         oj.b().onTrue(
             elevator.ElevatorPositionC(ElevatorSubsystem.Position.L3)
-            .andThen(wait(1.2))
+            .andThen(wait(1.0))
             .andThen(coral.CoralPositionC(CoralSubsystem.Position.OUT))
         );
         /** OJ Y - L4 Scoring Position */
         oj.y().onTrue(
             elevator.ElevatorPositionC(ElevatorSubsystem.Position.L4)
-            .andThen(wait(1.2))
+            .andThen(wait(1.0))
             .andThen(coral.CoralPositionC(CoralSubsystem.Position.OUT))
         );
         /** OJ Right Trigger - Score Coral sequence (from L2, L3, and L4) (hold trigger) */

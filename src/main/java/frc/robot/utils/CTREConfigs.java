@@ -9,6 +9,7 @@ import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.HardwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.configs.Slot1Configs;
 import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.TalonFXSConfiguration;
@@ -53,13 +54,21 @@ public final class CTREConfigs {
         coralCCConfig.MagnetSensor.MagnetOffset = CoralConstants.kMagnetOffset;
 
         Slot0Configs coralSlot0Configs = new Slot0Configs()
-            .withKP(CoralConstants.kP)
-            .withKI(CoralConstants.kI)
-            .withKD(CoralConstants.kD)
-            .withKS(CoralConstants.kS)
-            .withKV(CoralConstants.kV)
-            .withKA(CoralConstants.kA);
+            .withKP(CoralConstants.in.kP)
+            .withKI(CoralConstants.in.kI)
+            .withKD(CoralConstants.in.kD)
+            .withKS(CoralConstants.in.kS)
+            .withKV(CoralConstants.in.kV)
+            .withKA(CoralConstants.in.kA);
         coralFXConfig.Slot0 = coralSlot0Configs;
+        Slot1Configs coralSlot1Configs = new Slot1Configs()
+            .withKP(CoralConstants.out.kP)
+            .withKI(CoralConstants.out.kI)
+            .withKD(CoralConstants.out.kD)
+            .withKS(CoralConstants.out.kS)
+            .withKV(CoralConstants.out.kV)
+            .withKA(CoralConstants.out.kA);
+        coralFXConfig.Slot1 = coralSlot1Configs;
         //Current Limits
         CurrentLimitsConfigs coralCurrentLimitsConfigs = new CurrentLimitsConfigs()
             .withSupplyCurrentLimit(CoralConstants.kCurrentLimitAmps)
@@ -68,11 +77,11 @@ public final class CTREConfigs {
             .withSupplyCurrentLimitEnable(CoralConstants.kCurrentLimitEnable);
         coralFXConfig.CurrentLimits = coralCurrentLimitsConfigs;
         //Motion Magic
-        MotionMagicConfigs coralMotionMagicConfigs = new MotionMagicConfigs()
-            .withMotionMagicCruiseVelocity(CoralConstants.kMotionMagicCruise)
-            .withMotionMagicAcceleration(CoralConstants.kMotionMagicAccel)
-            .withMotionMagicJerk(CoralConstants.kMotionMagicJerk);
-        coralFXConfig.MotionMagic = coralMotionMagicConfigs;
+        // MotionMagicConfigs coralMotionMagicConfigs = new MotionMagicConfigs()
+        //     .withMotionMagicCruiseVelocity(CoralConstants.kMotionMagicCruise)
+        //     .withMotionMagicAcceleration(CoralConstants.kMotionMagicAccel)
+        //     .withMotionMagicJerk(CoralConstants.kMotionMagicJerk);
+        // coralFXConfig.MotionMagic = coralMotionMagicConfigs;
         //Mechanical Limits
         SoftwareLimitSwitchConfigs coralSoftwareLimitSwitchConfigs = new SoftwareLimitSwitchConfigs()
             .withReverseSoftLimitEnable(CoralConstants.kSoftReverseLimitEnable)

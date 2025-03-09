@@ -334,6 +334,12 @@ public class ElevatorSubsystem extends SubsystemBase {
     );
   }
 
+  public Command ElevatorStopC() {
+    return runOnce(
+      () -> ElevatorStop()
+    );
+  }
+
   public void ElevatorUp() {
     m_curState = State.UP;
     m_motor1.setControl(m_DutyCycle);

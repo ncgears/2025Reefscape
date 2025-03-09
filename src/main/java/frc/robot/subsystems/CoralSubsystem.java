@@ -9,6 +9,7 @@ import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
+import com.ctre.phoenix6.controls.PositionDutyCycle;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.StaticBrake;
 import com.ctre.phoenix6.controls.VoltageOut;
@@ -89,6 +90,7 @@ public class CoralSubsystem extends SubsystemBase {
 
   private final MotionMagicVoltage m_mmVoltage = new MotionMagicVoltage(0);
   private final PositionVoltage m_posVoltage = new PositionVoltage(0);
+  private final PositionDutyCycle m_posDutyCycle = new PositionDutyCycle(0);
   private final DutyCycleOut m_DutyCycle = new DutyCycleOut(0);
   private final NeutralOut m_neutral = new NeutralOut();
   private final StaticBrake m_brake = new StaticBrake();
@@ -247,7 +249,10 @@ public class CoralSubsystem extends SubsystemBase {
   // #region Setters
   public void setPosition(Position position) {
     m_targetPosition = position;
-    m_motor1.setControl(m_mmVoltage.withPosition(position.getRotations()));
+    //if forward, use slot1; if reverse use slot0
+    int slot = (position.getRotations() > m_motor1.getClosedLoopReference().getValueAsDouble()) ? 1 : 0; 
+    //figure out if forward or reverse
+    m_motor1.setControl(m_posDutyCycle.withPosition(position.getRotations()).withSlot(slot));
     NCDebug.Debug.debug("Coral: Move to " + position.toString());
   }
 

@@ -23,6 +23,7 @@ public class CoralConstants {
     public static final NeutralModeValue kNeutralMode = NeutralModeValue.Coast;
     public static final double kCurrentSpikeLimit = 15;
     public static final double kSpeed = 0.75;
+    public static final double kWaitDelay = 0.8;
 
     public static final double kGearRatio = 2.0; // 20:1 gearbox (0.05), 18t:42t -- this is between rotor and sensor
     public static final double kSensorGearRatio = 1.0; // no gearing between sensor and spool -- this is between sensor and spool

@@ -305,19 +305,19 @@ public class RobotContainer {
         /** OJ A - L2 Scoring Position */
         oj.a().onTrue(
             elevator.ElevatorPositionC(ElevatorSubsystem.Position.L2)
-            .andThen(wait(1.0))
+            .andThen(wait(CoralConstants.kWaitDelay))
             .andThen(coral.CoralPositionC(CoralSubsystem.Position.OUT))
         );
         /** OJ B - L3 Scoring Position */
         oj.b().onTrue(
             elevator.ElevatorPositionC(ElevatorSubsystem.Position.L3)
-            .andThen(wait(1.0))
+            .andThen(wait(CoralConstants.kWaitDelay))
             .andThen(coral.CoralPositionC(CoralSubsystem.Position.OUT))
         );
         /** OJ Y - L4 Scoring Position */
         oj.y().onTrue(
             elevator.ElevatorPositionC(ElevatorSubsystem.Position.L4)
-            .andThen(wait(1.0))
+            .andThen(wait(CoralConstants.kWaitDelay))
             .andThen(coral.CoralPositionC(CoralSubsystem.Position.OUT))
         );
         /** OJ Right Trigger - Score Coral sequence (from L2, L3, and L4) (hold trigger) */
@@ -333,6 +333,7 @@ public class RobotContainer {
         /** OJ Right Bumper - Return to previous position */
         oj.rightBumper().onTrue(
             elevator.LastPositionC()
+            .andThen(wait(CoralConstants.kWaitDelay))
             .andThen(coral.CoralPositionC(CoralSubsystem.Position.OUT))
         );
         /** OJ Left Bumper - Human Player Intake */

@@ -367,6 +367,7 @@ public class RobotContainer {
         /** OJ POV Up - Barge scoring position */
         oj.povUp().onTrue(
           elevator.ElevatorPositionC(ElevatorSubsystem.Position.BARGE)
+          .andThen(algae.setAlgaePositionC(AlgaeSubsystem.Position.UP))
         );
         /** OJ POV Down - Processor scoring position */
         oj.povDown().onTrue(
@@ -390,7 +391,8 @@ public class RobotContainer {
         );
         /** OJ L3 - Floor Algae Pickup (do not stop toros, use limits) */
         oj.leftStick().onTrue(
-            algae.setAlgaePositionC(AlgaeSubsystem.Position.FLOOR)
+            elevator.ElevatorPositionC(ElevatorSubsystem.Position.FLOOR)
+            .andThen(algae.setAlgaePositionC(AlgaeSubsystem.Position.FLOOR))
             .andThen(algae.startToroC(false))
         ).onFalse(
             algae.setAlgaePositionC(AlgaeSubsystem.Position.UP)

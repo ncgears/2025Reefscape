@@ -294,7 +294,7 @@ public class RobotContainer {
         // CORAL STUFF
         /** OJ X - L1 Position (currently stow?) */
         oj.x().onTrue(
-            coral.CoralPositionC(CoralSubsystem.Position.IN)
+            coral.CoralPositionC(CoralSubsystem.Position.SCORE)
             .andThen(wait(0.4))
             .andThen(
                 elevator.ElevatorPositionC(ElevatorSubsystem.Position.L1)
@@ -325,7 +325,7 @@ public class RobotContainer {
             elevator.ScoreC()
             .until(elevator::isAtTarget)
             .andThen(wait(0.2))
-            .andThen(coral.CoralPositionC(CoralSubsystem.Position.IN))
+            .andThen(coral.CoralPositionC(CoralSubsystem.Position.SCORE))
         ).onFalse(
             wait(0.2)
             .andThen(coral.CoralStopC())

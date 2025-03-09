@@ -1,26 +1,23 @@
 TODO:
   Vision:
-    - Mark centerlines of robot left/right, front/back, and refresh "FRONT" mark of robot on frame
-    - Identify X,Y,Z,angle of front camera
-    - Identify X,Y,Z,angle of back camera
-    - Set photon camera positions in VisionConstants
     - Test AddVisionMeasurement into ctre pose estimator for photon readings when seeing ATs
-  Elevator:
-    - Plot current during elevator stall, coral stall; set appropriate current limits so we can ignore the motors death screams.
   Drivers Station:
     - Update drivers station NI game tools and Elastic Dashboard
     - Verify c:\users\public\public documents\frc\frc ds data storage.ini is pointing at correct elastic executable
   Climber:
-    - Wire climber limit switches
-    - Tune climber motor power, test limits
+    - Tune climber motor power with new planetary
+  Elevator:
+    - Increase MM jerk setting on accel/decel or reduce acceleration for hard stops and starts
+  Algae:
+    - Wrist slower to drop coral on L1 without affecting Algae pickup (try?)
+    - Reduce barge outtake so it doesn't go over barge
   Drivetrain:
-    - Characterize drivetrain
     - Build auton paths
     - Update theta controller for heading lock (ref: FieldCentricFacingAngle HeadingController)
     - Reef side targeting math
-    - "In Position" from odometry for algae scoring (while holding scoring button, move elevator at appropriate time)
     - Re-init robot on disable
 
 Mechanical:
-    - Fix green rope anchor washer clearance to elevator CF spring 
-    - Add protection panel across PDH/battery box
+    - Replace elevator ropes with like types
+    - Change climber planetary to 10:1
+

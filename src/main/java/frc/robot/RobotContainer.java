@@ -212,7 +212,7 @@ public class RobotContainer {
                     .andThen(new WaitCommand(0.25))
                 ).until(RobotModeTriggers.disabled().negate())
             )
-            .alongWith(elevator.ElevatorStopC().ignoringDisable(true))
+            .alongWith(elevator.ElevatorStopC().ignoringDisable(true)).ignoringDisable(true)
         );
         // bind to the autonomous() and teleop() trigger which happens any time the robot is enabled in either of those modes
         RobotModeTriggers.autonomous().or(RobotModeTriggers.teleop()).onTrue(

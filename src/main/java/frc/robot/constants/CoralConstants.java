@@ -20,7 +20,7 @@ public class CoralConstants {
     public static final boolean kSensorInverted = false;
     public static final int kMotorID = ID.TalonFX.coral;
     public static final boolean kIsInverted = false;
-    public static final NeutralModeValue kNeutralMode = NeutralModeValue.Brake;
+    public static final NeutralModeValue kNeutralMode = NeutralModeValue.Coast;
     public static final double kCurrentSpikeLimit = 15;
     public static final double kSpeed = 0.75;
 
@@ -40,9 +40,9 @@ public class CoralConstants {
       public static final double kS = 0.02; // add kS to overcome static friction: adjust first to start moving
       public static final double kV = 0.12; // add kV for velocity target: voltage(12) / velocity target.. 1 rps results in 0.12v output
       public static final double kA = 0.0; // add kA for acceleration: 0.01 = 1 rps/s requires 0.01v output
-      public static final double kP = 0.10; // add kP per rotation of error: error of 1 rotation results in 12v output (this might be low for aimer)
+      public static final double kP = 0.11; // add kP per rotation of error: error of 1 rotation results in 12v output (this might be low for aimer)
       public static final double kI = 0.0; // no integral
-      public static final double kD = 0.04; //0.0; // 0.1 = velocity error of 1rps results in 0.1v output
+      public static final double kD = 0.03; //0.0; // 0.1 = velocity error of 1rps results in 0.1v output
     }
     // public static final double kMotionMagicCruise = 20; // Motor Max / Gear Ratio
     // public static final double kMotionMagicAccel = 500; // Acceleration: Cruise / Accel = time to cruise
@@ -56,8 +56,8 @@ public class CoralConstants {
         public static final double kFwdLimit = 2.82; //Forward imit
         public static final double kRevLimit = -2.82; //Reverse Limit
         public static final double kStow = 0.07; //all the way in (home)
-        public static final double kOut = 2.5; //out ready for scoring
-        public static final double kScore = 0.42; //retracted to score
+        public static final double kOut = 2.3; //out ready for scoring
+        public static final double kScore = 0.6; //retracted to score
         public static final double kIn = 0.02; //0.015137; //retracted for transit
     }
     public static final boolean kSoftForwardLimitEnable = true;

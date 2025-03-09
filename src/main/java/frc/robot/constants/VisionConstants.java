@@ -34,16 +34,16 @@ public class VisionConstants {
         public static final String kCameraName = "frontcam";
         public static final boolean kUseForPose = true;
         public static final Transform3d kRobotToCam = new Transform3d(
-            new Translation3d(0.34,0.19,0.23), //0.34; x,y,z location of camera on robot in meters
-            new Rotation3d(0,Math.toRadians(33),0) //yaw,pitch/roll of camera on robot in radians
+            new Translation3d(0.215,0.285,0.286), //x,y,z location of camera on robot in meters
+            new Rotation3d(0,Math.toRadians(19.18),0) //yaw,pitch/roll of camera on robot in radians
         );
     }
     public static final class Back { //backwards facing camera
         public static final String kCameraName = "rearcam";
         public static final boolean kUseForPose = false;
         public static final Transform3d kRobotToCam = new Transform3d(
-            new Translation3d(-0.34,0.19,0.23), //-0.34x,y,z location of camera on robot in meters
-            new Rotation3d(0,Math.toRadians(33),Math.toRadians(180)) //yaw,pitch/roll of camera on robot in radians
+            new Translation3d(-0.223,0.285,0.286), //x,y,z location of camera on robot in meters
+            new Rotation3d(0,Math.toRadians(70.82),Math.toRadians(180)) //yaw,pitch/roll of camera on robot in radians
         );
     }
 }

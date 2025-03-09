@@ -219,8 +219,8 @@ public class RobotContainer {
             new InstantCommand(orchestra::stop).ignoringDisable(true)
             .andThen(() -> lighting.setColorCommand(Colors.OFF))
             .andThen(coral.CoralPositionC(CoralSubsystem.Position.SCORE))
-            .andThen(wait(0.2))
-            .andThen(coral.CoralStopC())
+            // .andThen(wait(0.2))
+            // .andThen(coral.CoralStopC())
         );
         //#endregion
 
@@ -300,7 +300,7 @@ public class RobotContainer {
                 elevator.ElevatorPositionC(ElevatorSubsystem.Position.L1)
             )
             // .until(elevator::isAtTarget)
-            .andThen(coral.CoralStopC())
+            // .andThen(coral.CoralStopC())
         );
         /** OJ A - L2 Scoring Position */
         oj.a().onTrue(
@@ -326,10 +326,11 @@ public class RobotContainer {
             .until(elevator::isAtTarget)
             .andThen(wait(0.2))
             .andThen(coral.CoralPositionC(CoralSubsystem.Position.SCORE))
-        ).onFalse(
-            wait(0.2)
-            .andThen(coral.CoralStopC())
         );
+        // .onFalse(
+        //     wait(0.2)
+        //     .andThen(coral.CoralStopC())
+        // );
         /** OJ Right Bumper - Return to previous position */
         oj.rightBumper().onTrue(
             elevator.LastPositionC()
@@ -343,8 +344,8 @@ public class RobotContainer {
             .andThen(algae.setAlgaePositionC(AlgaeSubsystem.Position.UP))
         ).onFalse(
             coral.CoralPositionC(CoralSubsystem.Position.SCORE)
-            .andThen(wait(0.5))
-            .andThen(coral.CoralStopC())
+            // .andThen(wait(0.5))
+            // .andThen(coral.CoralStopC())
         );
 
         // CLIMBER STUFF

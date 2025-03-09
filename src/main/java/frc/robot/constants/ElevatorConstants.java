@@ -59,13 +59,13 @@ public class ElevatorConstants {
         public static final double kFloor = 0.3;
         public static final double kBarge = kFwdLimit; //all the way up
         public static final double kProcessor = kStow; //all the way down
-        public static final double kL4 = 5.05; //Elevator up to L4
+        public static final double kL4 = 5.00; //Elevator up to L4
         public static final double kL4Score = kL4 - 1.0; //Elevator up to L4 Score
         public static final double kAlgaeHigh = 2.73; //Elevator between L3 and L4
-        public static final double kL3 = 2.93; //Elevator up to L3
+        public static final double kL3 = 2.85; //Elevator up to L3
         public static final double kL3Score = kL3 - kScoreDelta; //Elevator up to L3 Score
         public static final double kAlgaeLow = 1.25; //Elevator between L2 and L3
-        public static final double kL2 = 1.6; //Elevator up to L2
+        public static final double kL2 = 1.51; //Elevator up to L2
         public static final double kL2Score = kL2 - kScoreDelta; //Elevator up to L2 Score
         public static final double kL1 = 0.0; //Elevator up to L1
         public static final double kHP = kStow; //all the way down

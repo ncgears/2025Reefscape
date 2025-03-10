@@ -18,7 +18,7 @@ public class ElevatorConstants {
     public static final int kCANcoderID = ID.CANcoder.elevator;
     public static final boolean kUseCANcoder = true;
     public static final boolean kSensorInverted = true;
-    public static final double kMagnetOffset = -0.228516; //Adjust magnet to sensor offset for CANcoder
+    public static final double kMagnetOffset = -0.080811; //Adjust magnet to sensor offset for CANcoder
     public static final int kMotorID = ID.TalonFX.elevator;
     public static final boolean kIsInverted = true;
     public static final NeutralModeValue kNeutralMode = NeutralModeValue.Brake;
@@ -45,7 +45,7 @@ public class ElevatorConstants {
 
     public static final double kMotionMagicCruise = 400; // Motor Max / Gear Ratio
     public static final double kMotionMagicAccel = 200; // Acceleration: Cruise / Accel = time to cruise
-    public static final double kMotionMagicJerk = 1000; //0=disabled; 10-20x accel for smooth; lower for smoother motion at the cost of time: accel / jerk = jerk time
+    public static final double kMotionMagicJerk = 500; //0=disabled; 10-20x accel for smooth; lower for smoother motion at the cost of time: accel / jerk = jerk time
     //Current Limiting
     public static final boolean kCurrentLimitEnable = false; // TODO: Test current limits
     public static final double kCurrentLimitAmps = 30.0;
@@ -53,7 +53,7 @@ public class ElevatorConstants {
     public static final double kCurrentLimitThresholdSecs = 0.3;
     public class Positions {
         private static final double kScoreDelta = 0.75;
-        public static final double kFwdLimit = 5.7; //Forward imit
+        public static final double kFwdLimit = 5.85; //Forward imit
         public static final double kRevLimit = -0.01; //Reverse Limit
         public static final double kStow = 0.0; //all the way down
         public static final double kFloor = 0.3;

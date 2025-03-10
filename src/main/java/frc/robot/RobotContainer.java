@@ -317,7 +317,7 @@ public class RobotContainer {
         /** OJ Y - L4 Scoring Position */
         oj.y().onTrue(
             elevator.ElevatorPositionC(ElevatorSubsystem.Position.L4)
-            .andThen(wait(CoralConstants.kWaitDelay))
+            .andThen(wait(CoralConstants.kWaitDelay + 0.2))
             .andThen(coral.CoralPositionC(CoralSubsystem.Position.OUT))
         );
         /** OJ Right Trigger - Score Coral sequence (from L2, L3, and L4) (hold trigger) */

@@ -292,16 +292,6 @@ public class RobotContainer {
 
         //#region Operator Joystick
         // CORAL STUFF
-        /** OJ X - L1 Position (currently stow?) */
-        oj.x().onTrue(
-            coral.CoralPositionC(CoralSubsystem.Position.SCORE)
-            .andThen(wait(0.4))
-            .andThen(
-                elevator.ElevatorPositionC(ElevatorSubsystem.Position.L1)
-            )
-            // .until(elevator::isAtTarget)
-            // .andThen(coral.CoralStopC())
-        );
         /** OJ A - L2 Scoring Position */
         oj.a().onTrue(
             elevator.ElevatorPositionC(ElevatorSubsystem.Position.L2)
@@ -317,7 +307,7 @@ public class RobotContainer {
         /** OJ Y - L4 Scoring Position */
         oj.y().onTrue(
             elevator.ElevatorPositionC(ElevatorSubsystem.Position.L4)
-            .andThen(wait(CoralConstants.kWaitDelay))
+            .andThen(wait(CoralConstants.kWaitDelay + 0.2))
             .andThen(coral.CoralPositionC(CoralSubsystem.Position.OUT))
         );
         /** OJ Right Trigger - Score Coral sequence (from L2, L3, and L4) (hold trigger) */
@@ -332,13 +322,13 @@ public class RobotContainer {
         //     .andThen(coral.CoralStopC())
         // );
         /** OJ Right Bumper - Return to previous position */
-        oj.rightBumper().onTrue(
+        oj.x().negate().and(oj.rightBumper()).onTrue(
             elevator.LastPositionC()
             .andThen(wait(CoralConstants.kWaitDelay))
             .andThen(coral.CoralPositionC(CoralSubsystem.Position.OUT))
         );
-        /** OJ Left Bumper - Human Player Intake */
-        oj.leftBumper().onTrue(
+        /** OJ Left Bumper without X - Human Player Intake */
+        oj.x().negate().and(oj.leftBumper()).onTrue(
             elevator.ElevatorPositionC(ElevatorSubsystem.Position.HP)
             .andThen(coral.CoralPositionC(CoralSubsystem.Position.OUT))
             .andThen(algae.setAlgaePositionC(AlgaeSubsystem.Position.UP))
@@ -346,6 +336,19 @@ public class RobotContainer {
             coral.CoralPositionC(CoralSubsystem.Position.SCORE)
             // .andThen(wait(0.5))
             // .andThen(coral.CoralStopC())
+        );
+        /** OJ X and Left Bumper - Home and Zero Coral */
+        oj.x().and(oj.leftBumper()).onTrue(
+          coral.CoralHomeC()
+        ).onFalse(
+          coral.CoralZeroC()
+          .andThen(coral.CoralStopC())
+        );
+        /** OJ X and Right Bumper - Zero Elevator */
+        oj.x().and(oj.rightBumper()).onTrue(
+          noop()
+        ).onFalse(
+          elevator.ElevatorZeroC()
         );
 
         // CLIMBER STUFF
@@ -545,8 +548,13 @@ public class RobotContainer {
     //#endregion Dashboard
 
     //#region Convenience
+    //This command is a shortcut for WaitCommand
     private Command wait(double seconds) {
       return new WaitCommand(seconds);
+    }
+    //This command does nothing
+    private Command noop() {
+      return new InstantCommand(() -> {});
     }
     //#endregion
 }

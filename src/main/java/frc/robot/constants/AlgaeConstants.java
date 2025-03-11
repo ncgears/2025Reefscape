@@ -16,7 +16,7 @@ public class AlgaeConstants {
     public static final boolean isDisabled = false; //disable algae system
     public static final int kCANcoderID = ID.CANcoder.algae;
     public static final boolean kUseCANcoder = true;
-    public static final double kMagnetOffset = 0.140; //0.126465; //0.140137; //Adjust magnet to sensor offset for CANcoder
+    public static final double kMagnetOffset = -0.001221; //0.140137; //Adjust magnet to sensor offset for CANcoder
     public static final boolean kSensorInverted = true;
     public static final double kGearRatio = 60.0; // this is between rotor and sensor
     public static final double kSensorGearRatio = 1.0; // no gearing between sensor and spool
@@ -29,9 +29,9 @@ public class AlgaeConstants {
         public static final double kSpeed = 0.70;
         public static final double kPositionTolerance = 0.05;
         public class Positions {
-            public static final double stow = 0.002;
-            public static final double up = 0.05;
-            public static final double transit = 0.05;
+            public static final double stow = 0.01;
+            public static final double up = 0.04;
+            public static final double transit = 0.04;
             public static final double down = 0.169;
             public static final double proc = 0.08;
             public static final double reef = 0.143;

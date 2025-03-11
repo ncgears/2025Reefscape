@@ -16,7 +16,7 @@ public class AlgaeConstants {
     public static final boolean isDisabled = false; //disable algae system
     public static final int kCANcoderID = ID.CANcoder.algae;
     public static final boolean kUseCANcoder = true;
-    public static final double kMagnetOffset = 0.105225; //Adjust magnet to sensor offset for CANcoder
+    public static final double kMagnetOffset = 0.140137; //Adjust magnet to sensor offset for CANcoder
     public static final boolean kSensorInverted = true;
     public static final double kGearRatio = 60.0; // this is between rotor and sensor
     public static final double kSensorGearRatio = 1.0; // no gearing between sensor and spool

@@ -322,13 +322,13 @@ public class RobotContainer {
         //     .andThen(coral.CoralStopC())
         // );
         /** OJ Right Bumper - Return to previous position */
-        oj.rightBumper().onTrue(
+        oj.x().negate().and(oj.rightBumper()).onTrue(
             elevator.LastPositionC()
             .andThen(wait(CoralConstants.kWaitDelay))
             .andThen(coral.CoralPositionC(CoralSubsystem.Position.OUT))
         );
         /** OJ Left Bumper without X - Human Player Intake */
-        oj.leftBumper().and(oj.x().negate()).onTrue(
+        oj.x().negate().and(oj.leftBumper()).onTrue(
             elevator.ElevatorPositionC(ElevatorSubsystem.Position.HP)
             .andThen(coral.CoralPositionC(CoralSubsystem.Position.OUT))
             .andThen(algae.setAlgaePositionC(AlgaeSubsystem.Position.UP))
@@ -337,17 +337,18 @@ public class RobotContainer {
             // .andThen(wait(0.5))
             // .andThen(coral.CoralStopC())
         );
-        /** OJ Left Bumper with X - Home and Zero Coral */
-        oj.leftBumper().and(oj.x()).onTrue(
-          // coral.CoralPositionC(CoralSubsystem.Position.SCORE)
-          // .andThen(wait(0.4))
-          // .andThen(
-          //     elevator.ElevatorPositionC(ElevatorSubsystem.Position.L1)
-          // )
+        /** OJ X and Left Bumper - Home and Zero Coral */
+        oj.x().and(oj.leftBumper()).onTrue(
           coral.CoralHomeC()
         ).onFalse(
           coral.CoralZeroC()
           .andThen(coral.CoralStopC())
+        );
+        /** OJ X and Right Bumper - Zero Elevator */
+        oj.x().and(oj.rightBumper()).onTrue(
+          noop()
+        ).onFalse(
+          elevator.ElevatorZeroC()
         );
 
         // CLIMBER STUFF
@@ -547,8 +548,13 @@ public class RobotContainer {
     //#endregion Dashboard
 
     //#region Convenience
+    //This command is a shortcut for WaitCommand
     private Command wait(double seconds) {
       return new WaitCommand(seconds);
+    }
+    //This command does nothing
+    private Command noop() {
+      return new InstantCommand(() -> {});
     }
     //#endregion
 }

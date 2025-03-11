@@ -341,6 +341,14 @@ public class ElevatorSubsystem extends SubsystemBase {
     );
   }
 
+  public Command ElevatorZeroC() {
+    return runOnce(() -> {
+      m_motor1.setPosition(0);
+      m_encoder.setPosition(0);
+      NCDebug.Debug.debug("Elevator: Zero Motor and Encoder");
+    });
+  }
+
   public void ElevatorUp() {
     m_curState = State.UP;
     m_motor1.setControl(m_DutyCycle);

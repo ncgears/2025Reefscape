@@ -89,12 +89,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     private final SwerveRequest.SysIdSwerveSteerGains m_steerCharacterization = new SwerveRequest.SysIdSwerveSteerGains();
     private final SwerveRequest.SysIdSwerveRotation m_rotationCharacterization = new SwerveRequest.SysIdSwerveRotation();
 
-    /* Theta controller for heading control */
-    private final PhoenixPIDController m_thetaController = new PhoenixPIDController(10,0,0);
-
-    // private final PIDController m_thetaController = new PIDController(10,0,0);
-    // m_thetaController.enableContinuousInput(-Math.PI, Math.PI);
-    
     /* SysId routine for characterizing translation. This is used to find PID gains for the drive motors. */
     private final SysIdRoutine m_sysIdRoutineTranslation = new SysIdRoutine(
         new SysIdRoutine.Config(
@@ -240,7 +234,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     }
 
     public void init() {
-        m_thetaController.enableContinuousInput(-Math.PI,Math.PI);
         NCDebug.Debug.debug("Drivetrain: Initialized");
     }
 

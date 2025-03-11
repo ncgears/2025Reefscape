@@ -112,7 +112,7 @@ public class RobotContainer {
     public RobotContainer() {
         WebServer.start(5800, Filesystem.getDeployDirectory().getPath());
 
-        snapDrive.HeadingController = new PhoenixPIDController(10,0,0);
+        snapDrive.HeadingController = new PhoenixPIDController(5,0,0);
         snapDrive.HeadingController.enableContinuousInput(-Math.PI,Math.PI);
 
         final InputAxis m_fieldX = new InputAxis("Forward", dj::getLeftY)

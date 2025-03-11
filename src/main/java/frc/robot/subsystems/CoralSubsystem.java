@@ -287,6 +287,20 @@ public class CoralSubsystem extends SubsystemBase {
     }
   }
 
+  public Command CoralHomeC() {
+    return runOnce(() -> {
+      m_motor1.setControl(m_DutyCycle.withOutput(-0.1));
+    });
+  }
+  
+  public Command CoralZeroC() {
+    return runOnce(() -> {
+      m_motor1.setPosition(0);
+      m_encoder.setPosition(0);
+      NCDebug.Debug.debug("Coral: Zero Motor and Encoder");
+    });
+  }
+
   public Command CoralPositionC(Position position) {
     return runOnce(
       () -> setPosition(position)

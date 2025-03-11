@@ -294,13 +294,15 @@ public class RobotContainer {
         // CORAL STUFF
         /** OJ X - L1 Position (currently stow?) */
         oj.x().onTrue(
-            coral.CoralPositionC(CoralSubsystem.Position.SCORE)
-            .andThen(wait(0.4))
-            .andThen(
-                elevator.ElevatorPositionC(ElevatorSubsystem.Position.L1)
-            )
-            // .until(elevator::isAtTarget)
-            // .andThen(coral.CoralStopC())
+          // coral.CoralPositionC(CoralSubsystem.Position.SCORE)
+          // .andThen(wait(0.4))
+          // .andThen(
+          //     elevator.ElevatorPositionC(ElevatorSubsystem.Position.L1)
+          // )
+          coral.CoralHomeC()
+        ).onFalse(
+          coral.CoralZeroC()
+          .andThen(coral.CoralStopC())
         );
         /** OJ A - L2 Scoring Position */
         oj.a().onTrue(

@@ -8,6 +8,7 @@ import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
+import com.ctre.phoenix6.swerve.utility.PhoenixPIDController;
 
 import choreo.auto.AutoChooser;
 import choreo.auto.AutoFactory;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Optional;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.net.WebServer;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -39,6 +41,7 @@ import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import frc.robot.classes.Gyro;
 import frc.robot.classes.Lighting;
 import frc.robot.classes.Lighting.Colors;
+import frc.robot.classes.Targeting.Targets;
 import frc.robot.classes.NCOrchestra;
 import frc.robot.classes.Targeting;
 import frc.robot.classes.Vision;
@@ -83,15 +86,24 @@ public class RobotContainer {
     private double MaxAngularRate = RotationsPerSecond.of(SwerveConstants.kMaxAngularRate).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
 
     private final Telemetry logger = new Telemetry(MaxSpeed);
-    /* Setting up bindings for necessary control of the swerve drive platform */
+    /* Helpers for breaking and wheel strait testing */
+    private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
+    private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
+    /* Setup the drive methods for normal driving, robot strafing, and snap driving */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
         .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
         .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors    
     private final SwerveRequest.RobotCentric robotdrive = new SwerveRequest.RobotCentric()
         .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
-    private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
-    private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
+    private final SwerveRequest.FieldCentricFacingAngle snapDrive = new SwerveRequest.FieldCentricFacingAngle()
+        .withHeadingPID(7.0,0.0,0.0)
+        .withDeadband(MaxSpeed * 0.035)
+        .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
+        // .withDriveRequestType(DriveRequestType.Velocity);
+    public static Rotation2d m_targetDirection = new Rotation2d();
+    public static Boolean m_targetLock = false;
 
+    /* Setup the joysticks */
     private final CommandStadiaController dj = new CommandStadiaController(OIConstants.JoyDriverID);
     private final CommandStadiaController oj = new CommandStadiaController(OIConstants.JoyOperID);
     private final CommandStadiaController pj = new CommandStadiaController(OIConstants.JoyProgID);
@@ -99,6 +111,10 @@ public class RobotContainer {
 
     public RobotContainer() {
         WebServer.start(5800, Filesystem.getDeployDirectory().getPath());
+
+        snapDrive.HeadingController = new PhoenixPIDController(10,0,0);
+        snapDrive.HeadingController.enableContinuousInput(-Math.PI,Math.PI);
+
         final InputAxis m_fieldX = new InputAxis("Forward", dj::getLeftY)
             .withDeadband(OIConstants.kMinDeadband)
             .withInvert(true)
@@ -131,11 +147,25 @@ public class RobotContainer {
         //#region Default Commands
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
-            drivetrain.applyRequest(() ->
-                drive.withVelocityX(m_fieldX.getAsDouble() * MaxSpeed) // Drive forward with negative Y (forward)
-                    .withVelocityY(m_fieldY.getAsDouble() * MaxSpeed) // Drive left with negative X (left)
-                    .withRotationalRate(m_rotate.getAsDouble() * MaxAngularRate) // Drive counterclockwise with negative X (left)
-            )
+            drivetrain.applyRequest(() -> {
+              double rot = m_rotate.getAsDouble();
+              if(Math.abs(rot) > 0) { //turning
+                if(m_targetLock) NCDebug.Debug.debug("Drive: Heading Unlocked");
+                m_targetLock = false;
+              }
+              if(m_targetLock) { //specific facing angle
+                // NCDebug.Debug.debug("drive with facing angle");
+                return snapDrive.withVelocityX(m_fieldX.getAsDouble() * MaxSpeed) // Drive forward with negative Y (forward)
+                .withVelocityY(m_fieldY.getAsDouble() * MaxSpeed) // Drive left with negative X (left)
+                .withTargetDirection(m_targetDirection);
+              } else {
+                // NCDebug.Debug.debug("drive with unlocked");
+                return drive.withVelocityX(m_fieldX.getAsDouble() * MaxSpeed) // Drive forward with negative Y (forward)
+                  .withVelocityY(m_fieldY.getAsDouble() * MaxSpeed) // Drive left with negative X (left)
+                  .withRotationalRate(rot * MaxAngularRate); // Drive counterclockwise with negative X (left)
+                  // .withRotationalRate(m_rotate.getAsDouble() * MaxAngularRate); // Drive counterclockwise with negative X (left)
+              }
+            })
         );
 
         /**
@@ -196,31 +226,14 @@ public class RobotContainer {
         // bind to the disabled() trigger which happens any time the robot is disabled
         RobotModeTriggers.disabled().onTrue(
             new InstantCommand(this::resetRobot).ignoringDisable(true)
-            .alongWith(
-                new RepeatCommand(  //Lighting Disco Party!
-                    lighting.setColorCommand(Colors.NCBLUE)
-                    .andThen(new WaitCommand(0.5))
-                    .andThen(lighting.setColorCommand(Colors.NCGREEN))
-                    .andThen(new WaitCommand(0.5))
-                    .andThen(lighting.setColorCommand(Colors.NCBLUE))
-                    .andThen(new WaitCommand(0.15))
-                    .andThen(lighting.setColorCommand(Colors.OFF))
-                    .andThen(new WaitCommand(0.15))
-                    .andThen(lighting.setColorCommand(Colors.NCBLUE))
-                    .andThen(new WaitCommand(0.15))
-                    .andThen(lighting.setColorCommand(Colors.NCGREEN))
-                    .andThen(new WaitCommand(0.25))
-                ).until(RobotModeTriggers.disabled().negate())
-            )
+            .alongWith(lighting.danceParty()).until(RobotModeTriggers.disabled().negate()).ignoringDisable(true)
             .alongWith(elevator.ElevatorStopC().ignoringDisable(true)).ignoringDisable(true)
         );
         // bind to the autonomous() and teleop() trigger which happens any time the robot is enabled in either of those modes
         RobotModeTriggers.autonomous().or(RobotModeTriggers.teleop()).onTrue(
             new InstantCommand(orchestra::stop).ignoringDisable(true)
-            .andThen(() -> lighting.setColorCommand(Colors.OFF))
+            .andThen(lighting.setColorCommand(Colors.OFF)).ignoringDisable(true)
             .andThen(coral.CoralPositionC(CoralSubsystem.Position.SCORE))
-            // .andThen(wait(0.2))
-            // .andThen(coral.CoralStopC())
         );
         //#endregion
 
@@ -279,12 +292,43 @@ public class RobotContainer {
         ));
 
         //target tracking/alignment buttons
-        dj.leftBumper().and(dj.leftTrigger().negate()).onTrue(targeting.setTrackingRFLC());
-        dj.rightBumper().and(dj.leftTrigger().negate()).onTrue(targeting.setTrackingRFCC());
-        dj.rightTrigger().and(dj.leftTrigger().negate()).onTrue(targeting.setTrackingRFRC());
-        dj.leftBumper().and(dj.leftTrigger()).onTrue(targeting.setTrackingRBLC());
-        dj.rightBumper().and(dj.leftTrigger()).onTrue(targeting.setTrackingRBCC());
-        dj.rightTrigger().and(dj.leftTrigger()).onTrue(targeting.setTrackingRBRC());
+        /** DJ NO Left Trigger...
+         * + Left Bumper - Align to Reef Front Left face
+         * + Right Bumper - Align to Reef Front Center face
+         * + Right Trigger - Align to Reef Front Right face
+         * DJ YES Left Trigger...
+         * + Left Bumper - Align to Reef Rear Left face
+         * + Right Bumper - Align to Reef Rear Center face
+         * + Right Trigger - Align to Reef Rear Right face
+         */
+        dj.leftTrigger().negate().and(dj.leftBumper()).onTrue(updateTargetC(Targets.REEF_FRONT_LEFT_C));
+        dj.leftTrigger().negate().and(dj.rightBumper()).onTrue(updateTargetC(Targets.REEF_FRONT_CENTER_C));
+        dj.leftTrigger().negate().and(dj.rightTrigger()).onTrue(updateTargetC(Targets.REEF_FRONT_RIGHT_C));
+        dj.leftTrigger().and(dj.leftBumper()).onTrue(updateTargetC(Targets.REEF_BACK_LEFT_C));
+        dj.leftTrigger().and(dj.rightBumper()).onTrue(updateTargetC(Targets.REEF_BACK_CENTER_C));
+        dj.leftTrigger().and(dj.rightTrigger()).onTrue(updateTargetC(Targets.REEF_BACK_RIGHT_C));
+        /** DJ Left Trigger (While Held) - Right Stick is facing angle instead of turn */
+        dj.leftTrigger().whileTrue(
+          drivetrain.applyRequest(() -> {
+            // Use right joystick raw for heading
+            double headingX = -dj.getRightY(); // joystick -Y is forward, +X heading
+            double headingY = -dj.getRightX(); // joystick -X is left, +Y heading
+            if ((MathUtil.applyDeadband(headingX, 0.25) != 0.0 || MathUtil.applyDeadband(headingY,0.25) != 0.0) && Math.hypot(headingX, headingY) > 0.1) {
+              m_targetDirection = new Rotation2d(headingX, headingY);
+              // NCDebug.Debug.debug("Drive: Heading Locked to "+NCDebug.General.roundDouble(m_targetDirection.getDegrees(),2));
+            } else {
+              // m_targetDirection = Rotation2d.kZero;
+              if(!m_targetLock) {
+                m_targetDirection = drivetrain.getBotHeading();
+                // NCDebug.Debug.debug("Drive: Heading Locked to "+drivetrain.getBotHeading().getDegrees());
+              }
+              m_targetLock = true;
+            }
+            return snapDrive.withVelocityX(-dj.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
+                .withVelocityY(-dj.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+                .withTargetDirection(m_targetDirection);
+          })
+        );
         
         // reset the field-centric heading on hamburger button press
         dj.hamburger().onTrue(drivetrain.resetGyroC());
@@ -292,6 +336,16 @@ public class RobotContainer {
 
         //#region Operator Joystick
         // CORAL STUFF
+        /** OJ X - L1 Position (currently stow?) */
+        oj.x().onTrue(
+            coral.CoralPositionC(CoralSubsystem.Position.SCORE)
+            .andThen(wait(0.4))
+            .andThen(
+                elevator.ElevatorPositionC(ElevatorSubsystem.Position.L1)
+            )
+            // .until(elevator::isAtTarget)
+            // .andThen(coral.CoralStopC())
+        );
         /** OJ A - L2 Scoring Position */
         oj.a().onTrue(
             elevator.ElevatorPositionC(ElevatorSubsystem.Position.L2)
@@ -548,6 +602,16 @@ public class RobotContainer {
     //#endregion Dashboard
 
     //#region Convenience
+    private void updateTarget(Targets target) {
+      Rotation2d angle = targeting.getAngleOfTarget(target);
+      NCDebug.Debug.debug("Update target to "+target.toString()+" ("+NCDebug.General.roundDouble(angle.getDegrees(),2)+" deg)");
+      m_targetDirection = angle;
+      m_targetLock = true;
+    }
+
+    private Command updateTargetC(Targets target) {
+      return new InstantCommand(() -> updateTarget(target)); 
+    }    
     //This command is a shortcut for WaitCommand
     private Command wait(double seconds) {
       return new WaitCommand(seconds);

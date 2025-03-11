@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -34,90 +35,55 @@ import frc.robot.RobotContainer;
 public class Targeting {
 	private static Targeting instance;
 
-/**
- * 2024 April tag positions, in inches
- * ID	X	Y	Z	Rotation
- * 1	593.68	9.68	53.38	120
- * 2	637.21	34.79	53.38	120
- * 3	652.73	196.17	57.13	180
- * 4	652.73	218.42	57.13	180
- * 5	578.77	323.00	53.38	270
- * 6	72.5	323.00	53.38	270
- * 7	-1.50	218.42	57.13	0
- * 8	-1.50	196.17	57.13	0
- * 9	14.02	34.79	53.38	60
- * 10	57.54	9.68	53.38	60
- * 11	468.69	146.19	52.00	300
- * 12	468.69	177.10	52.00	60
- * 13	441.74	161.62	52.00	180
- * 14	209.48	161.62	52.00	0
- * 15	182.73	177.10	52.00	120
- * 16	182.73	146.19	52.00	240
- * 2024 April tag positions, in meters
- * ID	X	        Y	        Z	        Rotation    Name
- * 1	15.079472	0.245872	1.355852	120         Blue Source Right
- * 2	16.185134	0.883666	1.355852	120         Blue Source Left
- * 3	16.579342	4.982718	1.451102	180         Red Speaker Right
- * 4	16.579342	5.547868	1.451102	180         Red Speaker Center
- * 5	14.700758	8.2042  	1.355852	270         Red Amp Center
- * 6	1.8415  	8.2042	    1.355852	270         Blue Amp Center
- * 7	-0.0381 	5.547868	1.451102	0           Blue Speaker Center
- * 8	-0.0381 	4.982718	1.451102	0           Blue Speaker Left
- * 9	0.356108	0.883666	1.355852	60          Red Source Right
- * 10	1.461516	0.245872	1.355852	60          Red Source Left
- * 11	11.904726	3.713226	1.3208	    300         Red Trap South (left)
- * 12	11.904726	4.49834	    1.3208	    60          Red Trap North (right)
- * 13	11.220196	4.105148	1.3208	    180         Red Trap Center
- * 14	5.320792	4.105148	1.3208	    0           Blue Trap Center
- * 15	4.641342	4.49834 	1.3208	    120         Blue Trap North (left)
- * 16	4.641342	3.713226	1.3208  	240         Blue Trap South (right)
- */
 	/**
 	 * Targets represents different locations on the field that we might be interested in tracking
 	 */
 	private static final double m_fieldLength = VisionConstants.kTagLayout.getFieldLength();
     public enum Targets { //based on blue origin 0,0 (blue driver station, right corner)
-		HP_RIGHT(0.851154,0.65532,1.4859,54),
-		HP_LEFT(0.851154,7.39648,1.4859,306),
-		REEF_FRONT_RIGHT_R(4.2158,3.2234,0,240),
-		REEF_FRONT_RIGHT_C(4.073906,3.306318,0.308102,240),
-		REEF_FRONT_RIGHT_L(3.9312,3.3877,0,240),
-		REEF_FRONT_CENTER_R(3.6576,3.8616,0,180),
-		REEF_FRONT_CENTER_C(3.6576,4.0259,0.308102,180),
-		REEF_FRONT_CENTER_L(3.6576,4.1902,0,180),
-		REEF_FRONT_LEFT_R(3.9312,4.664,0,120),
-		REEF_FRONT_LEFT_C(4.073906,4.745482,0.308102,120),
-		REEF_FRONT_LEFT_L(4.2158,4.8283,0,120),
-		REEF_BACK_RIGHT_R(4.7629,3.2234,0,300),
-		REEF_BACK_RIGHT_C(4.90474,3.306318,0.308102,300),
-		REEF_BACK_RIGHT_L(5.0475,3.3877,0,300),
-		REEF_BACK_CENTER_R(5.321046,3.8616,0,0),
-		REEF_BACK_CENTER_C(5.321046,4.0259,0.308102,0),
-		REEF_BACK_CENTER_L(5.321046,4.1902,0,0),
-		REEF_BACK_LEFT_R(5.0475,4.664,0,60),
-		REEF_BACK_LEFT_C(4.90474,4.745482,0.308102,60),
-		REEF_BACK_LEFT_L(4.7629,4.8283,0,60),
-		PROCESSOR(5.969,-0.00381,1.30175,90),
-		SPIKE_LEFT(1.2192,5.8547,0,-1),
-		SPIKE_CENTER(1.2192,4.0259,0,-1),
-		SPIKE_RIGHT(1.2192,2.1971,0,-1),
-		BARGE_CAGE_RIGHT(8.7741,5.0784,0,-1),
-		BARGE_CAGE_CENTER(8.7741,6.169,0,-1),
-		BARGE_CAGE_LEFT(8.7741,7.2596,0,-1);
-        private final double x,y,z,angle;
-        Targets(double x, double y, double z, double angle) { this.x=x; this.y=y; this.z=z; this.angle=angle; }
-		public Rotation2d getAngle() { return new Rotation2d(this.angle); }
-		public Rotation2d getMirrorAngle() { return new Rotation2d(this.angle).plus(new Rotation2d(-180)); }
-        public Pose3d getPose() { return new Pose3d(
-            new Translation3d(this.x, this.y, this.z),
-			new Rotation3d()
-            // new Rotation3d(0,0,Math.toRadians(this.angle))
-        ); }
-        public Pose3d getMirrorPose() { return new Pose3d(
-            new Translation3d(m_fieldLength - this.x, this.y, this.z),
-			new Rotation3d()
-            // new Rotation3d(0,0,Math.PI - Math.toRadians(this.angle))
-        ); }
+      HP_RIGHT(0.851154,0.65532,1.4859,54),
+      HP_LEFT(0.851154,7.39648,1.4859,306),
+      REEF_FRONT_RIGHT_R(4.2158,3.2234,0,240),
+      REEF_FRONT_RIGHT_C(4.073906,3.306318,0.308102,240),
+      REEF_FRONT_RIGHT_L(3.9312,3.3877,0,240),
+      REEF_FRONT_CENTER_R(3.6576,3.8616,0,180),
+      REEF_FRONT_CENTER_C(3.6576,4.0259,0.308102,180),
+      REEF_FRONT_CENTER_L(3.6576,4.1902,0,180),
+      REEF_FRONT_LEFT_R(3.9312,4.664,0,120),
+      REEF_FRONT_LEFT_C(4.073906,4.745482,0.308102,120),
+      REEF_FRONT_LEFT_L(4.2158,4.8283,0,120),
+      REEF_BACK_RIGHT_R(4.7629,3.2234,0,300),
+      REEF_BACK_RIGHT_C(4.90474,3.306318,0.308102,300),
+      REEF_BACK_RIGHT_L(5.0475,3.3877,0,300),
+      REEF_BACK_CENTER_R(5.321046,3.8616,0,0),
+      REEF_BACK_CENTER_C(5.321046,4.0259,0.308102,0),
+      REEF_BACK_CENTER_L(5.321046,4.1902,0,0),
+      REEF_BACK_LEFT_R(5.0475,4.664,0,60),
+      REEF_BACK_LEFT_C(4.90474,4.745482,0.308102,60),
+      REEF_BACK_LEFT_L(4.7629,4.8283,0,60),
+      PROCESSOR(5.969,-0.00381,1.30175,90),
+      SPIKE_LEFT(1.2192,5.8547,0,-1),
+      SPIKE_CENTER(1.2192,4.0259,0,-1),
+      SPIKE_RIGHT(1.2192,2.1971,0,-1),
+      BARGE_CAGE_RIGHT(8.7741,5.0784,0,-1),
+      BARGE_CAGE_CENTER(8.7741,6.169,0,-1),
+      BARGE_CAGE_LEFT(8.7741,7.2596,0,-1);
+      private final double x,y,z,angle;
+      Targets(double x, double y, double z, double angle) { this.x=x; this.y=y; this.z=z; this.angle=angle; }
+      public Rotation2d getRawAngle() { return Rotation2d.fromDegrees(this.angle); }
+      public Rotation2d getAngle(boolean redOrigin) { return (redOrigin) ? getRawAngle() : getRawAngle().rotateBy(Rotation2d.k180deg); }
+      public Rotation2d getMirrorAngle(boolean redOrigin) { return (redOrigin) ? getRawAngle().unaryMinus() : getRawAngle().unaryMinus().rotateBy(Rotation2d.k180deg); }
+      public Pose3d getPose() { return new Pose3d(
+        new Translation3d(this.x, this.y, this.z),
+  			new Rotation3d()
+          // new Rotation3d(0,0,Math.toRadians(this.angle))
+          ); 
+      }
+      public Pose3d getMirrorPose() { return new Pose3d(
+        new Translation3d(m_fieldLength - this.x, this.y, this.z),
+			  new Rotation3d()
+          // new Rotation3d(0,0,Math.PI - Math.toRadians(this.angle))
+        );
+      }
     }
 	/** State represents different tracking system states */
     public enum State {
@@ -130,11 +96,12 @@ public class Targeting {
         public String getColor() { return this.color; }
     }
     private State m_trackingState = State.STOP; //current Tracking state
-	private Targets m_trackingTarget = Targets.HP_LEFT; //current Tracking target
-	private Pose3d m_shooterPose = new Pose3d();
-	private boolean m_adjustUp = false;
-	public final Trigger isTracking = new Trigger(() -> { return (m_trackingState==State.READY || m_trackingState==State.TRACKING); });
-	public final Trigger isReady = new Trigger(() -> { return (m_trackingState==State.READY); });
+    private Targets m_trackingTarget = Targets.HP_LEFT; //current Tracking target
+    private Pose3d m_shooterPose = new Pose3d();
+    private boolean m_adjustUp = false;
+    public final Trigger isTracking = new Trigger(() -> { return (m_trackingState==State.READY || m_trackingState==State.TRACKING); });
+    public final Trigger isReady = new Trigger(() -> { return (m_trackingState==State.READY); });
+    public final PIDController thetaController = new PIDController(ThetaConstants.kP, ThetaConstants.kI, ThetaConstants.kP, ThetaConstants.kIZone);
   
     public Targeting() {
 		init();
@@ -171,6 +138,10 @@ public class Targeting {
 		return () -> RobotContainer.drivetrain.getState().Pose;
 	}
 
+  public Rotation2d getRobotHeading() {
+    return getPose().get().getRotation().rotateBy(new Rotation2d(Math.PI));
+  }
+
 	public double getBearingOfTarget(Targets target) {
 		return 0.0;
 		//RobotContainer.drivetrain.getTargetHeading();
@@ -181,9 +152,13 @@ public class Targeting {
 	}
 
 	public Rotation2d getAngleOfTarget(Targets target) {
-		// return Rotation2d.fromDegrees(0.0);
-    return target.getAngle();
+    boolean red = RobotContainer.isAllianceRed();
+    Rotation2d perspective = (red) ? Rotation2d.k180deg : Rotation2d.kZero;
+    return (red) ? target.getAngle(red).minus(perspective) : target.getMirrorAngle(red).unaryMinus().minus(perspective);
+    // return target.getRawAngle();
 	}
+
+
 
 	// /**
     //  * Reset the estimated pose of the swerve drive on the field.
@@ -206,28 +181,28 @@ public class Targeting {
 	////#region "Tracking"
 	/** Creates the dashboard for the tracking system */
 	public void createDashboards() {
-		if(true) { //false to disable tracking dashboard
-			ShuffleboardTab systemTab = Shuffleboard.getTab("System");
-			systemTab.addNumber("Bot Pose Hdg", () -> NCDebug.General.roundDouble(getPose().get().getRotation().getDegrees(),2))
-				.withSize(4,2)
-				.withPosition(0,4);
-			// systemTab.addNumber("Shooter Hdg", () -> NCDebug.General.roundDouble(getPose().get().rotateBy(new Rotation2d(Math.PI)).getRotation().getDegrees(),2))
-			// 	.withSize(4,2)
-			// 	.withPosition(4,2);
-			ShuffleboardLayout trackingList = systemTab.getLayout("Target Tracking", BuiltInLayouts.kList)
-				.withSize(4,5)
-				.withPosition(12,5)
-				.withProperties(Map.of("Label position","LEFT"));
-			trackingList.addString("Tracking", this::getTrackingStateColor)
-				.withWidget("Single Color View");
-			trackingList.addString("State", this::getTrackingStateName)
-				.withWidget("Text Display");
-			trackingList.addString("Target", this::getTrackingTargetName)
-				.withWidget("Text Display");
-			trackingList.addNumber("Bearing", this::getTrackingTargetBearing);
-			trackingList.addNumber("Distance", this::getTrackingTargetDistance);
-			trackingList.addNumber("Angle", this::getTrackingTargetAngle);
-		}
+		// if(true) { //false to disable tracking dashboard
+		// 	ShuffleboardTab systemTab = Shuffleboard.getTab("System");
+		// 	systemTab.addNumber("Bot Pose Hdg", () -> NCDebug.General.roundDouble(getPose().get().getRotation().getDegrees(),2))
+		// 		.withSize(4,2)
+		// 		.withPosition(0,4);
+		// 	// systemTab.addNumber("Shooter Hdg", () -> NCDebug.General.roundDouble(getPose().get().rotateBy(new Rotation2d(Math.PI)).getRotation().getDegrees(),2))
+		// 	// 	.withSize(4,2)
+		// 	// 	.withPosition(4,2);
+		// 	ShuffleboardLayout trackingList = systemTab.getLayout("Target Tracking", BuiltInLayouts.kList)
+		// 		.withSize(4,5)
+		// 		.withPosition(12,5)
+		// 		.withProperties(Map.of("Label position","LEFT"));
+		// 	trackingList.addString("Tracking", this::getTrackingStateColor)
+		// 		.withWidget("Single Color View");
+		// 	trackingList.addString("State", this::getTrackingStateName)
+		// 		.withWidget("Text Display");
+		// 	trackingList.addString("Target", this::getTrackingTargetName)
+		// 		.withWidget("Text Display");
+		// 	trackingList.addNumber("Bearing", this::getTrackingTargetBearing);
+		// 	trackingList.addNumber("Distance", this::getTrackingTargetDistance);
+		// 	trackingList.addNumber("Angle", this::getTrackingTargetAngle);
+		// }
 	}
 	/** Determines if the robot should be tracking a target
 	 * @return boolean indicating if robot is tracking
@@ -259,7 +234,7 @@ public class Targeting {
 	/** Disables target tracking */
     public void trackingStop() {
         m_trackingState = State.STOP;
-		RobotContainer.drivetrain.lockHeading();
+		// RobotContainer.drivetrain.lockHeading();
 		NCDebug.Debug.debug("Tracking: Stop Tracking");
 	}
 	/** Sets the requested tracking target

@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RepeatCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.constants.*; 
 import frc.robot.utils.NCDebug;
 
@@ -112,6 +114,27 @@ public class Lighting {
 
   public Command setColorCommand(Colors color) {
     return new InstantCommand(() -> setColor(color)).ignoringDisable(true);
+  }
+
+  public Command danceParty() {
+    return new RepeatCommand(  //Lighting Dance Party!
+      setColorCommand(Colors.NCBLUE)
+      .andThen(wait(0.5))
+      .andThen(setColorCommand(Colors.NCGREEN))
+      .andThen(wait(0.5))
+      .andThen(setColorCommand(Colors.NCBLUE))
+      .andThen(wait(0.15))
+      .andThen(setColorCommand(Colors.OFF))
+      .andThen(wait(0.15))
+      .andThen(setColorCommand(Colors.NCBLUE))
+      .andThen(wait(0.15))
+      .andThen(setColorCommand(Colors.NCGREEN))
+      .andThen(wait(0.25))
+    );
+  }
+
+  private Command wait(double seconds) {
+    return new WaitCommand(seconds);
   }
 
 }

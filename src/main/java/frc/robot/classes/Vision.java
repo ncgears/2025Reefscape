@@ -15,6 +15,8 @@ import org.photonvision.simulation.VisionSystemSim;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
+import com.ctre.phoenix6.Utils;
+
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -319,7 +321,8 @@ public class Vision {
 					estPose = estPose.transformBy(new Transform2d(new Translation2d(-0.44,0.0), new Rotation2d())); 
 					// Change our trust in the measurement based on the tags we can see
 					var estStdDevs = RobotContainer.vision.getFrontEstimationStdDevs(estPose);
-					RobotContainer.drivetrain.addVisionMeasurement(estPose, est.timestampSeconds, estStdDevs);
+          //For CTR, timestamp must be in correct timebase, use Utils.fpgaToCurrentTime(timestamp) to correct
+					RobotContainer.drivetrain.addVisionMeasurement(estPose, Utils.fpgaToCurrentTime(est.timestampSeconds), estStdDevs);
 				}
 			);
 		}
@@ -332,7 +335,8 @@ public class Vision {
 					estPose = estPose.transformBy(new Transform2d(new Translation2d(0.44,0.0), new Rotation2d())); 
 					// Change our trust in the measurement based on the tags we can see
 					var estStdDevs = RobotContainer.vision.getBackEstimationStdDevs(estPose);
-					RobotContainer.drivetrain.addVisionMeasurement(estPose, est.timestampSeconds, estStdDevs);
+          //For CTR, timestamp must be in correct timebase, use Utils.fpgaToCurrentTime(timestamp) to correct
+					RobotContainer.drivetrain.addVisionMeasurement(estPose, Utils.fpgaToCurrentTime(est.timestampSeconds), estStdDevs);
 				}
 			);
 		}

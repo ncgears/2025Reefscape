@@ -4,20 +4,9 @@ TODO:
   Drivers Station:
     - Update drivers station NI game tools and Elastic Dashboard
     - Verify c:\users\public\public documents\frc\frc ds data storage.ini is pointing at correct elastic executable
-  Climber:
-    - Tune climber motor power with new planetary
-  Elevator:
-    - Increase MM jerk setting on accel/decel or reduce acceleration for hard stops and starts
-  Algae:
-    - Wrist slower to drop coral on L1 without affecting Algae pickup (try?)
-    - Reduce barge outtake so it doesn't go over barge
   Drivetrain:
     - Build auton paths
     - Update theta controller for heading lock (ref: FieldCentricFacingAngle HeadingController)
     - Reef side targeting math
     - Re-init robot on disable
-
-Mechanical:
-    - Replace elevator ropes with like types
-    - Change climber planetary to 10:1
 

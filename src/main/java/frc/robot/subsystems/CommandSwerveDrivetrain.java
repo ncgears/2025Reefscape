@@ -13,6 +13,7 @@ import com.ctre.phoenix6.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.swerve.SwerveModule;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.swerve.SwerveRequest;
+import com.ctre.phoenix6.swerve.utility.PhoenixPIDController;
 
 import choreo.Choreo.TrajectoryLogger;
 import choreo.auto.AutoFactory;
@@ -20,6 +21,7 @@ import choreo.trajectory.SwerveSample;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -87,9 +89,12 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     private final SwerveRequest.SysIdSwerveSteerGains m_steerCharacterization = new SwerveRequest.SysIdSwerveSteerGains();
     private final SwerveRequest.SysIdSwerveRotation m_rotationCharacterization = new SwerveRequest.SysIdSwerveRotation();
 
-    /* Theta controller for normal heading lock */
-    private final PIDController m_thetaController = new PIDController(7,0,0);
+    /* Theta controller for heading control */
+    private final PhoenixPIDController m_thetaController = new PhoenixPIDController(10,0,0);
 
+    // private final PIDController m_thetaController = new PIDController(10,0,0);
+    // m_thetaController.enableContinuousInput(-Math.PI, Math.PI);
+    
     /* SysId routine for characterizing translation. This is used to find PID gains for the drive motors. */
     private final SysIdRoutine m_sysIdRoutineTranslation = new SysIdRoutine(
         new SysIdRoutine.Config(
@@ -235,10 +240,11 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     }
 
     public void init() {
+        m_thetaController.enableContinuousInput(-Math.PI,Math.PI);
         NCDebug.Debug.debug("Drivetrain: Initialized");
     }
 
-    	public void createDashboards() {
+   	public void createDashboards() {
 		ShuffleboardTab driverTab = Shuffleboard.getTab("Driver");
 		// driverTab.add("Swerve Drive", this)
 		// 	.withSize(4, 4)
@@ -308,54 +314,41 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 "field_rotation",RobotContainer.isAllianceRed()?90.0:270.0
             ));
 		ShuffleboardLayout systemThetaList = systemTab.getLayout("theta Controller", BuiltInLayouts.kList)
-			.withSize(4,4)
-			.withPosition(0,6)
+			.withSize(4,6)
+			.withPosition(0,4)
 			.withProperties(Map.of("Label position","LEFT"));
 		systemThetaList.addString("Heading Lock", this::getHeadingLockedColor)
 			.withWidget("Single Color View");
 		systemThetaList.addNumber("Target Heading", () -> NCDebug.General.roundDouble(getTargetHeading(),4));
-		systemThetaList.addNumber("Current Heading", () -> NCDebug.General.roundDouble(getHeading().getDegrees(),4));
-		systemThetaList.addNumber("Heading Error", () -> NCDebug.General.roundDouble(getHeadingError(),4));
+		systemThetaList.addNumber("Current Heading", () -> NCDebug.General.roundDouble(getBotHeading().getDegrees(),4));
+		systemThetaList.addNumber("Heading Error", () -> NCDebug.General.roundDouble(getHeadingError().getDegrees(),4));
 
 		if(SwerveConstants.debugDashboard) {
 		}
 
 	}
 
-	public Rotation2d getHeading() {
-		return RobotContainer.gyro.getYaw();
-		// return RobotContainer.pose.getPose().getRotation();
-	}
-
-	public double getHeadingError() {
-		double desired_heading = (isTrackingTarget()) ? Rotation2d.fromDegrees(getTrackingTargetHeading()).rotateBy(new Rotation2d(Math.PI)).getDegrees() : target_heading;
-		// double desired_heading = target_heading;
-		double error = desired_heading - getHeading().getDegrees();
-		return error;
-	}
-
-	public void lockHeading() {
-		target_heading = RobotContainer.gyro.getYaw().getDegrees();
-		heading_locked = true;
-	}
-
-	public void unlockHeading() {
-		heading_locked = false;
-	}
+  public Pose2d getBotPose() {
+    return getState().Pose;
+  }
+  public Rotation2d getBotHeading() {
+    return getBotPose().getRotation();
+  }
+  public Rotation2d getHeadingError() {
+    if(!getHeadingLocked()) return Rotation2d.kZero;
+    return getBotHeading().minus(RobotContainer.m_targetDirection);
+  }
 
 	public void setSuppressVision(boolean suppress) { 
 		m_suppressVision = suppress; 
 		NCDebug.Debug.debug((m_suppressVision) ? "Drive: Vision Suppressed" : "Drive: Vision Unsuppressed");
 	}
-
 	public Command suppressVisionC() {
 		return runOnce(() -> setSuppressVision(true));
 	}
-
 	public Command unsuppressVisionC() {
 		return runOnce(() -> setSuppressVision(false));
 	}
-
 	public void autoSuppressVision() {
 		if(VisionConstants.kUseAutoSuppress) {
 			// ChassisSpeeds speeds = getState().ChassisSpeeds;
@@ -369,16 +362,13 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 	}
 	public boolean isVisionSuppressed() { return m_suppressVision; }
 
-  public boolean getHeadingLocked() { return heading_locked; }
+  public boolean getHeadingLocked() { return RobotContainer.m_targetLock; }
 	public String getHeadingLockedColor() {
-		return (heading_locked) ?
-			(isTrackingTarget()) ? DashboardConstants.Colors.ORANGE : DashboardConstants.Colors.GREEN
-			: DashboardConstants.Colors.RED;
+		return (getHeadingLocked()) ?	DashboardConstants.Colors.GREEN	: DashboardConstants.Colors.RED;
 	}
-	public double getTargetHeading() { return (isTrackingTarget()) ? getTrackingTargetHeading() : target_heading; }
+	public double getTargetHeading() { return RobotContainer.m_targetDirection.getDegrees(); }
 	public boolean isTrackingTarget() { return RobotContainer.targeting.getTracking(); }
 	public double getTrackingTargetHeading() { 
-		// return Rotation2d.fromDegrees(RobotContainer.pose.getTrackingTargetBearing()).rotateBy(new Rotation2d(Math.PI)).getDegrees(); 
 		return Rotation2d.fromDegrees(RobotContainer.targeting.getTrackingTargetBearing()).getDegrees(); 
 	}
 

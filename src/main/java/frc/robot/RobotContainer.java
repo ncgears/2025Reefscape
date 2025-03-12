@@ -534,6 +534,7 @@ public class RobotContainer {
                 autoRoutines = new AutoRoutines(autoFactory);
                 autoChooser.addRoutine("00: None (Do Nothing)", autoRoutines::doNothingAuto);
                 autoChooser.addRoutine("01: Move Off Line", autoRoutines::moveOffLine);
+                autoChooser.addRoutine("91: Left Algae Double", autoRoutines::leftAlgaeDouble);
                 autoChooser.addRoutine("99: Simple Forward", autoRoutines::simpleForwardAuto);
                 // SmartDashboard.putData("Autonomous Chooser", autoChooser);
             // m_auto_chooser = autoChooser;

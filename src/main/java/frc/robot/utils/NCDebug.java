@@ -1,5 +1,7 @@
 package frc.robot.utils;
 
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.constants.*; 
 
 public class NCDebug {
@@ -10,10 +12,13 @@ public class NCDebug {
          * This function takes a string and outputs it to the console when the debugging is enabled
          * @param message String to print to console
          */
-        public final static void debug(String message) {
+        public static final void debug(String message) {
             if (debugEnabled) {
                 System.out.println(message);
             }
+        }
+        public static final Command debugC(String message) {
+          return new InstantCommand(() -> debug(message));
         }
 
         /**

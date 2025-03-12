@@ -49,7 +49,7 @@ public class CoralConstants {
     // public static final double kMotionMagicAccel = 500; // Acceleration: Cruise / Accel = time to cruise
     // public static final double kMotionMagicJerk = 5000; //0=disabled; 10-20x accel for smooth; lower for smoother motion at the cost of time: accel / jerk = jerk time
     //Current Limiting
-    public static final boolean kCurrentLimitEnable = true; // TODO: Test current limits
+    public static final boolean kCurrentLimitEnable = true; 
     public static final double kCurrentLimitAmps = 20.0;
     public static final double kCurrentLimitThresholdAmps = 40.0;
     public static final double kCurrentLimitThresholdSecs = 0.5;
@@ -58,7 +58,7 @@ public class CoralConstants {
         public static final double kRevLimit = -2.82; //Reverse Limit
         public static final double kStow = 0.07; //all the way in (home)
         public static final double kOut = 2.3; //out ready for scoring
-        public static final double kScore = 0.5; //retracted to score
+        public static final double kScore = 0.30; //retracted to score
         public static final double kIn = 0.02; //0.015137; //retracted for transit
     }
     public static final boolean kSoftForwardLimitEnable = true;

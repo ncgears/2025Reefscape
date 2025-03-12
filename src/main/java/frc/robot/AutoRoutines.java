@@ -23,13 +23,24 @@ public class AutoRoutines {
     }
 
     public AutoRoutine simpleForwardAuto() {
-        final AutoRoutine routine = m_factory.newRoutine("SimpleForward");
-        final AutoTrajectory simplePath = routine.trajectory("SimpleForward");
+      final AutoRoutine routine = m_factory.newRoutine("SimpleForward");
+      final AutoTrajectory simplePath = routine.trajectory("SimpleForward");
 
-        routine.active().onTrue(
-            simplePath.resetOdometry()
-                .andThen(simplePath.cmd())
-        );
-        return routine;
-    }
+      routine.active().onTrue(
+          simplePath.resetOdometry()
+              .andThen(simplePath.cmd())
+      );
+      return routine;
+  }
+  public AutoRoutine moveOffLine() {
+    final AutoRoutine routine = m_factory.newRoutine("MoveOffLine");
+    final AutoTrajectory path = routine.trajectory("MoveOffLine");
+
+    routine.active().onTrue(
+        path.resetOdometry()
+            .andThen(path.cmd())
+    );
+    return routine;
+  }
+
 }

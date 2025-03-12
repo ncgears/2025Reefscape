@@ -26,7 +26,7 @@ public class AutoRoutines {
 
         routine.active().onTrue(
             simplePath.resetOdometry()
-                .andThen(simplePath.cmd())
+              .andThen(runPath(simplePath))
         );
         return routine;
     }
@@ -38,7 +38,7 @@ public class AutoRoutines {
       RobotContainer.targeting.resetPose(simplePath.getInitialPose().get());
       routine.active().onTrue(
           simplePath.resetOdometry()
-              .andThen(simplePath.cmd())
+            .andThen(runPath(simplePath))
       );
       return routine;
     }
@@ -50,7 +50,7 @@ public class AutoRoutines {
       RobotContainer.targeting.resetPose(path.getInitialPose().get());
       routine.active().onTrue(
           path.resetOdometry()
-              .andThen(path.cmd())
+            .andThen(runPath(path))
       );
       return routine;
     }

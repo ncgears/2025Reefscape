@@ -112,9 +112,9 @@ public class Targeting {
 		m_trackingState = State.STOP;
 		m_trackingTarget = Targets.HP_LEFT;
 		resetPose(
-			(RobotContainer.isAllianceRed()) //more realistic starting position
-				? new Pose2d(m_fieldLength - 7.2439,4.0082,new Rotation2d()) 
-				: new Pose2d(7.2439,4.0082,new Rotation2d(Math.PI))
+			(RobotContainer.isAllianceRed()) //more realistic starting position, center on black line
+				? new Pose2d(m_fieldLength - 7.2439,4.0082,Rotation2d.kZero) 
+				: new Pose2d(7.2439,4.0082,Rotation2d.kZero)
 		);
 		NCDebug.Debug.debug("Pose: Initialized");
 	}

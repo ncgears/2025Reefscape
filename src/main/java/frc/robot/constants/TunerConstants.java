@@ -82,7 +82,7 @@ public class TunerConstants {
 
     private static final double kDriveGearRatio = SwerveConstants.drive.kGearRatio;
     private static final double kSteerGearRatio = SwerveConstants.steer.kGearRatio;
-    private static final Distance kWheelRadius = Inches.of(SwerveConstants.kWheelDiamInches);
+    private static final Distance kWheelRadius = Inches.of(SwerveConstants.kWheelDiamInches / 2);
 
     private static final boolean kInvertLeftSide = SwerveConstants.kInvertLeftSide;
     private static final boolean kInvertRightSide = SwerveConstants.kInvertRightSide;

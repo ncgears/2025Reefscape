@@ -156,7 +156,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     ShuffleboardTab systemTab = Shuffleboard.getTab("System");
     ShuffleboardLayout ElevatorList = systemTab.getLayout("Elevator", BuiltInLayouts.kList)
-      .withSize(4, 5)
+      .withSize(4, 6)
       .withPosition(12, 0)
       .withProperties(Map.of("Label position", "LEFT"));
     ElevatorList.addString("Status", this::getStateColor)
@@ -164,7 +164,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     ElevatorList.addString("State", this::getStateName);
     ElevatorList.addString("Target", this::getTargetPositionName);
     ElevatorList.addNumber("Target Pos", this::getTargetPosition);
-    ElevatorList.addNumber("Position", () -> NCDebug.General.roundDouble(getPosition().in(Units.Rotations), 6));
+    ElevatorList.addNumber("Motor Pos", () -> NCDebug.General.roundDouble(getPosition().in(Units.Rotations), 6));
 
     if (ElevatorConstants.debugDashboard) {
       ShuffleboardTab debugTab = Shuffleboard.getTab("Debug");

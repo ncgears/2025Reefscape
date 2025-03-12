@@ -174,7 +174,7 @@ public class CoralSubsystem extends SubsystemBase {
     CoralList.addString("Direction", this::getDirectionName);
     CoralList.addString("Target", this::getTargetPositionName);
     CoralList.addNumber("Target Pos", this::getTargetPosition);
-    CoralList.addNumber("Pos", () -> { return NCDebug.General.roundDouble(getMotorPosition().in(Units.Rotations),6); });
+    CoralList.addNumber("Motor Pos", () -> { return NCDebug.General.roundDouble(getMotorPosition().in(Units.Rotations),6); });
 
     if (CoralConstants.debugDashboard) {
       ShuffleboardTab debugTab = Shuffleboard.getTab("Debug");

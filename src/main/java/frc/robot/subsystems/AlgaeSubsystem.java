@@ -174,8 +174,12 @@ public class AlgaeSubsystem extends SubsystemBase {
       .withProperties(Map.of("Label position", "LEFT"));
     AlgaeList.addString("Status", this::getDirectionColor)
       .withWidget("Single Color View");
-    AlgaeList.addString("Position", this::getPositionName);
     AlgaeList.addString("Direction", this::getDirectionName);
+    AlgaeList.addString("Position", this::getPositionName);
+    AlgaeList.addNumber("Target Pos", this::getTargetPosition);
+    AlgaeList.addNumber("Motor Pos", () -> {
+      return NCDebug.General.roundDouble(getMotorPosition().in(Units.Rotations), 6);
+    });
 
     if (AlgaeConstants.debugDashboard) {
       ShuffleboardTab debugTab = Shuffleboard.getTab("Debug");

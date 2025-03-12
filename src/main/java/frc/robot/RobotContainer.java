@@ -516,8 +516,8 @@ public class RobotContainer {
         //List of Widgets: https://github.com/Gold872/elastic-dashboard/wiki/Widgets-List-&-Properties-Reference
         buildAutonChooser();
         buildDriverTab();
-        // buildTab("Swerve");
-        // buildTab("System");
+        buildSystemTab();
+        // buildTab("Swerve"); //placeholder
         // buildPowerTab();
         // buildDebugTab();
         gyro.buildDashboards();
@@ -583,10 +583,19 @@ public class RobotContainer {
     }
 
     @SuppressWarnings({"unused"})
+    private void buildSystemTab(){
+        ShuffleboardTab systemTab = buildTab("System");
+        var chooser = (AutonConstants.isDisabled) ? m_auto_chooser : autoChooser;
+        systemTab.add("Autonomous Chooser", chooser)
+          .withPosition(12, 6)
+          .withSize(8, 2)
+          .withProperties(Map.of("sort_options",true))
+          .withWidget("ComboBox Chooser");
+    }
+
+    @SuppressWarnings({"unused"})
     private void buildDebugTab(){
         ShuffleboardTab debugTab = buildTab("Debug");
-        debugTab.add("Command Scheduler", CommandScheduler.getInstance())
-            .withPosition(0,2);      
     }
 
     @SuppressWarnings({"unused"})

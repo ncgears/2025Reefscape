@@ -526,15 +526,15 @@ public class RobotContainer {
     public void buildAutonChooser() {
         //This builds the auton chooser, giving driver friendly names to the commands from above
         if(AutonConstants.isDisabled) {
-            m_auto_chooser.setDefaultOption("None (Auto Disabled)", Commands.none());
+            m_auto_chooser.setDefaultOption("00: None (Auto Disabled)", Commands.none());
         } else {
             // m_auto_chooser.setDefaultOption("Do Nothing", new cg_autonDoNothing(drive));
             if(AutonConstants.kUseChoreo) {
                 autoFactory = drivetrain.createAutoFactory();
                 autoRoutines = new AutoRoutines(autoFactory);
-                // autoChooser.addRoutine("None (Do Nothing)", autoRoutines::doNothingAuto);
-                autoChooser.addRoutine("Simple Forward", autoRoutines::simpleForwardAuto);
-                autoChooser.addRoutine("Move Off Line", autoRoutines::moveOffLine);
+                autoChooser.addRoutine("00: None (Do Nothing)", autoRoutines::doNothingAuto);
+                autoChooser.addRoutine("01: Move Off Line", autoRoutines::moveOffLine);
+                autoChooser.addRoutine("99: Simple Forward", autoRoutines::simpleForwardAuto);
                 // SmartDashboard.putData("Autonomous Chooser", autoChooser);
             // m_auto_chooser = autoChooser;
             }
@@ -628,7 +628,7 @@ public class RobotContainer {
     }
     //This command does nothing
     private Command noop() {
-      return new InstantCommand(() -> {});
+      return Commands.none();
     }
     //#endregion
 }

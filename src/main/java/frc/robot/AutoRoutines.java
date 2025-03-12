@@ -26,6 +26,7 @@ public class AutoRoutines {
       final AutoRoutine routine = m_factory.newRoutine("SimpleForward");
       final AutoTrajectory simplePath = routine.trajectory("SimpleForward");
 
+      RobotContainer.targeting.resetPose(simplePath.getInitialPose().get());
       routine.active().onTrue(
           simplePath.resetOdometry()
               .andThen(simplePath.cmd())
@@ -35,7 +36,8 @@ public class AutoRoutines {
   public AutoRoutine moveOffLine() {
     final AutoRoutine routine = m_factory.newRoutine("MoveOffLine");
     final AutoTrajectory path = routine.trajectory("MoveOffLine");
-
+  
+    RobotContainer.targeting.resetPose(path.getInitialPose().get());
     routine.active().onTrue(
         path.resetOdometry()
             .andThen(path.cmd())

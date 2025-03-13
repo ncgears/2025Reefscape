@@ -244,55 +244,55 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 		// 	.withPosition(20, 5)
 		// 	.withProperties(Map.of("show_robot_rotation","true"));
 		// driverTab.add("Field", getField())
-		// 	.withSize(12,7)
+		// 	.withSize(17,9)
 		// 	.withPosition(8,0)
 		// 	.withWidget("Field")
 		// 	.withProperties(Map.of("field_game","Crescendo","robot_width",Units.inchesToMeters(Global.kBumperWidth),"robot_length",Units.inchesToMeters(Global.kBumperLength)));
 
-		ShuffleboardTab swerveTab = Shuffleboard.getTab("Swerve");
-		// swerveTab.add("Swerve Drive", null)
-		// 	.withSize(6, 6)
-		// 	.withPosition(0, 0)
-		// 	.withProperties(Map.of("show_robot_rotation","true"));
-		swerveTab.addNumber("FL Angle", () -> NCDebug.General.roundDouble(getState().ModuleStates[0].angle.getDegrees(),2))
-			.withSize(2, 2)
-			.withPosition(6, 0);
-		swerveTab.addNumber("FR Angle", () -> NCDebug.General.roundDouble(getState().ModuleStates[1].angle.getDegrees(),2))
-			.withSize(2, 2)
-			.withPosition(12, 0);
-		swerveTab.addNumber("BL Angle", () -> NCDebug.General.roundDouble(getState().ModuleStates[2].angle.getDegrees(),2))
-			.withSize(2, 2)
-			.withPosition(6, 4);
-		swerveTab.addNumber("BR Angle", () -> NCDebug.General.roundDouble(getState().ModuleStates[3].angle.getDegrees(),2))
-			.withSize(2, 2)
-			.withPosition(12, 4);
-		swerveTab.addNumber("FL Speed", () -> NCDebug.General.roundDouble(getState().ModuleStates[0].speedMetersPerSecond,3))
-			.withSize(2, 2)
-			.withPosition(8, 1);
-		swerveTab.addNumber("FR Speed", () -> NCDebug.General.roundDouble(getState().ModuleStates[1].speedMetersPerSecond,3))
-			.withSize(2, 2)
-			.withPosition(10, 1);
-		swerveTab.addNumber("BL Speed", () -> NCDebug.General.roundDouble(getState().ModuleStates[2].speedMetersPerSecond,3))
-			.withSize(2, 2)
-			.withPosition(8, 3);
-		swerveTab.addNumber("BR Speed", () -> NCDebug.General.roundDouble(getState().ModuleStates[3].speedMetersPerSecond,3))
-			.withSize(2, 2)
-			.withPosition(10, 3);
-		// swerveTab.add("Field", getField())
-		// 	.withSize(6,4)
-		// 	.withPosition(0,6)
-		// 	.withWidget("Field")
-		// 	.withProperties(Map.of("field_game","Crescendo","robot_width",Units.inchesToMeters(Global.kBumperWidth),"robot_length",Units.inchesToMeters(Global.kBumperLength)));
+		// ShuffleboardTab swerveTab = Shuffleboard.getTab("Swerve");
+		// // swerveTab.add("Swerve Drive", null)
+		// // 	.withSize(6, 6)
+		// // 	.withPosition(0, 0)
+		// // 	.withProperties(Map.of("show_robot_rotation","true"));
+		// swerveTab.addNumber("FL Angle", () -> NCDebug.General.roundDouble(getState().ModuleStates[0].angle.getDegrees(),2))
+		// 	.withSize(2, 2)
+		// 	.withPosition(6, 0);
+		// swerveTab.addNumber("FR Angle", () -> NCDebug.General.roundDouble(getState().ModuleStates[1].angle.getDegrees(),2))
+		// 	.withSize(2, 2)
+		// 	.withPosition(12, 0);
+		// swerveTab.addNumber("BL Angle", () -> NCDebug.General.roundDouble(getState().ModuleStates[2].angle.getDegrees(),2))
+		// 	.withSize(2, 2)
+		// 	.withPosition(6, 4);
+		// swerveTab.addNumber("BR Angle", () -> NCDebug.General.roundDouble(getState().ModuleStates[3].angle.getDegrees(),2))
+		// 	.withSize(2, 2)
+		// 	.withPosition(12, 4);
+		// swerveTab.addNumber("FL Speed", () -> NCDebug.General.roundDouble(getState().ModuleStates[0].speedMetersPerSecond,3))
+		// 	.withSize(2, 2)
+		// 	.withPosition(8, 1);
+		// swerveTab.addNumber("FR Speed", () -> NCDebug.General.roundDouble(getState().ModuleStates[1].speedMetersPerSecond,3))
+		// 	.withSize(2, 2)
+		// 	.withPosition(10, 1);
+		// swerveTab.addNumber("BL Speed", () -> NCDebug.General.roundDouble(getState().ModuleStates[2].speedMetersPerSecond,3))
+		// 	.withSize(2, 2)
+		// 	.withPosition(8, 3);
+		// swerveTab.addNumber("BR Speed", () -> NCDebug.General.roundDouble(getState().ModuleStates[3].speedMetersPerSecond,3))
+		// 	.withSize(2, 2)
+		// 	.withPosition(10, 3);
+		// // swerveTab.add("Field", getField())
+		// // 	.withSize(6,4)
+		// // 	.withPosition(0,6)
+		// // 	.withWidget("Field")
+		// // 	.withProperties(Map.of("field_game","Crescendo","robot_width",Units.inchesToMeters(Global.kBumperWidth),"robot_length",Units.inchesToMeters(Global.kBumperLength)));
 
-		// ShuffleboardLayout thetaList = swerveTab.getLayout("theta Controller", BuiltInLayouts.kList)
-		// 	.withSize(4,4)
-		// 	.withPosition(6,6)
-		// 	.withProperties(Map.of("Label position","LEFT"));
-		// thetaList.addString("Heading Lock", this::getHeadingLockedColor)
-		// 	.withWidget("Single Color View");
-		// thetaList.addNumber("Target Heading", () -> NCDebug.General.roundDouble(getTargetHeading(),4));
-		// thetaList.addNumber("Current Heading", () -> NCDebug.General.roundDouble(getHeading().getDegrees(),4));
-		// thetaList.addNumber("Heading Error", () -> NCDebug.General.roundDouble(getHeadingError(),4));
+		// // ShuffleboardLayout thetaList = swerveTab.getLayout("theta Controller", BuiltInLayouts.kList)
+		// // 	.withSize(4,4)
+		// // 	.withPosition(6,6)
+		// // 	.withProperties(Map.of("Label position","LEFT"));
+		// // thetaList.addString("Heading Lock", this::getHeadingLockedColor)
+		// // 	.withWidget("Single Color View");
+		// // thetaList.addNumber("Target Heading", () -> NCDebug.General.roundDouble(getTargetHeading(),4));
+		// // thetaList.addNumber("Current Heading", () -> NCDebug.General.roundDouble(getHeading().getDegrees(),4));
+		// // thetaList.addNumber("Heading Error", () -> NCDebug.General.roundDouble(getHeadingError(),4));
 
 		ShuffleboardTab systemTab = Shuffleboard.getTab("System");
 		systemTab.add("Field", getField())
@@ -307,7 +307,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 "field_rotation",RobotContainer.isAllianceRed()?90.0:270.0
             ));
 		ShuffleboardLayout systemThetaList = systemTab.getLayout("theta Controller", BuiltInLayouts.kList)
-			.withSize(4,6)
+			.withSize(4,5)
 			.withPosition(0,4)
 			.withProperties(Map.of("Label position","LEFT"));
 		systemThetaList.addString("Heading Lock", this::getHeadingLockedColor)

@@ -85,7 +85,7 @@ public class Lighting {
     driverTab.addString("LED Color", this::getColor)
       .withSize(8, 2)
       .withWidget("Single Color View")
-      .withPosition(0, 7);  
+      .withPosition(0, 5);  
 		if(LightingConstants.debugDashboard) {
       ShuffleboardTab debugTab = Shuffleboard.getTab("DBG:Lighting");
       debugTab.addString("LED Color", this::getColor)

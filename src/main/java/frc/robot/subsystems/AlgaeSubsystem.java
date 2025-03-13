@@ -166,7 +166,7 @@ public class AlgaeSubsystem extends SubsystemBase {
     driverTab.addString("Algae", this::getDirectionColor)
       .withSize(2, 2)
       .withWidget("Single Color View")
-      .withPosition(10, 7);
+      .withPosition(2, 7);
     ShuffleboardTab systemTab = Shuffleboard.getTab("System");
     ShuffleboardLayout AlgaeList = systemTab.getLayout("Algae", BuiltInLayouts.kList)
       .withSize(4, 5)

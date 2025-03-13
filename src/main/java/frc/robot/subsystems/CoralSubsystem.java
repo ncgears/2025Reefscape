@@ -163,10 +163,10 @@ public class CoralSubsystem extends SubsystemBase {
     driverTab.addString("Coral", this::getColor)
       .withSize(2, 2)
       .withWidget("Single Color View")
-      .withPosition(8, 7);
+      .withPosition(0, 7);
     ShuffleboardTab systemTab = Shuffleboard.getTab("System");
     ShuffleboardLayout CoralList = systemTab.getLayout("Coral", BuiltInLayouts.kList)
-      .withSize(4, 5)
+      .withSize(4, 4)
       .withPosition(8, 5)
       .withProperties(Map.of("Label position", "LEFT"));
     CoralList.addString("Status", this::getColor)

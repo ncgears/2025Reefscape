@@ -22,11 +22,8 @@ public class AutoRoutines {
 
     public AutoRoutine doNothingAuto() {
         final AutoRoutine routine = m_factory.newRoutine("Do Nothing");
-        final AutoTrajectory path1 = routine.trajectory("Nothing");
-
         routine.active().onTrue(
-            path1.resetOdometry()
-              .andThen(runPath(path1))
+          noop()
         );
         return routine;
     }

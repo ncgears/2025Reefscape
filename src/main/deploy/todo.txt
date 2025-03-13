@@ -2,11 +2,13 @@ TODO:
   Vision:
     - Update PhotoVision on devices (https://github.com/PhotonVision/photonvision/releases/tag/v2025.2.1)
       - https://github.com/PhotonVision/photonvision/releases/download/v2025.2.1/photonvision-v2025.2.1-linuxarm64.jar
-    - Upload new tag layout json with only reef tags
-      - new AprilTagFieldLayout(FileSystem.getDeployDirectory() + "/2025reefscape_tags_welded_reefonly.json")
+    - Upload new tag layout json to photonvision with only reef tags
   Drivetrain:
     - Build auton paths
     - Update theta controller for heading lock (ref: FieldCentricFacingAngle HeadingController)
     - Reef side targeting math
     - Re-init robot on disable
 
+Future:
+  - Vision subsystem overhaul from Mechanical Advantage AdvantageKit
+    - https://github.com/Mechanical-Advantage/AdvantageKit/tree/main/template_projects/sources/vision/src/main/java/frc/robot/subsystems/vision

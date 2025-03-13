@@ -30,8 +30,8 @@ public class AlgaeConstants {
         public static final double kPositionTolerance = 0.05;
         public class Positions {
             public static final double stow = 0.01;
-            public static final double up = 0.04;
-            public static final double transit = 0.04;
+            public static final double up = 0.025;
+            public static final double transit = 0.025;
             public static final double down = 0.169;
             public static final double proc = 0.08;
             public static final double reef = 0.143;
@@ -51,15 +51,15 @@ public class AlgaeConstants {
     }
 
     //PID Control
-    public static final double kS = 0.6; // add kS to overcome static friction: adjust first to start moving
+    public static final double kS = 0.2; // add kS to overcome static friction: adjust first to start moving
     public static final double kV = 3.596; //0.14; // add kV for velocity target: voltage(12) / velocity target.. 1 rps results in 0.12v output
     public static final double kA = 1.1036; // add kA for acceleration: 0.01 = 1 rps/s requires 0.01v output
-    public static final double kP = 40; // add kP per rotation of error: error of 1 rotation results in 12v output (this might be low for aimer)
+    public static final double kP = 27; // add kP per rotation of error: error of 1 rotation results in 12v output (this might be low for aimer)
     public static final double kI = 0.0; // no integral
-    public static final double kD = 0.0; // 0.1 = velocity error of 1rps results in 0.1v output
+    public static final double kD = 0.5; // 0.1 = velocity error of 1rps results in 0.1v output
     public static final double kMotionMagicCruise = 50; // Motor Max / Gear Ratio
-    public static final double kMotionMagicAccel = 400; // Acceleration: Cruise / Accel = time to cruise
-    public static final double kMotionMagicJerk = 2000; //0=disabled; 10-20x accel for smooth; lower for smoother motion at the cost of time: accel / jerk = jerk time
+    public static final double kMotionMagicAccel = 3; // Acceleration: Cruise / Accel = time to cruise
+    public static final double kMotionMagicJerk = 30; //0=disabled; 10-20x accel for smooth; lower for smoother motion at the cost of time: accel / jerk = jerk time
     //Current Limiting
     public static final boolean kCurrentLimitEnable = false; // TODO: Test current limits
     public static final double kCurrentLimitAmps = 30.0;

@@ -9,6 +9,7 @@ import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
+import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.StaticBrake;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.CANcoder;
@@ -88,6 +89,7 @@ public class AlgaeSubsystem extends SubsystemBase {
   private Position m_curPosition = Position.STOW;
 
   private final MotionMagicVoltage m_mmVoltage = new MotionMagicVoltage(0);
+  private final PositionVoltage m_posVoltage = new PositionVoltage(0);
   // private final DutyCycleOut m_DutyCycle = new DutyCycleOut(0);
   private final NeutralOut m_neutral = new NeutralOut();
   private final StaticBrake m_brake = new StaticBrake();
@@ -275,7 +277,8 @@ public class AlgaeSubsystem extends SubsystemBase {
 
   // #region Setters
   private void setPosition(Position position) {
-    m_wristmotor1.setControl(m_mmVoltage.withPosition(position.getRotations()));
+    // m_wristmotor1.setControl(m_mmVoltage.withPosition(position.getRotations()));
+    m_wristmotor1.setControl(m_posVoltage.withPosition(position.getRotations()));
     NCDebug.Debug.debug("Elevator: Move to " + position.toString());
     m_curPosition = position;
   }

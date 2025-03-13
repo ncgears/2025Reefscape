@@ -22,47 +22,47 @@ public class AutoRoutines {
 
     public AutoRoutine doNothingAuto() {
         final AutoRoutine routine = m_factory.newRoutine("Do Nothing");
-        final AutoTrajectory simplePath = routine.trajectory("Nothing");
+        final AutoTrajectory path1 = routine.trajectory("Nothing");
 
         routine.active().onTrue(
-            simplePath.resetOdometry()
-              .andThen(runPath(simplePath))
+            path1.resetOdometry()
+              .andThen(runPath(path1))
         );
         return routine;
     }
 
-    public AutoRoutine simpleForwardAuto() {
-      final AutoRoutine routine = m_factory.newRoutine("SimpleForward");
-      final AutoTrajectory simplePath = routine.trajectory("SimpleForward");
+    public AutoRoutine sCmoveOffLine() {
+      final AutoRoutine routine = m_factory.newRoutine("sCMoveOffLine");
+      final AutoTrajectory path1 = routine.trajectory("sC-MoveOffLine");
 
-      RobotContainer.targeting.resetPose(simplePath.getInitialPose().get());
+      seedPose(path1);
       routine.active().onTrue(
-          simplePath.resetOdometry()
-            .andThen(runPath(simplePath))
+          path1.resetOdometry()
+            .andThen(runPath(path1))
       );
       return routine;
     }
 
     public AutoRoutine sLLmoveOffLine() {
       final AutoRoutine routine = m_factory.newRoutine("sLLMoveOffLine");
-      final AutoTrajectory path = routine.trajectory("sLL-MoveOffLine");
+      final AutoTrajectory path1 = routine.trajectory("sLL-MoveOffLine");
     
-      RobotContainer.targeting.resetPose(path.getInitialPose().get());
+      seedPose(path1);
       routine.active().onTrue(
-          path.resetOdometry()
-            .andThen(runPath(path))
+          path1.resetOdometry()
+            .andThen(runPath(path1))
       );
       return routine;
     }
 
     public AutoRoutine sRRmoveOffLine() {
       final AutoRoutine routine = m_factory.newRoutine("sRRMoveOffLine");
-      final AutoTrajectory path = routine.trajectory("sRR-MoveOffLine");
+      final AutoTrajectory path1 = routine.trajectory("sRR-MoveOffLine");
     
-      RobotContainer.targeting.resetPose(path.getInitialPose().get());
+      seedPose(path1);
       routine.active().onTrue(
-          path.resetOdometry()
-            .andThen(runPath(path))
+          path1.resetOdometry()
+            .andThen(runPath(path1))
       );
       return routine;
     }

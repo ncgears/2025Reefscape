@@ -535,8 +535,8 @@ public class RobotContainer {
                 autoChooser.addRoutine("000: None (Do Nothing)", autoRoutines::doNothingAuto);
                 autoChooser.addRoutine("001: sLL-Move Off Line", autoRoutines::sLLmoveOffLine);
                 autoChooser.addRoutine("002: sRR-Move Off Line", autoRoutines::sRRmoveOffLine);
+                autoChooser.addRoutine("003: sC-Move Off Line", autoRoutines::sCmoveOffLine);
                 autoChooser.addRoutine("901: Left Algae Double", autoRoutines::leftAlgaeDouble);
-                autoChooser.addRoutine("902: Simple Forward", autoRoutines::simpleForwardAuto);
                 // SmartDashboard.putData("Autonomous Chooser", autoChooser);
             // m_auto_chooser = autoChooser;
             }

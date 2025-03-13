@@ -26,8 +26,7 @@ public class VisionConstants {
     public static final boolean kUseVisionForPose = true; //enable vision measurements to pose correction
     public static final boolean kUseAutoSuppress = false; //enable suppressing vision measurements based on speed
     public static final double kAutosuppressSpeedMetersPerSecond = 2.5; //speed at which to suppress vision addition
-    public static final AprilTagFieldLayout kTagLayout = AprilTagFields.kDefaultField.loadAprilTagLayoutField();
-    // public static final AprilTagFieldLayout kTagLayout = new AprilTagFieldLayout(Filesystem.getDeployDirectory() + "/2025reefscape_tags_welded_reefonly.json");
+    public static final AprilTagFieldLayout kTagLayout = getTagLayout();
     // The standard deviations of our vision estimated poses, which affect correction rate
     // (Fake values. Experiment and determine estimation noise on an actual robot.)
     public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(4, 4, 8);
@@ -47,5 +46,16 @@ public class VisionConstants {
             new Translation3d(-0.223,0.285,0.286), //x,y,z location of camera on robot in meters
             new Rotation3d(0,Math.toRadians(70.82),Math.toRadians(180)) //yaw,pitch/roll of camera on robot in radians
         );
+    }
+
+    /** This method tries to load a custom tag layout json file, or falls back to the default field 
+     * @return AprilTagFieldLayout for the custom layout file or the default field
+    */
+    private static AprilTagFieldLayout getTagLayout() {
+      try {
+        return new AprilTagFieldLayout(Filesystem.getDeployDirectory().getAbsolutePath() + "/2025reefscape_tags_welded_reefonly.json");
+      } catch (Exception e) {
+        return AprilTagFields.k2025Reefscape.loadAprilTagLayoutField();
+      }
     }
 }

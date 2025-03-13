@@ -14,6 +14,7 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.wpilibj.Filesystem;
 
 //Sometimes it is useful to comment out the following to see what variables or what controller buttons are not assigned yet
 @SuppressWarnings("unused") //We silence the "unused variables" warnings in VSCode
@@ -26,6 +27,7 @@ public class VisionConstants {
     public static final boolean kUseAutoSuppress = false; //enable suppressing vision measurements based on speed
     public static final double kAutosuppressSpeedMetersPerSecond = 2.5; //speed at which to suppress vision addition
     public static final AprilTagFieldLayout kTagLayout = AprilTagFields.kDefaultField.loadAprilTagLayoutField();
+    // public static final AprilTagFieldLayout kTagLayout = new AprilTagFieldLayout(Filesystem.getDeployDirectory() + "/2025reefscape_tags_welded_reefonly.json");
     // The standard deviations of our vision estimated poses, which affect correction rate
     // (Fake values. Experiment and determine estimation noise on an actual robot.)
     public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(4, 4, 8);

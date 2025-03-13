@@ -1,9 +1,9 @@
 TODO:
   Vision:
-    - Test AddVisionMeasurement into ctre pose estimator for photon readings when seeing ATs
-  Drivers Station:
-    - Update drivers station NI game tools and Elastic Dashboard
-    - Verify c:\users\public\public documents\frc\frc ds data storage.ini is pointing at correct elastic executable
+    - Update PhotoVision on devices (https://github.com/PhotonVision/photonvision/releases/tag/v2025.2.1)
+      - https://github.com/PhotonVision/photonvision/releases/download/v2025.2.1/photonvision-v2025.2.1-linuxarm64.jar
+    - Upload new tag layout json with only reef tags
+      - new AprilTagFieldLayout(FileSystem.getDeployDirectory() + "/2025reefscape_tags_welded_reefonly.json")
   Drivetrain:
     - Build auton paths
     - Update theta controller for heading lock (ref: FieldCentricFacingAngle HeadingController)

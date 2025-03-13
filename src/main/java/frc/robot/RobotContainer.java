@@ -532,10 +532,11 @@ public class RobotContainer {
             if(AutonConstants.kUseChoreo) {
                 autoFactory = drivetrain.createAutoFactory();
                 autoRoutines = new AutoRoutines(autoFactory);
-                autoChooser.addRoutine("00: None (Do Nothing)", autoRoutines::doNothingAuto);
-                autoChooser.addRoutine("01: Move Off Line", autoRoutines::moveOffLine);
-                autoChooser.addRoutine("91: Left Algae Double", autoRoutines::leftAlgaeDouble);
-                autoChooser.addRoutine("99: Simple Forward", autoRoutines::simpleForwardAuto);
+                autoChooser.addRoutine("000: None (Do Nothing)", autoRoutines::doNothingAuto);
+                autoChooser.addRoutine("001: sLL-Move Off Line", autoRoutines::sLLmoveOffLine);
+                autoChooser.addRoutine("002: sRR-Move Off Line", autoRoutines::sRRmoveOffLine);
+                autoChooser.addRoutine("901: Left Algae Double", autoRoutines::leftAlgaeDouble);
+                autoChooser.addRoutine("902: Simple Forward", autoRoutines::simpleForwardAuto);
                 // SmartDashboard.putData("Autonomous Chooser", autoChooser);
             // m_auto_chooser = autoChooser;
             }
@@ -551,20 +552,20 @@ public class RobotContainer {
             .withProperties(Map.of("time_display_mode","Minutes and Seconds","red_start_time",15,"yellow_start_time",30)) //mode: "Seconds Only" or "Minutes and Seconds"
             .withWidget("Match Time");
         // Auton Chooser
-        if(AutonConstants.isDisabled) {
-            driverTab.add("Autonomous Chooser", m_auto_chooser)
-                .withPosition(0, 5)
-                .withSize(8, 2)
-                .withProperties(Map.of("sort_options",true))
-                .withWidget("ComboBox Chooser");
-        } else {
-            // SmartDashboard.putData("Autonomous Chooser", autoChooser);
-            driverTab.add("Autonomous Chooser", autoChooser)
-                .withPosition(0, 5)
-                .withSize(8, 2)
-                .withProperties(Map.of("sort_options",true))
-                .withWidget("ComboBox Chooser");
-        }
+        // if(AutonConstants.isDisabled) {
+        //     driverTab.add("Autonomous Chooser", m_auto_chooser)
+        //         .withPosition(0, 5)
+        //         .withSize(8, 2)
+        //         .withProperties(Map.of("sort_options",true))
+        //         .withWidget("ComboBox Chooser");
+        // } else {
+        //     // SmartDashboard.putData("Autonomous Chooser", autoChooser);
+        //     driverTab.add("Autonomous Chooser", autoChooser)
+        //         .withPosition(0, 5)
+        //         .withSize(8, 2)
+        //         .withProperties(Map.of("sort_options",true))
+        //         .withWidget("ComboBox Chooser");
+        // }
             // FMS Info - Cannot be programmatically placed, but we put it here for informative reasons
             // driverTab.add("FMS Info", "")
             //   .withPosition(0,5)

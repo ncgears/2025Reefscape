@@ -114,7 +114,7 @@ public final class CTREConfigs {
 
         //Algae Configuration
         //CANcoder
-        algaeCCConfig.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 0.5;
+        algaeCCConfig.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 0.12;
         algaeCCConfig.MagnetSensor.SensorDirection = (AlgaeConstants.kSensorInverted) ? SensorDirectionValue.Clockwise_Positive : SensorDirectionValue.CounterClockwise_Positive;
         algaeCCConfig.MagnetSensor.MagnetOffset = AlgaeConstants.kMagnetOffset;
 

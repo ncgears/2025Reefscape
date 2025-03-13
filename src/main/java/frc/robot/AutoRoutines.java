@@ -43,9 +43,21 @@ public class AutoRoutines {
       return routine;
     }
 
-    public AutoRoutine moveOffLine() {
-      final AutoRoutine routine = m_factory.newRoutine("MoveOffLine");
-      final AutoTrajectory path = routine.trajectory("MoveOffLine");
+    public AutoRoutine sLLmoveOffLine() {
+      final AutoRoutine routine = m_factory.newRoutine("sLLMoveOffLine");
+      final AutoTrajectory path = routine.trajectory("sLL-MoveOffLine");
+    
+      RobotContainer.targeting.resetPose(path.getInitialPose().get());
+      routine.active().onTrue(
+          path.resetOdometry()
+            .andThen(runPath(path))
+      );
+      return routine;
+    }
+
+    public AutoRoutine sRRmoveOffLine() {
+      final AutoRoutine routine = m_factory.newRoutine("sRRMoveOffLine");
+      final AutoTrajectory path = routine.trajectory("sRR-MoveOffLine");
     
       RobotContainer.targeting.resetPose(path.getInitialPose().get());
       routine.active().onTrue(

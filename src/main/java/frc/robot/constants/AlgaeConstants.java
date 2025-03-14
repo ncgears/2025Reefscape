@@ -21,7 +21,7 @@ public class AlgaeConstants {
     public static final double kGearRatio = 60.0; // this is between rotor and sensor
     public static final double kSensorGearRatio = 1.0; // no gearing between sensor and spool
     public static final double kIntakeSpeed = 0.5; 
-    public static final double kOuttakeSpeed = 0.75;
+    public static final double kOuttakeSpeed = 0.60;
     public class wrist {
         public static final int kMotorID = ID.TalonFX.algae_wrist;
         public static final boolean kIsInverted = false;

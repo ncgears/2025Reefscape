@@ -25,7 +25,7 @@ public class AlgaeConstants {
     public class wrist {
         public static final int kMotorID = ID.TalonFX.algae_wrist;
         public static final boolean kIsInverted = false;
-        public static final NeutralModeValue kNeutralMode = NeutralModeValue.Coast;
+        public static final NeutralModeValue kNeutralMode = NeutralModeValue.Brake;
         public static final double kSpeed = 0.70;
         public static final double kPositionTolerance = 0.05;
         public class Positions {

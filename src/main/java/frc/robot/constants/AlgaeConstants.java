@@ -33,7 +33,7 @@ public class AlgaeConstants {
             public static final double up = 0.025;
             public static final double transit = 0.025;
             public static final double down = 0.169;
-            public static final double proc = 0.08;
+            public static final double proc = 0.125;
             public static final double reef = 0.143;
             public static final double floor = 0.24;
             public static final double kSoftForwardLimit = 0.269;

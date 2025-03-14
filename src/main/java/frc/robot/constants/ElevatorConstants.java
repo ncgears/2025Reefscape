@@ -57,9 +57,9 @@ public class ElevatorConstants {
         public static final double kRevLimit = -0.01; //Reverse Limit
         public static final double kStow = 0.0; //all the way down
         public static final double kFloor = 0.28;
-        public static final double kBarge = kFwdLimit; //all the way up
+        public static final double kBarge = 5.68; //all the way up
         public static final double kProcessor = kStow; //all the way down
-        public static final double kL4 = 5.00; //Elevator up to L4
+        public static final double kL4 = 4.87; //Elevator up to L4
         public static final double kL4Score = kL4 - 1.0; //Elevator up to L4 Score
         public static final double kAlgaeHigh = 2.73; //Elevator between L3 and L4
         public static final double kL3 = 2.85; //Elevator up to L3

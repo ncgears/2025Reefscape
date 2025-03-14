@@ -40,6 +40,25 @@ public class AutoRoutines {
       return routine;
     }
 
+    public AutoRoutine sCScoreAlgae() {
+      final AutoRoutine routine = m_factory.newRoutine("sCScoreAlgae");
+      final AutoTrajectory path1 = routine.trajectory("sC-rBC");
+
+      path1.done().onTrue(
+        RobotContainer.elevator.ElevatorPositionC(ElevatorSubsystem.Position.ALGAELOW)
+        .andThen(wait(0.5))
+        .andThen(RobotContainer.algae.setAlgaePositionC(AlgaeSubsystem.Position.REEF))
+        .andThen(RobotContainer.algae.startToroC(false))
+      );
+
+      seedPose(path1);
+      routine.active().onTrue(
+          path1.resetOdometry()
+            .andThen(runPath(path1))
+      );
+      return routine;
+    }
+
     public AutoRoutine sLLmoveOffLine() {
       final AutoRoutine routine = m_factory.newRoutine("sLLMoveOffLine");
       final AutoTrajectory path1 = routine.trajectory("sLL-MoveOffLine");

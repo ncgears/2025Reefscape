@@ -151,8 +151,7 @@ public class AlgaeSubsystem extends SubsystemBase {
    */
   public void init() {
     AlgaeBrake();
-    setPosition(Position.STOW);
-    // AlgaeStop();
+    // setPosition(Position.STOW);  //this was a workaround for the moving magnet, not needed.
     m_curDirection = Direction.STOP;
     NCDebug.Debug.debug("Algae: Initialized");
   }

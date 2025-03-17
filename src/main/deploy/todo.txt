@@ -2,12 +2,14 @@ TODO:
   Vision:
     - Test for exact position (does PV think robot is in right spot)
     - Test for pose updates (does pose think robot is in right spot)
-  Algae:
-    - Init to correct position on poweron
-    - Remove delay when returning to last position
   Drivetrain:
     - Build auton paths
+    - Fix issue causing driver has to re-zero every match
     - Re-init robot on disable
+  Verify Fixes:
+    - Algae init to correct position on powerup
+    - Remove delay when returning to last position
+
 
 Links:
   - PV-Front: http://10.19.18.11:5800

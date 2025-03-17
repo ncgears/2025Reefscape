@@ -1,12 +1,12 @@
 TODO:
   Vision:
-    - Update PhotoVision on devices (https://github.com/PhotonVision/photonvision/releases/tag/v2025.2.1)
-      - https://github.com/PhotonVision/photonvision/releases/download/v2025.2.1/photonvision-v2025.2.1-linuxarm64.jar
-    - Upload new tag layout json to photonvision with only reef tags
+    - Test for exact position (does PV think robot is in right spot)
+    - Test for pose updates (does pose think robot is in right spot)
+  Algae:
+    - Init to correct position on poweron
+    - Remove delay when returning to last position
   Drivetrain:
     - Build auton paths
-    - Update theta controller for heading lock (ref: FieldCentricFacingAngle HeadingController)
-    - Reef side targeting math
     - Re-init robot on disable
 
 Links:
@@ -14,6 +14,8 @@ Links:
   - PV-Back: http://10.19.18.12:5800
 
 Reference:
+  - PhotonVision Releases
+    - https://github.com/PhotonVision/photonvision/releases/tag/v2025.2.1
   - Vision subsystem overhaul from Mechanical Advantage AdvantageKit
     - https://github.com/Mechanical-Advantage/AdvantageKit/tree/main/template_projects/sources/vision/src/main/java/frc/robot/subsystems/vision
   - April Tag Visualizer

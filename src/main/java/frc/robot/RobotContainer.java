@@ -371,10 +371,6 @@ public class RobotContainer {
             .andThen(wait(0.2))
             .andThen(coral.CoralPositionC(CoralSubsystem.Position.SCORE))
         );
-        // .onFalse(
-        //     wait(0.2)
-        //     .andThen(coral.CoralStopC())
-        // );
         /** OJ Right Bumper - Return to previous position */
         oj.x().negate().and(oj.rightBumper()).onTrue(
             elevator.LastPositionC()

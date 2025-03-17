@@ -378,7 +378,7 @@ public class RobotContainer {
         /** OJ Right Bumper - Return to previous position */
         oj.x().negate().and(oj.rightBumper()).onTrue(
             elevator.LastPositionC()
-            .andThen(wait(CoralConstants.kWaitDelay))
+            // .andThen(wait(CoralConstants.kWaitDelay))
             .andThen(coral.CoralPositionC(CoralSubsystem.Position.OUT))
         );
         /** OJ Left Bumper without X - Human Player Intake */

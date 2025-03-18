@@ -75,6 +75,7 @@ public class ElevatorConstants {
         public static final double kAlgaeHigh = 2.73; //Elevator between L3 and L4
         public static final double kL3 = 2.85; //Elevator up to L3
         public static final double kL3Score = kL3 - kScoreDelta; //Elevator up to L3 Score
+        public static final double kLineup = 1.25; //Elevator height for lining up 
         public static final double kAlgaeLow = 1.25; //Elevator between L2 and L3
         public static final double kL2 = 1.51; //Elevator up to L2
         public static final double kL2Score = kL2 - kScoreDelta; //Elevator up to L2 Score

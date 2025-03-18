@@ -364,6 +364,10 @@ public class RobotContainer {
             .andThen(wait(CoralConstants.kWaitDelay + 0.2))
             .andThen(coral.CoralPositionC(CoralSubsystem.Position.OUT))
         );
+        /** OJ X - L4 Scoring Position */
+        oj.x().onTrue(
+          elevator.ElevatorPositionC(ElevatorSubsystem.Position.LINEUP)
+        );
         /** OJ Right Trigger - Score Coral sequence (from L2, L3, and L4) (hold trigger) */
         oj.rightTrigger().onTrue(
             elevator.ScoreC()
@@ -372,13 +376,13 @@ public class RobotContainer {
             .andThen(coral.CoralPositionC(CoralSubsystem.Position.SCORE))
         );
         /** OJ Right Bumper - Return to previous position */
-        oj.x().negate().and(oj.rightBumper()).onTrue(
+        oj.ellipses().negate().and(oj.rightBumper()).onTrue(
             elevator.LastPositionC()
             // .andThen(wait(CoralConstants.kWaitDelay))
             .andThen(coral.CoralPositionC(CoralSubsystem.Position.OUT))
         );
         /** OJ Left Bumper without X - Human Player Intake */
-        oj.x().negate().and(oj.leftBumper()).onTrue(
+        oj.ellipses().negate().and(oj.leftBumper()).onTrue(
             elevator.ElevatorPositionC(ElevatorSubsystem.Position.HP)
             .andThen(coral.CoralPositionC(CoralSubsystem.Position.OUT))
             .andThen(algae.setAlgaePositionC(AlgaeSubsystem.Position.UP))
@@ -387,15 +391,15 @@ public class RobotContainer {
             // .andThen(wait(0.5))
             // .andThen(coral.CoralStopC())
         );
-        /** OJ X and Left Bumper - Home and Zero Coral */
-        oj.x().and(oj.leftBumper()).onTrue(
+        /** OJ Ellipses and Left Bumper - Home and Zero Coral */
+        oj.ellipses().and(oj.leftBumper()).onTrue(
           coral.CoralHomeC()
         ).onFalse(
           coral.CoralZeroC()
           .andThen(coral.CoralStopC())
         );
-        /** OJ X and Right Bumper - Zero Elevator */
-        oj.x().and(oj.rightBumper()).onTrue(
+        /** OJ Ellipses and Right Bumper - Zero Elevator */
+        oj.ellipses().and(oj.rightBumper()).onTrue(
           noop()
         ).onFalse(
           elevator.ElevatorZeroC()
@@ -457,13 +461,8 @@ public class RobotContainer {
         .onFalse(
           algae.stopToroC()
         );
-        /** OJ Ellipses - Stop toros */
-        oj.ellipses().onTrue(
-            algae.stopToroC()
-        );
+        /** OJ Google - Stop toros */
         oj.google().onTrue(
-            algae.startToroC(false)
-        ).onFalse(
             algae.stopToroC()
         );
 

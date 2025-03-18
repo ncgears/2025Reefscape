@@ -214,14 +214,23 @@ public final class CTREConfigs {
         elevatorCCConfig.MagnetSensor.MagnetOffset = ElevatorConstants.kMagnetOffset;
 
         Slot0Configs elevatorSlot0Configs = new Slot0Configs()
-            .withKP(ElevatorConstants.kP)
-            .withKI(ElevatorConstants.kI)
-            .withKD(ElevatorConstants.kD)
-            .withKS(ElevatorConstants.kS)
-            .withKV(ElevatorConstants.kV)
-            .withKA(ElevatorConstants.kA)
-            .withKG(ElevatorConstants.kG);
+            .withKP(ElevatorConstants.up.kP)
+            .withKI(ElevatorConstants.up.kI)
+            .withKD(ElevatorConstants.up.kD)
+            .withKS(ElevatorConstants.up.kS)
+            .withKV(ElevatorConstants.up.kV)
+            .withKA(ElevatorConstants.up.kA)
+            .withKG(ElevatorConstants.up.kG);
         elevatorFXConfig.Slot0 = elevatorSlot0Configs;
+        Slot1Configs elevatorSlot1Configs = new Slot1Configs()
+            .withKP(ElevatorConstants.down.kP)
+            .withKI(ElevatorConstants.down.kI)
+            .withKD(ElevatorConstants.down.kD)
+            .withKS(ElevatorConstants.down.kS)
+            .withKV(ElevatorConstants.down.kV)
+            .withKA(ElevatorConstants.down.kA)
+            .withKG(ElevatorConstants.down.kG);
+        elevatorFXConfig.Slot1 = elevatorSlot1Configs;
         //Current Limits
         CurrentLimitsConfigs elevatorCurrentLimitsConfigs = new CurrentLimitsConfigs()
             .withSupplyCurrentLimit(ElevatorConstants.kCurrentLimitAmps)

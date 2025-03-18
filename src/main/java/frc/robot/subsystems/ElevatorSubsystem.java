@@ -252,7 +252,9 @@ public class ElevatorSubsystem extends SubsystemBase {
   public void setPosition(Position position) {
     setPrevPosition(position);
     m_targetPosition = position;
-    m_motor1.setControl(m_mmVoltage.withPosition(position.getRotations()));
+    //if down, use slot1; if up use slot0
+    int slot = (position.getRotations() > m_motor1.getClosedLoopReference().getValueAsDouble()) ? 1 : 0; 
+    m_motor1.setControl(m_mmVoltage.withPosition(position.getRotations()).withSlot(slot));
     NCDebug.Debug.debug("Elevator: Move to " + position.toString());
   }
   // #endregion Setters

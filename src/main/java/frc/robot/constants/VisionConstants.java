@@ -57,7 +57,7 @@ public class VisionConstants {
       try {
         return new AprilTagFieldLayout(Filesystem.getDeployDirectory().getAbsolutePath() + "/apriltags/2025reefscape_tags_welded_reefonly.json");
       } catch (Exception e) {
-        return AprilTagFields.k2025Reefscape.loadAprilTagLayoutField();
+        return AprilTagFields.k2025ReefscapeWelded.loadAprilTagLayoutField();
       }
     }
 }

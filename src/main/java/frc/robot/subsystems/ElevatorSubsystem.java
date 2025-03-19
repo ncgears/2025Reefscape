@@ -70,6 +70,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     BARGE(ElevatorConstants.Positions.kBarge),
     ALGAEHIGH(ElevatorConstants.Positions.kAlgaeHigh),
     ALGAELOW(ElevatorConstants.Positions.kAlgaeLow),
+    LINEUP(ElevatorConstants.Positions.kLineup),
     FLOOR(ElevatorConstants.Positions.kFloor),
     HP(ElevatorConstants.Positions.kHP),
     PROC(ElevatorConstants.Positions.kProcessor);

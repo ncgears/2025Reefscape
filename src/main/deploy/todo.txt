@@ -5,6 +5,9 @@ TODO:
   Drivetrain:
     - Build auton paths
     - Re-init robot on disable
+  Re-Zero:
+    - Algae
+    - Elevator
   Verify Fixes:
     - Fix issue causing driver has to re-zero every match
     - Algae init to correct position on powerup

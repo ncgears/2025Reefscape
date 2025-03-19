@@ -1,26 +1,13 @@
 package frc.robot.classes;
 
-import java.util.Map;
 import java.util.function.Supplier;
 
-import edu.wpi.first.math.Matrix;
-import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform2d;
-import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
-import edu.wpi.first.math.numbers.N1;
-import edu.wpi.first.math.numbers.N3;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -97,8 +84,8 @@ public class Targeting {
     }
     private State m_trackingState = State.STOP; //current Tracking state
     private Targets m_trackingTarget = Targets.HP_LEFT; //current Tracking target
-    private Pose3d m_shooterPose = new Pose3d();
-    private boolean m_adjustUp = false;
+    // private Pose3d m_shooterPose = new Pose3d();
+    // private boolean m_adjustUp = false;
     public final Trigger isTracking = new Trigger(() -> { return (m_trackingState==State.READY || m_trackingState==State.TRACKING); });
     public final Trigger isReady = new Trigger(() -> { return (m_trackingState==State.READY); });
     public final PIDController thetaController = new PIDController(ThetaConstants.kP, ThetaConstants.kI, ThetaConstants.kP, ThetaConstants.kIZone);
@@ -113,7 +100,7 @@ public class Targeting {
 		m_trackingTarget = Targets.HP_LEFT;
 		resetPose(
 			(RobotContainer.isAllianceRed()) //more realistic starting position, center on black line
-				? new Pose2d(m_fieldLength - 7.2439,4.0082,Rotation2d.kZero) 
+				? new Pose2d(m_fieldLength - 7.2439,4.0082,Rotation2d.k180deg) 
 				: new Pose2d(7.2439,4.0082,Rotation2d.kZero)
 		);
 		NCDebug.Debug.debug("Pose: Initialized");

@@ -158,8 +158,8 @@
   "splits":[0]
  },
  "events":[
-   {"name":"spike_intake", "from":{"target":1, "targetTimestamp":1.85235, "offset":{"exp":"-0.75 s", "val":-0.75}}, "event":{"type":"named", "data":{"name":"spike_intake"}}},
-   {"name":"algae_transit", "from":{"target":1, "targetTimestamp":1.85235, "offset":{"exp":"0.5 s", "val":0.5}}, "event":{"type":"named", "data":{"name":"algae_transit"}}},
-   {"name":"barge _ready", "from":{"target":3, "targetTimestamp":4.56511, "offset":{"exp":"-0.75 s", "val":-0.75}}, "event":{"type":"named", "data":{"name":"barge_ready"}}},
-   {"name":"barge_score", "from":{"target":3, "targetTimestamp":4.56511, "offset":{"exp":"0 s", "val":0.0}}, "event":{"type":"named", "data":{"name":"barge_score"}}}]
+   {"name":"intakeSpike", "from":{"target":1, "targetTimestamp":1.85235, "offset":{"exp":"-0.75 s", "val":-0.75}}, "event":null},
+   {"name":"transit", "from":{"target":1, "targetTimestamp":1.85235, "offset":{"exp":"0.5 s", "val":0.5}}, "event":null},
+   {"name":"readyBarge", "from":{"target":3, "targetTimestamp":4.56511, "offset":{"exp":"-0.75 s", "val":-0.75}}, "event":null},
+   {"name":"scoreAlgae", "from":{"target":3, "targetTimestamp":4.56511, "offset":{"exp":"0 s", "val":0.0}}, "event":null}]
 }

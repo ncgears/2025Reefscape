@@ -85,6 +85,6 @@
  },
  "events":[
    {"name":"readyL4", "from":{"target":2, "targetTimestamp":1.70331, "offset":{"exp":"-0.5 s", "val":-0.5}}, "event":null},
-   {"name":"score", "from":{"target":2, "targetTimestamp":1.70331, "offset":{"exp":"0 s", "val":0.0}}, "event":null},
+   {"name":"scoreCoral", "from":{"target":2, "targetTimestamp":1.70331, "offset":{"exp":"0 s", "val":0.0}}, "event":null},
    {"name":"transit", "from":{"target":0, "targetTimestamp":0.0, "offset":{"exp":"0.25 s", "val":0.25}}, "event":null}]
 }

@@ -95,5 +95,5 @@
  },
  "events":[
    {"name":"transit", "from":{"target":0, "targetTimestamp":0.0, "offset":{"exp":"0.25 s", "val":0.25}}, "event":null},
-   {"name":"intake", "from":{"target":3, "targetTimestamp":1.68616, "offset":{"exp":"-0.5 s", "val":-0.5}}, "event":null}]
+   {"name":"intakeCoral", "from":{"target":3, "targetTimestamp":1.68616, "offset":{"exp":"-0.5 s", "val":-0.5}}, "event":null}]
 }

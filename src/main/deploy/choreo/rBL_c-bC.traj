@@ -68,6 +68,6 @@
   "splits":[0]
  },
  "events":[
-   {"name":"ready", "from":{"target":1, "targetTimestamp":1.16346, "offset":{"exp":"-0.5 s", "val":-0.5}}, "event":{"type":"named", "data":{"name":"ready"}}},
-   {"name":"score", "from":{"target":1, "targetTimestamp":1.16346, "offset":{"exp":"0 s", "val":0.0}}, "event":{"type":"named", "data":{"name":"score"}}}]
+   {"name":"readyBarge", "from":{"target":1, "targetTimestamp":1.16346, "offset":{"exp":"-0.5 s", "val":-0.5}}, "event":null},
+   {"name":"scoreAlgae", "from":{"target":1, "targetTimestamp":1.16346, "offset":{"exp":"0 s", "val":0.0}}, "event":null}]
 }

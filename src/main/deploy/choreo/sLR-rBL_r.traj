@@ -72,5 +72,5 @@
  },
  "events":[
    {"name":"readyL4", "from":{"target":2, "targetTimestamp":1.22024, "offset":{"exp":"-0.25 s", "val":-0.25}}, "event":null},
-   {"name":"score", "from":{"target":2, "targetTimestamp":1.22024, "offset":{"exp":"0 s", "val":0.0}}, "event":null}]
+   {"name":"scoreCoral", "from":{"target":2, "targetTimestamp":1.22024, "offset":{"exp":"0 s", "val":0.0}}, "event":null}]
 }

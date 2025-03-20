@@ -1,0 +1,65 @@
+DESC: sLR L4-4pc
+NAME: Left4Coral
+sLRb-rBL_r - to back right, readyL4/scoreCoral
+*coral L4
+rBL_r-hL - to human, transit/intakeCoral
+*intake
+hL-rFL_l - to front left, transit/readyL4/scoreCoral
+*coral L4
+rFL_l-hL - to human, transit/intakeCoral
+*intake
+hL- rFL_r - to front left, transit/readyL4/scoreCoral
+*coral L4
+rFL_4-hL - to human, transit/intakeCoral
+*intake
+hL-rFC_l - to front center, transit/readyL4/scoreCoral
+*coral L4
+______________________
+
+DESC: sC L4 2algae net
+
+sCb-rBC_r
+*coral L4
+rBC_r-rBC
+*Rotate collect algae
+rBC-bLR
+*algae net
+bLR-rBL
+*intake algae
+rBL-bLR
+*algae net
+*face hPL
+______________________
+
+DESC: sRL L4-4pc
+
+sRL-rBR_l
+*coral L4
+rBL_l-hR
+*intake coral
+hPR-rFR_r
+*coral L4
+rFR_r-hR
+*intake coral
+hPR-rFR_l
+*coral L4
+rFR_l-hR
+*intake coral
+hPR-rFC_r
+*coral L4
+______________________
+
+DESC: sC L4 2algae Proc
+
+sC-rBC_l
+*coral L4
+rBC_l-rBC
+*intake algae
+rBC-p
+*algae proc
+p-rBR
+*intake algae
+rBR-p
+*algae proc
+p-hPR
+______________________

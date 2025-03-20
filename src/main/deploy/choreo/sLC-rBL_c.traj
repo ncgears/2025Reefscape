@@ -1,5 +1,5 @@
 {
- "name":"sLCb-rBL_c",
+ "name":"sLC-rBL_c",
  "version":1,
  "snapshot":{
   "waypoints":[
@@ -62,5 +62,5 @@
   "splits":[0]
  },
  "events":[
-   {"name":"algae intake", "from":{"target":1, "targetTimestamp":0.93587, "offset":{"exp":"-0.3 s", "val":-0.3}}, "event":{"type":"named", "data":{"name":"algae_high_intake"}}}]
+   {"name":"intakeHigh", "from":{"target":1, "targetTimestamp":0.93587, "offset":{"exp":"-0.3 s", "val":-0.3}}, "event":null}]
 }

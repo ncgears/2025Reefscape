@@ -278,7 +278,7 @@ public class AlgaeSubsystem extends SubsystemBase {
   private void setPosition(Position position) {
     // m_wristmotor1.setControl(m_mmVoltage.withPosition(position.getRotations()));
     m_wristmotor1.setControl(m_posVoltage.withPosition(position.getRotations()));
-    NCDebug.Debug.debug("Elevator: Move to " + position.toString());
+    NCDebug.Debug.debug("Algae: Move to " + position.toString());
     m_curPosition = position;
   }
 

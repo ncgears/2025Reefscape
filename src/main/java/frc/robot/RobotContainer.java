@@ -533,6 +533,7 @@ public class RobotContainer {
                 autoChooser.addRoutine("003: sC-Move Off Line", autoRoutines::sCmoveOffLine);
                 autoChooser.addRoutine("100: sC Score Coral Get Low Alge", autoRoutines::sCScoreAlgae);
                 autoChooser.addRoutine("201: sLR-Left 4 Coral", autoRoutines::left4Coral);
+                autoChooser.addRoutine("202: Center Coral Left 2 Algae",autoRoutines::sCL4Coral2Algae);
                 autoChooser.addRoutine("901: Left Algae Double", autoRoutines::leftAlgaeDouble);
                 // SmartDashboard.putData("Autonomous Chooser", autoChooser);
             // m_auto_chooser = autoChooser;

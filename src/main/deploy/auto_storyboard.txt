@@ -1,6 +1,6 @@
 DESC: sLR L4-4pc
 NAME: Left4Coral
-sLR-rBL_r - to back right, readyL4/scoreCoral
+sLRb-rBL_r - to back right, readyL4/scoreCoral
 *coral L4
 rBL_r-hL - to human, transit/intakeCoral
 *intake
@@ -18,7 +18,7 @@ ______________________
 
 DESC: sC L4 2algae net
 
-sC-rBC_r
+sCb-rBC_r
 *coral L4
 rBC_r-rBC
 *Rotate collect algae

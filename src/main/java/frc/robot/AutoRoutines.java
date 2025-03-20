@@ -100,9 +100,34 @@ public class AutoRoutines {
       return routine;
     }
 
+    public AutoRoutine sCL4Coral2Algae() {
+      final AutoRoutine routine = m_factory.newRoutine("sCL4Coral2Algae");
+      final AutoTrajectory path1 = routine.trajectory("sCb-rBC_r");
+      final AutoTrajectory path2 = routine.trajectory("rBC_r-rBC_c");
+      final AutoTrajectory path3 = routine.trajectory("rBC_c-bC");
+      final AutoTrajectory path4 = routine.trajectory("bC-rBL_c");
+      final AutoTrajectory path5 = routine.trajectory("rBL_c-bC");
+      final AutoTrajectory path6 = routine.trajectory("bC-hL");
+    
+      path1.done().onTrue(runPath(path2));
+      path2.done().onTrue(runPath(path3));
+      path3.done().onTrue(runPath(path4));
+      path4.done().onTrue(runPath(path5));
+      path5.done().onTrue(runPath(path6));
+      path6.done().onTrue(log("Routine Complete!"));
+
+      seedPose(path1);
+      routine.active().onTrue(
+          path1.resetOdometry()
+          .andThen(runPath(path1))
+      );
+
+      return routine;
+    }
+
     public AutoRoutine left4Coral() {
       final AutoRoutine routine = m_factory.newRoutine("Left4Coral");
-      final AutoTrajectory path1 = routine.trajectory("sLR-rBL_r");
+      final AutoTrajectory path1 = routine.trajectory("sLRb-rBL_r");
       final AutoTrajectory path2 = routine.trajectory("rBL_r-hL");
       final AutoTrajectory path3 = routine.trajectory("hL-rFL_l");
       final AutoTrajectory path4 = routine.trajectory("rFL_l-hL");

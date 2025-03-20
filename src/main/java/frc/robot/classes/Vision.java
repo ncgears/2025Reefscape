@@ -318,7 +318,7 @@ public class Vision {
 				est -> {
 					var estPose = est.estimatedPose.toPose2d();
 					//workaround for remove camera to robot center
-					estPose = estPose.transformBy(new Transform2d(new Translation2d(-0.44,0.0), new Rotation2d())); 
+					// estPose = estPose.transformBy(new Transform2d(new Translation2d(-0.44,0.0), new Rotation2d())); 
 					// Change our trust in the measurement based on the tags we can see
 					var estStdDevs = RobotContainer.vision.getFrontEstimationStdDevs(estPose);
           //For CTR, timestamp must be in correct timebase, use Utils.fpgaToCurrentTime(timestamp) to correct
@@ -332,7 +332,7 @@ public class Vision {
 				est -> {
 					var estPose = est.estimatedPose.toPose2d();
 					//workaround for remove camera to robot center
-					estPose = estPose.transformBy(new Transform2d(new Translation2d(0.44,0.0), new Rotation2d())); 
+					// estPose = estPose.transformBy(new Transform2d(new Translation2d(0.44,0.0), new Rotation2d())); 
 					// Change our trust in the measurement based on the tags we can see
 					var estStdDevs = RobotContainer.vision.getBackEstimationStdDevs(estPose);
           //For CTR, timestamp must be in correct timebase, use Utils.fpgaToCurrentTime(timestamp) to correct

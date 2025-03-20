@@ -242,8 +242,8 @@ public class ElevatorSubsystem extends SubsystemBase {
       case L3:
       case L2:
       case L1:
+        if(position != m_prevPosition) NCDebug.Debug.debug("Elevator: Saved Last Position " + position.toString());
         m_prevPosition = position;
-        NCDebug.Debug.debug("Elevator: Saved Last Position " + position.toString());
         break;
       default:
         break;

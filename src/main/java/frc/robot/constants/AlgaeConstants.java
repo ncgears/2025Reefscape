@@ -27,15 +27,15 @@ public class AlgaeConstants {
         public static final boolean kIsInverted = false;
         public static final NeutralModeValue kNeutralMode = NeutralModeValue.Brake;
         public static final double kSpeed = 0.70;
-        public static final double kPositionTolerance = 0.05;
+        public static final double kPositionTolerance = 0.02;
         public class Positions {
             public static final double stow = 0.01;
-            public static final double up = 0.025;
-            public static final double transit = 0.025;
-            public static final double down = 0.169;
-            public static final double proc = 0.125;
-            public static final double reef = 0.143;
-            public static final double floor = 0.24;
+            public static final double up = 0.020;
+            public static final double transit = 0.020;
+            public static final double down = 0.165;
+            public static final double proc = 0.120;
+            public static final double reef = 0.140;
+            public static final double floor = 0.22;
             public static final double kSoftForwardLimit = 0.269;
         }
     }

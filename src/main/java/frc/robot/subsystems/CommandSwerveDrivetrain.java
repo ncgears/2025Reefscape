@@ -80,8 +80,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
      * These are used for Choreo
     */
     private final SwerveRequest.ApplyFieldSpeeds m_pathApplyFieldSpeeds = new SwerveRequest.ApplyFieldSpeeds();
-    private final PIDController m_pathXController = new PIDController(10, 0, 0);
-    private final PIDController m_pathYController = new PIDController(10, 0, 0);
+    private final PIDController m_pathXController = new PIDController(7, 0, 0);
+    private final PIDController m_pathYController = new PIDController(7, 0, 0);
     private final PIDController m_pathThetaController = new PIDController(7, 0, 0);
 
     /* Swerve requests to apply during SysId characterization */

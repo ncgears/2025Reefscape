@@ -372,7 +372,7 @@ public class RobotContainer {
         oj.rightTrigger().onTrue(
             elevator.ScoreC()
             .until(elevator::isAtTarget)
-            .andThen(wait(0.2))
+            .andThen(wait(0.5))
             .andThen(coral.CoralPositionC(CoralSubsystem.Position.SCORE))
         );
         /** OJ Right Bumper - Return to previous position */

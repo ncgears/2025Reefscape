@@ -100,31 +100,6 @@ public class AutoRoutines {
       return routine;
     }
 
-    public AutoRoutine sCL4Coral2Algae() { //202
-      final AutoRoutine routine = m_factory.newRoutine("sCL4Coral2Algae");
-      final AutoTrajectory path1 = routine.trajectory("sCb-rBC_r");
-      final AutoTrajectory path2 = routine.trajectory("rBC_r-rBC_c");
-      final AutoTrajectory path3 = routine.trajectory("rBC_c-bC");
-      final AutoTrajectory path4 = routine.trajectory("bC-rBL_c");
-      final AutoTrajectory path5 = routine.trajectory("rBL_c-bC");
-      final AutoTrajectory path6 = routine.trajectory("bC-hL");
-    
-      // path1.done().onTrue(runPath(path2));
-      // path2.done().onTrue(runPath(path3));
-      // path3.done().onTrue(runPath(path4));
-      // path4.done().onTrue(runPath(path5));
-      // path5.done().onTrue(runPath(path6));
-      // path6.done().onTrue(log("Routine Complete!"));
-
-      seedPose(path1);
-      routine.active().onTrue(
-          path1.resetOdometry()
-          .andThen(runPath(path1))
-      );
-
-      return routine;
-    }
-
     public AutoRoutine testRun() { //999
       final AutoRoutine routine = m_factory.newRoutine("TestRun");
       final AutoTrajectory path1 = routine.trajectory("T1");
@@ -157,18 +132,18 @@ public class AutoRoutines {
     
       path1.recentlyDone().onTrue(
         ScoreCoral()
-        .andThen(wait(0.5))
+        .andThen(wait(0.3))
         .andThen(runPath(path2))
       );
-
-
-      // path1.done().onTrue(runPath(path2));
-      // path2.done().onTrue(runPath(path3));
-      // path3.done().onTrue(runPath(path4));
-      // path4.done().onTrue(runPath(path5));
-      // path5.done().onTrue(runPath(path6));
-      // path6.done().onTrue(runPath(path7));
-      // path7.done().onTrue(log("Routine Complete!"));
+      path2.recentlyDone().onTrue(
+        wait(0.5)
+        .andThen(runPath(path3))
+      );
+      path3.recentlyDone().onTrue(
+        ScoreCoral()
+        .andThen(wait(0.3))
+        .andThen(runPath(path4))
+      );
 
       seedPose(path1);
       routine.active().onTrue(
@@ -176,6 +151,39 @@ public class AutoRoutines {
           .andThen(runPath(path1))
       );
 
+      return routine;
+    }
+
+    public AutoRoutine sCL4Coral2Algae() { //202
+      final AutoRoutine routine = m_factory.newRoutine("sCL4Coral2Algae");
+      final AutoTrajectory path1 = routine.trajectory("sCb-rBC_r");
+      final AutoTrajectory path2 = routine.trajectory("rBC_r-rBC_c");
+      final AutoTrajectory path3 = routine.trajectory("rBC_c-bC");
+      final AutoTrajectory path4 = routine.trajectory("bC-rBL_c");
+      final AutoTrajectory path5 = routine.trajectory("rBL_c-bC");
+      final AutoTrajectory path6 = routine.trajectory("bC-hL");
+    
+      path1.recentlyDone().onTrue(
+        ScoreCoral()
+        .andThen(wait(0.0))
+        .andThen(runPath(path2))
+      );
+      path2.recentlyDone().onTrue(
+        wait(1.0)
+        .andThen(RobotContainer.algae.setAlgaePositionC(AlgaeSubsystem.Position.UP))
+        .andThen(runPath(path3))
+      );
+      path3.recentlyDone().onTrue(
+        ScoreAlgae()
+        // .andThen(wait(0.3))
+        // .andThen(runPath(path4))
+      );
+
+      seedPose(path1);
+      routine.active().onTrue(
+          path1.resetOdometry()
+          .andThen(runPath(path1))
+      );
       return routine;
     }
 
@@ -216,7 +224,7 @@ public class AutoRoutines {
     private Command ScoreCoral() {
       return 
         // Commands.waitUntil(RobotContainer.elevator.atTarget)
-        wait(1.0)
+        wait(0.5)
         .andThen(RobotContainer.elevator.ElevatorPositionC(ElevatorSubsystem.Position.L4SCORE))
           // .until(RobotContainer.elevator.atTarget)
         .andThen(wait(0.5))
@@ -236,17 +244,20 @@ public class AutoRoutines {
       return RobotContainer.elevator.ElevatorPositionC(ElevatorSubsystem.Position.ALGAELOW)
           // .until(RobotContainer.elevator.atTarget)
         .andThen(RobotContainer.algae.setAlgaePositionC(AlgaeSubsystem.Position.REEF))
-        .andThen(RobotContainer.algae.startToroC(false))
-        .andThen(wait(0.5))
-        .andThen(RobotContainer.algae.setAlgaePositionC(AlgaeSubsystem.Position.UP));
+        .andThen(RobotContainer.algae.startToroC(false));
+        // .andThen(wait(0.5))
+        // .andThen(RobotContainer.algae.setAlgaePositionC(AlgaeSubsystem.Position.UP));
     }
     private Command IntakeAlgaeHigh() {
       return RobotContainer.elevator.ElevatorPositionC(ElevatorSubsystem.Position.ALGAEHIGH)
-          .until(RobotContainer.elevator.atTarget)
+          // .until(RobotContainer.elevator.atTarget)
         .andThen(RobotContainer.algae.setAlgaePositionC(AlgaeSubsystem.Position.REEF))
-        .andThen(RobotContainer.algae.startToroC(false))
-        .andThen(wait(0.5))
-        .andThen(RobotContainer.algae.setAlgaePositionC(AlgaeSubsystem.Position.UP));
+        .andThen(RobotContainer.algae.startToroC(false));
+    }
+    private Command IntakeAlgae() {
+      return RobotContainer.algae.setAlgaePositionC(AlgaeSubsystem.Position.REEF)
+      .andThen(wait(1.0))
+      .andThen(RobotContainer.algae.setAlgaePositionC(AlgaeSubsystem.Position.UP));
     }
     private Command IntakeAlgaeSpike() {
       return RobotContainer.elevator.ElevatorPositionC(ElevatorSubsystem.Position.FLOOR)
@@ -260,7 +271,9 @@ public class AutoRoutines {
     }
     private Command Transit() {
       return RobotContainer.elevator.ElevatorPositionC(ElevatorSubsystem.Position.HP)
-        .andThen(RobotContainer.coral.CoralPositionC(CoralSubsystem.Position.SCORE));
+        .andThen(RobotContainer.coral.CoralPositionC(CoralSubsystem.Position.SCORE))
+        .andThen(RobotContainer.algae.setAlgaePositionC(AlgaeSubsystem.Position.UP));
+
     }
     //#endregion AutoCommands
 

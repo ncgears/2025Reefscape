@@ -150,8 +150,9 @@ public class AlgaeSubsystem extends SubsystemBase {
    * The init function resets and operational state of the subsystem
    */
   public void init() {
-    AlgaeBrake();
-    // setPosition(Position.STOW);  //this was a workaround for the moving magnet, not needed.
+    // AlgaeBrake();
+    setPosition(Position.STOW);
+    stopToro();
     m_curDirection = Direction.STOP;
     NCDebug.Debug.debug("Algae: Initialized");
   }

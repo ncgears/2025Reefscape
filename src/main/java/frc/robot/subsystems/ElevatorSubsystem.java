@@ -138,7 +138,8 @@ public class ElevatorSubsystem extends SubsystemBase {
    */
   public void init() {
     m_targetPosition = Position.STOW;
-    ElevatorStop();
+    // ElevatorStop();
+    setPosition(m_targetPosition);
     NCDebug.Debug.debug("Elevator: Initialized");
   }
 
@@ -164,7 +165,7 @@ public class ElevatorSubsystem extends SubsystemBase {
       .withWidget("Single Color View");
     ElevatorList.addString("State", this::getStateName);
     ElevatorList.addString("Target", this::getTargetPositionName);
-    ElevatorList.addNumber("Target Pos", this::getTargetPosition);
+    ElevatorList.addNumber("Target Pos", () -> NCDebug.General.roundDouble(getTargetPosition(),6));
     ElevatorList.addNumber("Motor Pos", () -> NCDebug.General.roundDouble(getPosition().in(Units.Rotations), 6));
 
     if (ElevatorConstants.debugDashboard) {
@@ -219,7 +220,9 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
 
   public double getPositionError() {
-    return m_motor1.getClosedLoopError().getValue();
+    // m_motor1.getClosedLoopError(true)
+    // return m_motor1.getClosedLoopError(true).getValue();
+    return (getTargetPosition() - getPosition().in(Units.Rotations));
   }
 
   public Angle getPosition() {
@@ -256,7 +259,8 @@ public class ElevatorSubsystem extends SubsystemBase {
     // //if down, use slot1; if up use slot0
     // int slot = (position.getRotations() > m_motor1.getClosedLoopReference().getValueAsDouble()) ? 1 : 0; 
     // m_motor1.setControl(m_mmVoltage.withPosition(position.getRotations()).withSlot(slot));
-    m_motor1.setControl(m_mmVoltage.withPosition(position.getRotations()));
+    // m_motor1.setControl(m_mmVoltage.withPosition(position.getRotations()));
+    gotoTargetPosition();
     NCDebug.Debug.debug("Elevator: Move to " + position.toString());
   }
   // #endregion Setters
@@ -299,7 +303,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     } else { // 0 power
       if (m_curState != State.HOLD && m_curState != State.STOP) {
         m_motor1.setControl(m_mmVoltage.withPosition(m_motor1.getPosition().getValueAsDouble())); // maintain this spot
-        m_motor1.setControl(m_brake);
+        // m_motor1.setControl(m_brake);
         m_curState = State.HOLD;
         NCDebug.Debug.debug("Elevator: Hold");
       }
@@ -351,6 +355,10 @@ public class ElevatorSubsystem extends SubsystemBase {
       m_encoder.setPosition(0);
       NCDebug.Debug.debug("Elevator: Zero Motor and Encoder");
     });
+  }
+
+  public void gotoTargetPosition() {
+    m_motor1.setControl(m_mmVoltage.withPosition(m_targetPosition.getRotations()));
   }
 
   public void ElevatorUp() {

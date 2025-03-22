@@ -167,7 +167,7 @@ public class CoralSubsystem extends SubsystemBase {
     ShuffleboardTab systemTab = Shuffleboard.getTab("System");
     ShuffleboardLayout CoralList = systemTab.getLayout("Coral", BuiltInLayouts.kList)
       .withSize(4, 4)
-      .withPosition(8, 5)
+      .withPosition(8, 4)
       .withProperties(Map.of("Label position", "LEFT"));
     CoralList.addString("Status", this::getColor)
       .withWidget("Single Color View");

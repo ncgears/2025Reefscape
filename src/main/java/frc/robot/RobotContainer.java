@@ -207,6 +207,7 @@ public class RobotContainer {
         lighting.init();
         targeting.init();
         drivetrain.init();
+        elevator.init();
         climber.init();
         coral.init();
         algae.init();
@@ -234,6 +235,7 @@ public class RobotContainer {
             new InstantCommand(orchestra::stop).ignoringDisable(true)
             .andThen(lighting.setColorCommand(Colors.OFF)).ignoringDisable(true)
             .andThen(coral.CoralPositionC(CoralSubsystem.Position.SCORE))
+            .andThen(new InstantCommand(() -> elevator.gotoTargetPosition()))
         );
         //#endregion
 
@@ -535,6 +537,7 @@ public class RobotContainer {
                 autoChooser.addRoutine("201: sLR-Left 4 Coral", autoRoutines::left4Coral);
                 autoChooser.addRoutine("202: Center Coral Left 2 Algae",autoRoutines::sCL4Coral2Algae);
                 autoChooser.addRoutine("901: Left Algae Double", autoRoutines::leftAlgaeDouble);
+                autoChooser.addRoutine("999: Test Run", autoRoutines::testRun);
                 // SmartDashboard.putData("Autonomous Chooser", autoChooser);
             // m_auto_chooser = autoChooser;
             }

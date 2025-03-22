@@ -158,6 +158,7 @@ public class AlgaeSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    m_wristmotor1.setControl(m_posVoltage.withPosition(m_curPosition.getRotations()));
   }
   // #endregion Setup
 
@@ -170,7 +171,7 @@ public class AlgaeSubsystem extends SubsystemBase {
       .withPosition(2, 7);
     ShuffleboardTab systemTab = Shuffleboard.getTab("System");
     ShuffleboardLayout AlgaeList = systemTab.getLayout("Algae", BuiltInLayouts.kList)
-      .withSize(4, 5)
+      .withSize(4, 4)
       .withPosition(8, 0)
       .withProperties(Map.of("Label position", "LEFT"));
     AlgaeList.addString("Status", this::getDirectionColor)
@@ -277,7 +278,7 @@ public class AlgaeSubsystem extends SubsystemBase {
   // #region Setters
   private void setPosition(Position position) {
     // m_wristmotor1.setControl(m_mmVoltage.withPosition(position.getRotations()));
-    m_wristmotor1.setControl(m_posVoltage.withPosition(position.getRotations()));
+    // m_wristmotor1.setControl(m_posVoltage.withPosition(position.getRotations()));
     NCDebug.Debug.debug("Algae: Move to " + position.toString());
     m_curPosition = position;
   }

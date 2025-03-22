@@ -28,13 +28,13 @@ public class ElevatorConstants {
     public static final double kGearRatio = 16; // 16:1 gearbox
     public static final double kSensorGearRatio = 1.0; // no gearing between sensor and spool -- this is between sensor and spool
     //PID Control
-    public static final double kS = 0.2; // add kS to overcome static friction: adjust first to start moving
+    public static final double kS = 0.25; // add kS to overcome static friction: adjust first to start moving
     public static final double kV = 1.25; // add kV for velocity target: voltage(12) / velocity target.. 1 rps results in 0.12v output
     public static final double kA = 0.0; // add kA for acceleration: 0.01 = 1 rps/s requires 0.01v output
-    public static final double kP = 18.0; // add kP per rotation of error: error of 1 rotation results in 12v output (this might be low for aimer)
+    public static final double kP = 20.0; // add kP per rotation of error: error of 1 rotation results in 12v output (this might be low for aimer)
     public static final double kI = 0.0; // no integral
     public static final double kD = 0.0; // 0.1 = velocity error of 1rps results in 0.1v output
-    public static final double kG = 0.45; // increase until start to move up
+    public static final double kG = 0.3; // increase until start to move up
 
     /** finding kS and kG
     * up = Increase output to find when it just starts moving up (from stalled) .5

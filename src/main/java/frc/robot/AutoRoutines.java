@@ -130,7 +130,11 @@ public class AutoRoutines {
       final AutoTrajectory path1 = routine.trajectory("T1");
       final AutoTrajectory path2 = routine.trajectory("T2");
 
-      Commands.waitUntil(path1.recentlyDone()).andThen(runPath(path2));
+      path1.recentlyDone().onTrue(
+        ScoreCoral()
+        .andThen(wait(2.0))
+        .andThen(runPath(path2))
+      );
 
       seedPose(path1);
       routine.active().onTrue(
@@ -143,7 +147,7 @@ public class AutoRoutines {
 
     public AutoRoutine left4Coral() { //201
       final AutoRoutine routine = m_factory.newRoutine("Left4Coral");
-      final AutoTrajectory path1 = routine.trajectory("sLRb-rBL_r");
+      final AutoTrajectory path1 = routine.trajectory("sLCb-rBL_r");
       final AutoTrajectory path2 = routine.trajectory("rBL_r-hL");
       final AutoTrajectory path3 = routine.trajectory("hL-rFL_l");
       final AutoTrajectory path4 = routine.trajectory("rFL_l-hL");
@@ -151,14 +155,12 @@ public class AutoRoutines {
       final AutoTrajectory path6 = routine.trajectory("rFL_r-hL");
       final AutoTrajectory path7 = routine.trajectory("hL-rFC_l");
     
-      // path1.done().onTrue(
-      //   ScoreCoral()
-      //   .andThen(wait(0.7))
-      //   .andThen(noop())
-      //   // runPath(path2)
-      //   .andThen(Commands.waitUntil(path1.recentlyDone()).andThen(path2.spawnCmd()))
-      // );
-      Commands.waitUntil(path1.recentlyDone()).andThen(path2.spawnCmd());
+      path1.recentlyDone().onTrue(
+        ScoreCoral()
+        .andThen(wait(0.5))
+        .andThen(runPath(path2))
+      );
+
 
       // path1.done().onTrue(runPath(path2));
       // path2.done().onTrue(runPath(path3));
@@ -198,27 +200,28 @@ public class AutoRoutines {
     //#region AutoCommands
     private Command ReadyL2() {
       return RobotContainer.elevator.ElevatorPositionC(ElevatorSubsystem.Position.L2)
-        .until(RobotContainer.elevator::isAtTarget)
+        // .until(RobotContainer.elevator.atTarget)
       .andThen(RobotContainer.coral.CoralPositionC(CoralSubsystem.Position.OUT));
   }
     private Command ReadyL3() {
       return RobotContainer.elevator.ElevatorPositionC(ElevatorSubsystem.Position.L3)
-        .until(RobotContainer.elevator::isAtTarget)
+        // .until(RobotContainer.elevator.atTarget)
       .andThen(RobotContainer.coral.CoralPositionC(CoralSubsystem.Position.OUT));
   }
     private Command ReadyL4() {
       return RobotContainer.elevator.ElevatorPositionC(ElevatorSubsystem.Position.L4)
-        .until(RobotContainer.elevator::isAtTarget)
+        // .until(RobotContainer.elevator.atTarget)
       .andThen(RobotContainer.coral.CoralPositionC(CoralSubsystem.Position.OUT));
     }
     private Command ScoreCoral() {
       return 
-        Commands.waitUntil(RobotContainer.elevator::isAtTarget)
-        .andThen(wait(0.0))
-        .andThen(RobotContainer.elevator.ScoreC())
-          .until(RobotContainer.elevator::isAtTarget)
-        .andThen(wait(0.2))
-        .andThen(RobotContainer.coral.CoralPositionC(CoralSubsystem.Position.SCORE));
+        // Commands.waitUntil(RobotContainer.elevator.atTarget)
+        wait(1.0)
+        .andThen(RobotContainer.elevator.ElevatorPositionC(ElevatorSubsystem.Position.L4SCORE))
+          // .until(RobotContainer.elevator.atTarget)
+        .andThen(wait(0.5))
+        .andThen(RobotContainer.coral.CoralPositionC(CoralSubsystem.Position.SCORE))
+        .andThen(wait(1.0));
     }
     private Command IntakeCoral() {
       return RobotContainer.elevator.ElevatorPositionC(ElevatorSubsystem.Position.HP)
@@ -231,7 +234,7 @@ public class AutoRoutines {
     }
     private Command IntakeAlgaeLow() {
       return RobotContainer.elevator.ElevatorPositionC(ElevatorSubsystem.Position.ALGAELOW)
-          .until(RobotContainer.elevator::isAtTarget)
+          // .until(RobotContainer.elevator.atTarget)
         .andThen(RobotContainer.algae.setAlgaePositionC(AlgaeSubsystem.Position.REEF))
         .andThen(RobotContainer.algae.startToroC(false))
         .andThen(wait(0.5))
@@ -239,7 +242,7 @@ public class AutoRoutines {
     }
     private Command IntakeAlgaeHigh() {
       return RobotContainer.elevator.ElevatorPositionC(ElevatorSubsystem.Position.ALGAEHIGH)
-          .until(RobotContainer.elevator::isAtTarget)
+          .until(RobotContainer.elevator.atTarget)
         .andThen(RobotContainer.algae.setAlgaePositionC(AlgaeSubsystem.Position.REEF))
         .andThen(RobotContainer.algae.startToroC(false))
         .andThen(wait(0.5))

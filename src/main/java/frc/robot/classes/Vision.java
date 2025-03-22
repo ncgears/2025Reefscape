@@ -20,6 +20,7 @@ import com.ctre.phoenix6.Utils;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -45,6 +46,7 @@ public class Vision {
   private final PhotonPoseEstimator photonEstimatorFront, photonEstimatorBack;
   private Matrix<N3, N1> curStdDevsFront, curStdDevsBack;
   private double lastEstTimestampFront, lastEstTimestampBack = 0;
+  private Pose2d m_visPose = Pose2d.kZero;
 
   // Simulator
   private VisionSystemSim visionSim;
@@ -139,7 +141,7 @@ public class Vision {
 		if(VisionConstants.debugDashboard) {
       ShuffleboardTab debugTab = Shuffleboard.getTab("Debug");
       ShuffleboardLayout dbgVisionList = debugTab.getLayout("Vision", BuiltInLayouts.kList)
-        .withSize(4, 3)
+        .withSize(4, 6)
         .withPosition(0, 0)
         .withProperties(Map.of("Label position", "LEFT"));
       dbgVisionList.addBoolean("Front Targets", () -> getLatestResult(front_camera).hasTargets())
@@ -148,7 +150,19 @@ public class Vision {
         .withWidget("Boolean Box");
       dbgVisionList.addBoolean("Suppressed", () -> RobotContainer.drivetrain.isVisionSuppressed())
         .withWidget("Boolean Box");
+      dbgVisionList.addNumber("Vision Pose X", () -> NCDebug.General.roundDouble(getVisionPose().getX(),3));
+      dbgVisionList.addNumber("Vision Pose Y", () -> NCDebug.General.roundDouble(getVisionPose().getY(),3));
+      dbgVisionList.addNumber("Robot Pose X", () -> NCDebug.General.roundDouble(RobotContainer.drivetrain.getBotPose().getX(),3));
+      dbgVisionList.addNumber("Robot Pose Y", () -> NCDebug.General.roundDouble(RobotContainer.drivetrain.getBotPose().getY(),3));
     }
+  }
+
+  public Pose2d getVisionPose() {
+    Optional<EstimatedRobotPose> estimatedPose = getFrontEstimatedGlobalPose();
+    if (!estimatedPose.isEmpty()) {
+      m_visPose = estimatedPose.get().estimatedPose.toPose2d();
+    }
+    return m_visPose;
   }
 
   public PhotonPipelineResult getLatestResult(PhotonCamera camera) {
@@ -318,7 +332,7 @@ public class Vision {
 				est -> {
 					var estPose = est.estimatedPose.toPose2d();
 					//workaround for remove camera to robot center
-					// estPose = estPose.transformBy(new Transform2d(new Translation2d(-0.44,0.0), new Rotation2d())); 
+					// estPose = estPose.transformBy(new Transform2d(new Translation2d(-0.339,-0.250), new Rotation2d())); 
 					// Change our trust in the measurement based on the tags we can see
 					var estStdDevs = RobotContainer.vision.getFrontEstimationStdDevs(estPose);
           //For CTR, timestamp must be in correct timebase, use Utils.fpgaToCurrentTime(timestamp) to correct

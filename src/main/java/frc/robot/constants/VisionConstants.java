@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj.Filesystem;
  * Constants for the Vision class
  */
 public class VisionConstants {
-    public static final boolean debugDashboard = false; //enable debugging dashboard
+    public static final boolean debugDashboard = true; //enable debugging dashboard
     public static final boolean kUseVisionForPose = true; //enable vision measurements to pose correction
     public static final boolean kUseAutoSuppress = false; //enable suppressing vision measurements based on speed
     public static final double kAutosuppressSpeedMetersPerSecond = 2.5; //speed at which to suppress vision addition
@@ -38,8 +38,9 @@ public class VisionConstants {
         public static final boolean kUseForPose = true;
         //+x left from center, +y forward from center, +z up from ground
         public static final Transform3d kRobotToCam = new Transform3d(
-            new Translation3d(0.290,0.250,0.280), //x,y,z location of camera on robot in meters
-            Rotation3d.kZero //yaw,pitch/roll of camera on robot in radians
+          // new Translation3d(0.290,0.250,0.280), //x,y,z location of camera on robot in meters
+          new Translation3d(0.247,0.335,0.280), //x,y,z location of camera on robot in meters
+          Rotation3d.kZero //yaw,pitch/roll of camera on robot in radians
             // new Rotation3d(0,Math.toRadians(19.18),0) //yaw,pitch/roll of camera on robot in radians
         );
     }

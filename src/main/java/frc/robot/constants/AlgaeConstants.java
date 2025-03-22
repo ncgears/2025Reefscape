@@ -12,7 +12,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 public class AlgaeConstants {
     //Controller Setup
     public static final String canBus = "rio";
-    public static final boolean debugDashboard = true; //enable debugging dashboard
+    public static final boolean debugDashboard = false; //enable debugging dashboard
     public static final boolean isDisabled = false; //disable algae system
     public static final int kCANcoderID = ID.CANcoder.algae;
     public static final boolean kUseCANcoder = true;

@@ -12,7 +12,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 public class CoralConstants {
     //Controller Setup
     public static final String canBus = "rio";
-    public static final boolean debugDashboard = true; //enable debugging dashboard
+    public static final boolean debugDashboard = false; //enable debugging dashboard
     public static final boolean isDisabled = true; //disable coral system
     public static final int kCANcoderID = ID.CANcoder.coral;
     public static final boolean kUseCANcoder = true;

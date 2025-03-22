@@ -23,7 +23,7 @@ public class ElevatorConstants {
     public static final boolean kIsInverted = true;
     public static final NeutralModeValue kNeutralMode = NeutralModeValue.Brake;
     public static final double kPositionTolerance = 0.05; //how close to be considered "at target"
-    public static final double kMaxSpeed = 0.70;
+    public static final double kMaxSpeed = 0.90;
 
     public static final double kGearRatio = 16; // 16:1 gearbox
     public static final double kSensorGearRatio = 1.0; // no gearing between sensor and spool -- this is between sensor and spool

@@ -369,6 +369,7 @@ public class RobotContainer {
         /** OJ X - L4 Scoring Position */
         oj.x().onTrue(
           elevator.ElevatorPositionC(ElevatorSubsystem.Position.LINEUP)
+          .andThen(algae.setAlgaePositionC(AlgaeSubsystem.Position.STOW))
         );
         /** OJ Right Trigger - Score Coral sequence (from L2, L3, and L4) (hold trigger) */
         oj.rightTrigger().onTrue(
@@ -410,9 +411,12 @@ public class RobotContainer {
         // CLIMBER STUFF
         // OJ Frame - Manual climb override, hold for at least 1 second
         oj.frame().onTrue(
-            wait(1.0).andThen(climber.climberMoveC(() -> ClimberConstants.kClimbPower))) //wait 1 second for manual override
-        .onFalse(
-          climber.climberStopC()
+          noop()
+        //   elevator.ElevatorPositionC(ElevatorSubsystem.Position.HP)
+        //   .andThen(coral.CoralPositionC(CoralSubsystem.Position.OUT))
+        //   .andThen(algae.setAlgaePositionC(AlgaeSubsystem.Position.UP)))
+        // .onFalse(
+        //   climber.climberStopC()
         );
 
         // ALGAE STUFF

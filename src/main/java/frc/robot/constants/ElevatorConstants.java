@@ -31,10 +31,10 @@ public class ElevatorConstants {
     public static final double kS = 0.25; // add kS to overcome static friction: adjust first to start moving
     public static final double kV = 1.25; // add kV for velocity target: voltage(12) / velocity target.. 1 rps results in 0.12v output
     public static final double kA = 0.0; // add kA for acceleration: 0.01 = 1 rps/s requires 0.01v output
-    public static final double kP = 20.0; // add kP per rotation of error: error of 1 rotation results in 12v output (this might be low for aimer)
+    public static final double kP = 28.0; // add kP per rotation of error: error of 1 rotation results in 12v output (this might be low for aimer)
     public static final double kI = 0.0; // no integral
     public static final double kD = 0.0; // 0.1 = velocity error of 1rps results in 0.1v output
-    public static final double kG = 0.3; // increase until start to move up
+    public static final double kG = 0.5; // increase until start to move up
 
     /** finding kS and kG
     * up = Increase output to find when it just starts moving up (from stalled) .5
@@ -43,8 +43,8 @@ public class ElevatorConstants {
     * kS = (up - dn) / 2
     */
 
-    public static final double kMotionMagicCruise = 800; // Motor Max / Gear Ratio
-    public static final double kMotionMagicAccel = 400; // Acceleration: Cruise / Accel = time to cruise
+    public static final double kMotionMagicCruise = 1600; // Motor Max / Gear Ratio
+    public static final double kMotionMagicAccel = 800; // Acceleration: Cruise / Accel = time to cruise
     public static final double kMotionMagicJerk = 800; //0=disabled; 10-20x accel for smooth; lower for smoother motion at the cost of time: accel / jerk = jerk time
     //Current Limiting
     public static final boolean kCurrentLimitEnable = false; // TODO: Test current limits

@@ -234,7 +234,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
 
   public boolean isAtTarget() {
-    return (getPositionError() <= ElevatorConstants.kPositionTolerance);
+    return (Math.abs(getPositionError()) <= ElevatorConstants.kPositionTolerance);
   }
   // #endregion Getters
 

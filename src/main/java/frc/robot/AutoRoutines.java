@@ -107,7 +107,7 @@ public class AutoRoutines {
 
       path1.recentlyDone().onTrue(
         ScoreCoral()
-        .andThen(wait(2.0))
+        .andThen(wait(0.2))
         .andThen(runPath(path2))
       );
 
@@ -132,7 +132,7 @@ public class AutoRoutines {
     
       path1.recentlyDone().onTrue(
         ScoreCoral()
-        .andThen(wait(0.3))
+        .andThen(wait(0.2))
         .andThen(runPath(path2))
       );
       path2.recentlyDone().onTrue(
@@ -141,7 +141,7 @@ public class AutoRoutines {
       );
       path3.recentlyDone().onTrue(
         ScoreCoral()
-        .andThen(wait(0.3))
+        .andThen(wait(0.2))
         .andThen(runPath(path4))
       );
 
@@ -165,7 +165,7 @@ public class AutoRoutines {
     
       path1.recentlyDone().onTrue(
         ScoreCoral()
-        .andThen(wait(0.0))
+        .andThen(wait(0.2))
         .andThen(runPath(path2))
       );
       path2.recentlyDone().onTrue(
@@ -228,8 +228,7 @@ public class AutoRoutines {
         .andThen(RobotContainer.elevator.ElevatorPositionC(ElevatorSubsystem.Position.L4SCORE))
           // .until(RobotContainer.elevator.atTarget)
         .andThen(wait(0.5))
-        .andThen(RobotContainer.coral.CoralPositionC(CoralSubsystem.Position.SCORE))
-        .andThen(wait(1.0));
+        .andThen(RobotContainer.coral.CoralPositionC(CoralSubsystem.Position.SCORE));
     }
     private Command IntakeCoral() {
       return RobotContainer.elevator.ElevatorPositionC(ElevatorSubsystem.Position.HP)

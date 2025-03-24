@@ -44,9 +44,9 @@ public class AlgaeSubsystem extends SubsystemBase {
   // private and public variables defined here
   // #region Declarations
   public enum Direction {
-    OUT(DashboardConstants.Colors.GREEN),
-    IN(DashboardConstants.Colors.RED),
-    HOLD(DashboardConstants.Colors.ORANGE),
+    OUT(DashboardConstants.Colors.ORANGE),
+    IN(DashboardConstants.Colors.GREEN),
+    HOLD(DashboardConstants.Colors.BLACK),
     STOP(DashboardConstants.Colors.BLACK);
 
     private final String color;
@@ -331,9 +331,11 @@ public class AlgaeSubsystem extends SubsystemBase {
     m_toro_right.set(speed);
     if (invert) {
       RobotContainer.lighting.setColor(Lighting.Colors.YELLOW);
+      m_curDirection = Direction.OUT;
       NCDebug.Debug.debug("Algae: Start Toro Inverted");
     } else {
       RobotContainer.lighting.setColor(Lighting.Colors.TEAL);
+      m_curDirection = Direction.IN;
       NCDebug.Debug.debug("Algae: Start Toro");
     }
   }
@@ -342,6 +344,7 @@ public class AlgaeSubsystem extends SubsystemBase {
     m_toro_left.set(0);
     m_toro_right.set(0);
     RobotContainer.lighting.setColor(Lighting.Colors.OFF);
+    m_curDirection = Direction.STOP;
     NCDebug.Debug.debug("Algae: Stop Toro");
   }
 

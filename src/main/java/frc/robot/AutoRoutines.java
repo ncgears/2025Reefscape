@@ -126,9 +126,9 @@ public class AutoRoutines {
       final AutoTrajectory path2 = routine.trajectory("rBL_r-hL");
       final AutoTrajectory path3 = routine.trajectory("hL-rFL_l");
       final AutoTrajectory path4 = routine.trajectory("rFL_l-hL");
-      final AutoTrajectory path5 = routine.trajectory("hL-rFL_r");
-      final AutoTrajectory path6 = routine.trajectory("rFL_r-hL");
-      final AutoTrajectory path7 = routine.trajectory("hL-rFC_l");
+      // final AutoTrajectory path5 = routine.trajectory("hL-rFL_r");
+      // final AutoTrajectory path6 = routine.trajectory("rFL_r-hL");
+      // final AutoTrajectory path7 = routine.trajectory("hL-rFC_l");
     
       path1.recentlyDone().onTrue(
         ScoreCoral()
@@ -184,6 +184,40 @@ public class AutoRoutines {
           path1.resetOdometry()
           .andThen(runPath(path1))
       );
+      return routine;
+    }
+
+    public AutoRoutine right4Coral() { //203
+      final AutoRoutine routine = m_factory.newRoutine("Right4Coral");
+      final AutoTrajectory path1 = routine.trajectory("sRCb-rBR_l"); //sLCb-rBL_r
+      final AutoTrajectory path2 = routine.trajectory("rBR_l-hR"); //rBL_r-hL
+      final AutoTrajectory path3 = routine.trajectory("hR-rFR_r"); //hL-rFL_l
+      final AutoTrajectory path4 = routine.trajectory("rFR_r-hR"); //rFL_l-hL
+      // final AutoTrajectory path5 = routine.trajectory("hR-rFR_l"); //hL-rFL_r
+      // final AutoTrajectory path6 = routine.trajectory("rFR_l-hR"); //rFL_r-hL
+      // final AutoTrajectory path7 = routine.trajectory("hR-rFC_r"); //hL-rFC_l
+    
+      path1.recentlyDone().onTrue(
+        ScoreCoral()
+        .andThen(wait(0.2))
+        .andThen(runPath(path2))
+      );
+      path2.recentlyDone().onTrue(
+        wait(0.5)
+        .andThen(runPath(path3))
+      );
+      path3.recentlyDone().onTrue(
+        ScoreCoral()
+        .andThen(wait(0.2))
+        .andThen(runPath(path4))
+      );
+
+      seedPose(path1);
+      routine.active().onTrue(
+          path1.resetOdometry()
+          .andThen(runPath(path1))
+      );
+
       return routine;
     }
 

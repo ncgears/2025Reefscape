@@ -43,9 +43,9 @@ public class ElevatorConstants {
     * kS = (up - dn) / 2
     */
 
-    public static final double kMotionMagicCruise = 600; // Motor Max / Gear Ratio
+    public static final double kMotionMagicCruise = 800; // Motor Max / Gear Ratio
     public static final double kMotionMagicAccel = 400; // Acceleration: Cruise / Accel = time to cruise
-    public static final double kMotionMagicJerk = 500; //0=disabled; 10-20x accel for smooth; lower for smoother motion at the cost of time: accel / jerk = jerk time
+    public static final double kMotionMagicJerk = 800; //0=disabled; 10-20x accel for smooth; lower for smoother motion at the cost of time: accel / jerk = jerk time
     //Current Limiting
     public static final boolean kCurrentLimitEnable = false; // TODO: Test current limits
     public static final double kCurrentLimitAmps = 30.0;

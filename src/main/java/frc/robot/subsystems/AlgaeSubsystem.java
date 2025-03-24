@@ -28,6 +28,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.constants.*;
+import frc.robot.classes.Lighting;
 import frc.robot.utils.NCDebug;
 import frc.robot.RobotContainer;
 
@@ -329,8 +330,10 @@ public class AlgaeSubsystem extends SubsystemBase {
     m_toro_left.set(speed);
     m_toro_right.set(speed);
     if (invert) {
+      RobotContainer.lighting.setColor(Lighting.Colors.YELLOW);
       NCDebug.Debug.debug("Algae: Start Toro Inverted");
     } else {
+      RobotContainer.lighting.setColor(Lighting.Colors.TEAL);
       NCDebug.Debug.debug("Algae: Start Toro");
     }
   }
@@ -338,6 +341,7 @@ public class AlgaeSubsystem extends SubsystemBase {
   public void stopToro() {
     m_toro_left.set(0);
     m_toro_right.set(0);
+    RobotContainer.lighting.setColor(Lighting.Colors.OFF);
     NCDebug.Debug.debug("Algae: Stop Toro");
   }
 

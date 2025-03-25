@@ -208,10 +208,10 @@ public class AutoRoutines {
       final AutoTrajectory path2 = routine.trajectory("rBR_l-hR"); //rBL_r-hL
       final AutoTrajectory path3 = routine.trajectory("hR-rFR_r"); //hL-rFL_l
       final AutoTrajectory path4 = routine.trajectory("rFR_r-hR"); //rFL_l-hL
-      // final AutoTrajectory path5 = routine.trajectory("hR-rFR_l"); //hL-rFL_r
-      // final AutoTrajectory path6 = routine.trajectory("rFR_l-hR"); //rFL_r-hL
+      final AutoTrajectory path5 = routine.trajectory("hR-rFR_l"); //hL-rFL_r
+      final AutoTrajectory path6 = routine.trajectory("rFR_l-hR"); //rFL_r-hL
       // final AutoTrajectory path7 = routine.trajectory("hR-rFC_r"); //hL-rFC_l
-    
+
       path1.recentlyDone().onTrue(
         ScoreCoral()
         .andThen(wait(0.2))
@@ -225,6 +225,15 @@ public class AutoRoutines {
         ScoreCoral()
         .andThen(wait(0.2))
         .andThen(runPath(path4))
+      );
+      path4.recentlyDone().onTrue(
+        wait(0.7)
+        .andThen(runPath(path5))
+      );
+      path5.recentlyDone().onTrue(
+        ScoreCoral()
+        .andThen(wait(0.2))
+        .andThen(runPath(path6))
       );
 
       seedPose(path1);

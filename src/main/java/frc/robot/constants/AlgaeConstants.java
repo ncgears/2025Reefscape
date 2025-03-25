@@ -29,7 +29,7 @@ public class AlgaeConstants {
         public static final double kSpeed = 0.70;
         public static final double kPositionTolerance = 0.02;
         public class Positions {
-            public static final double stow = 0.01;
+            public static final double stow = 0.003;
             public static final double up = 0.020;
             public static final double transit = 0.020;
             public static final double down = 0.165;

@@ -126,8 +126,8 @@ public class AutoRoutines {
       final AutoTrajectory path2 = routine.trajectory("rBL_r-hL");
       final AutoTrajectory path3 = routine.trajectory("hL-rFL_l");
       final AutoTrajectory path4 = routine.trajectory("rFL_l-hL");
-      // final AutoTrajectory path5 = routine.trajectory("hL-rFL_r");
-      // final AutoTrajectory path6 = routine.trajectory("rFL_r-hL");
+      final AutoTrajectory path5 = routine.trajectory("hL-rFL_r");
+      final AutoTrajectory path6 = routine.trajectory("rFL_r-hL");
       // final AutoTrajectory path7 = routine.trajectory("hL-rFC_l");
     
       path1.recentlyDone().onTrue(
@@ -136,13 +136,22 @@ public class AutoRoutines {
         .andThen(runPath(path2))
       );
       path2.recentlyDone().onTrue(
-        wait(0.5)
+        wait(0.7)
         .andThen(runPath(path3))
       );
       path3.recentlyDone().onTrue(
         ScoreCoral()
         .andThen(wait(0.2))
         .andThen(runPath(path4))
+      );
+      path4.recentlyDone().onTrue(
+        wait(0.7)
+        .andThen(runPath(path5))
+      );
+      path5.recentlyDone().onTrue(
+        ScoreCoral()
+        .andThen(wait(0.2))
+        .andThen(runPath(path6))
       );
 
       seedPose(path1);
@@ -160,8 +169,9 @@ public class AutoRoutines {
       final AutoTrajectory path2 = routine.trajectory("rBC_r-rBC_c");
       final AutoTrajectory path3 = routine.trajectory("rBC_c-bC");
       final AutoTrajectory path4 = routine.trajectory("bC-rBL_c");
-      final AutoTrajectory path5 = routine.trajectory("rBL_c-bC");
-      final AutoTrajectory path6 = routine.trajectory("bC-hL");
+      final AutoTrajectory path5 = routine.trajectory("rBL_c-waitLeft");
+      // final AutoTrajectory path5 = routine.trajectory("rBL_c-bC");
+      // final AutoTrajectory path6 = routine.trajectory("bC-hL");
     
       path1.recentlyDone().onTrue(
         ScoreCoral()
@@ -169,14 +179,19 @@ public class AutoRoutines {
         .andThen(runPath(path2))
       );
       path2.recentlyDone().onTrue(
-        wait(1.0)
+        wait(0.7)
         .andThen(RobotContainer.algae.setAlgaePositionC(AlgaeSubsystem.Position.UP))
         .andThen(runPath(path3))
       );
       path3.recentlyDone().onTrue(
         ScoreAlgae()
-        // .andThen(wait(0.3))
-        // .andThen(runPath(path4))
+        .andThen(wait(0.3))
+        .andThen(runPath(path4))
+      );
+      path4.recentlyDone().onTrue(
+        wait(0.7)
+        .andThen(RobotContainer.algae.setAlgaePositionC(AlgaeSubsystem.Position.UP))
+        .andThen(runPath(path5))
       );
 
       seedPose(path1);
@@ -203,7 +218,7 @@ public class AutoRoutines {
         .andThen(runPath(path2))
       );
       path2.recentlyDone().onTrue(
-        wait(0.5)
+        wait(0.7)
         .andThen(runPath(path3))
       );
       path3.recentlyDone().onTrue(

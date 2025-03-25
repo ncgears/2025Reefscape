@@ -34,7 +34,7 @@ public class ElevatorConstants {
     public static final double kP = 28.0; // add kP per rotation of error: error of 1 rotation results in 12v output (this might be low for aimer)
     public static final double kI = 0.0; // no integral
     public static final double kD = 0.0; // 0.1 = velocity error of 1rps results in 0.1v output
-    public static final double kG = 0.5; // increase until start to move up
+    public static final double kG = 0.3; // increase until start to move up
 
     /** finding kS and kG
     * up = Increase output to find when it just starts moving up (from stalled) .5

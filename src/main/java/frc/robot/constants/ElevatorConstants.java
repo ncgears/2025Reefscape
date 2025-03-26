@@ -18,7 +18,7 @@ public class ElevatorConstants {
     public static final int kCANcoderID = ID.CANcoder.elevator;
     public static final boolean kUseCANcoder = true;
     public static final boolean kSensorInverted = true;
-    public static final double kMagnetOffset = -0.111816; //Adjust magnet to sensor offset for CANcoder
+    public static final double kMagnetOffset = -0.040527; //Adjust magnet to sensor offset for CANcoder
     public static final int kMotorID = ID.TalonFX.elevator;
     public static final boolean kIsInverted = true;
     public static final NeutralModeValue kNeutralMode = NeutralModeValue.Brake;
@@ -28,13 +28,13 @@ public class ElevatorConstants {
     public static final double kGearRatio = 16; // 16:1 gearbox
     public static final double kSensorGearRatio = 1.0; // no gearing between sensor and spool -- this is between sensor and spool
     //PID Control
-    public static final double kS = 0.25; // add kS to overcome static friction: adjust first to start moving
+    public static final double kS = 0.35; // add kS to overcome static friction: adjust first to start moving
     public static final double kV = 1.25; // add kV for velocity target: voltage(12) / velocity target.. 1 rps results in 0.12v output
     public static final double kA = 0.0; // add kA for acceleration: 0.01 = 1 rps/s requires 0.01v output
     public static final double kP = 28.0; // add kP per rotation of error: error of 1 rotation results in 12v output (this might be low for aimer)
     public static final double kI = 0.0; // no integral
     public static final double kD = 0.0; // 0.1 = velocity error of 1rps results in 0.1v output
-    public static final double kG = 0.3; // increase until start to move up
+    public static final double kG = 0.35; // increase until start to move up
 
     /** finding kS and kG
     * up = Increase output to find when it just starts moving up (from stalled) .5
@@ -43,9 +43,9 @@ public class ElevatorConstants {
     * kS = (up - dn) / 2
     */
 
-    public static final double kMotionMagicCruise = 1600; // Motor Max / Gear Ratio
-    public static final double kMotionMagicAccel = 800; // Acceleration: Cruise / Accel = time to cruise
-    public static final double kMotionMagicJerk = 800; //0=disabled; 10-20x accel for smooth; lower for smoother motion at the cost of time: accel / jerk = jerk time
+    public static final double kMotionMagicCruise = 2000; // Motor Max / Gear Ratio
+    public static final double kMotionMagicAccel = 300; // Acceleration: Cruise / Accel = time to cruise
+    public static final double kMotionMagicJerk = 1000; //0=disabled; 10-20x accel for smooth; lower for smoother motion at the cost of time: accel / jerk = jerk time
     //Current Limiting
     public static final boolean kCurrentLimitEnable = false; // TODO: Test current limits
     public static final double kCurrentLimitAmps = 30.0;
@@ -56,7 +56,7 @@ public class ElevatorConstants {
         public static final double kFwdLimit = 5.85; //Forward imit
         public static final double kRevLimit = -0.01; //Reverse Limit
         public static final double kStow = 0.0; //all the way down
-        public static final double kFloor = 0.28;
+        public static final double kFloor = 0.04;
         public static final double kBarge = 5.68; //all the way up
         public static final double kProcessor = kStow; //all the way down
         public static final double kL4 = 4.87; //Elevator up to L4
@@ -65,7 +65,7 @@ public class ElevatorConstants {
         public static final double kL3 = 2.85; //Elevator up to L3
         public static final double kL3Score = kL3 - kScoreDelta; //Elevator up to L3 Score
         public static final double kLineup = 1.25; //Elevator height for lining up
-        public static final double kAlgaeLow = 1.25; //Elevator between L2 and L3
+        public static final double kAlgaeLow = 1.45; //Elevator between L2 and L3
         public static final double kL2 = 1.51; //Elevator up to L2
         public static final double kL2Score = kL2 - kScoreDelta; //Elevator up to L2 Score
         public static final double kL1 = 0.0; //Elevator up to L1

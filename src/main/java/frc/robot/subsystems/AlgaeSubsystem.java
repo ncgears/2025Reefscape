@@ -330,11 +330,11 @@ public class AlgaeSubsystem extends SubsystemBase {
     m_toro_left.set(speed);
     m_toro_right.set(speed);
     if (invert) {
-      RobotContainer.lighting.setColor(Lighting.Colors.YELLOW);
+      RobotContainer.lighting.setColor(Lighting.Colors.WHITE);
       m_curDirection = Direction.OUT;
       NCDebug.Debug.debug("Algae: Start Toro Inverted");
     } else {
-      RobotContainer.lighting.setColor(Lighting.Colors.TEAL);
+      RobotContainer.lighting.setColor(Lighting.Colors.ORANGE);
       m_curDirection = Direction.IN;
       NCDebug.Debug.debug("Algae: Start Toro");
     }

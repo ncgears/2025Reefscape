@@ -318,6 +318,11 @@ public class ElevatorSubsystem extends SubsystemBase {
     return runOnce(
         () -> setPosition(position));
   }
+  // effectively, this is runOnce().andThen(idle()), allowing us to interrupt using .until(::atTarget) trigger
+  // public Command ElevatorPositionC(Position position) {
+  //   return runAndWait(
+  //       () -> setPosition(position));
+  // }
 
   public Command ScoreC() {
     return runOnce(() -> {

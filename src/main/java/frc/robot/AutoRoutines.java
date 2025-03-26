@@ -6,6 +6,7 @@ import choreo.auto.AutoTrajectory;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.classes.Lighting;
 import frc.robot.subsystems.AlgaeSubsystem;
 import frc.robot.subsystems.CoralSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
@@ -94,6 +95,7 @@ public class AutoRoutines {
       seedPose(path1);
       routine.active().onTrue(
           path1.resetOdometry()
+          .andThen(SeekingAlgae())
           .andThen(runPath(path1))
       );
 
@@ -132,26 +134,27 @@ public class AutoRoutines {
     
       path1.recentlyDone().onTrue(
         ScoreCoral()
-        .andThen(wait(0.1))
         .andThen(runPath(path2))
       );
       path2.recentlyDone().onTrue(
         wait(0.7)
+        .andThen(SeekingCoral())
         .andThen(runPath(path3))
       );
       path3.recentlyDone().onTrue(
         ScoreCoral()
-        .andThen(wait(0.1))
         .andThen(runPath(path4))
       );
       path4.recentlyDone().onTrue(
         wait(0.7)
+        .andThen(SeekingAlgae())
         .andThen(runPath(path5))
       );
 
       seedPose(path1);
       routine.active().onTrue(
           path1.resetOdometry()
+          .andThen(SeekingCoral())
           .andThen(runPath(path1))
       );
 
@@ -171,6 +174,7 @@ public class AutoRoutines {
       path1.recentlyDone().onTrue(
         ScoreCoral()
         .andThen(wait(0.2))
+        .andThen(SeekingAlgae())
         .andThen(runPath(path2))
       );
       path2.recentlyDone().onTrue(
@@ -181,10 +185,12 @@ public class AutoRoutines {
       path3.recentlyDone().onTrue(
         ScoreAlgae()
         .andThen(wait(0.3))
+        .andThen(SeekingAlgae())
         .andThen(runPath(path4))
       );
       path4.recentlyDone().onTrue(
         wait(0.7)
+        .andThen(SeekingNone())
         .andThen(RobotContainer.algae.setAlgaePositionC(AlgaeSubsystem.Position.UP))
         .andThen(runPath(path5))
       );
@@ -192,6 +198,7 @@ public class AutoRoutines {
       seedPose(path1);
       routine.active().onTrue(
           path1.resetOdometry()
+          .andThen(SeekingCoral())
           .andThen(runPath(path1))
       );
       return routine;
@@ -214,6 +221,7 @@ public class AutoRoutines {
       );
       path2.recentlyDone().onTrue(
         wait(0.7)
+        .andThen(SeekingCoral())
         .andThen(runPath(path3))
       );
       path3.recentlyDone().onTrue(
@@ -223,6 +231,7 @@ public class AutoRoutines {
       );
       path4.recentlyDone().onTrue(
         wait(0.7)
+        .andThen(SeekingCoral())
         .andThen(runPath(path5))
       );
       path5.recentlyDone().onTrue(
@@ -234,6 +243,7 @@ public class AutoRoutines {
       seedPose(path1);
       routine.active().onTrue(
           path1.resetOdometry()
+          .andThen(SeekingCoral())
           .andThen(runPath(path1))
       );
 
@@ -277,10 +287,11 @@ public class AutoRoutines {
     private Command ScoreCoral() {
       return 
         // Commands.waitUntil(RobotContainer.elevator.atTarget)
-        wait(0.5)
+        wait(0.3)
         .andThen(RobotContainer.elevator.ElevatorPositionC(ElevatorSubsystem.Position.L4SCORE))
           // .until(RobotContainer.elevator.atTarget)
-        .andThen(wait(0.5))
+        .andThen(wait(0.4))
+        .andThen(SeekingNone())
         .andThen(RobotContainer.coral.CoralPositionC(CoralSubsystem.Position.SCORE));
     }
     private Command IntakeCoral() {
@@ -319,13 +330,22 @@ public class AutoRoutines {
     private Command ScoreAlgae() {
       return RobotContainer.algae.startToroC(true)
       .andThen(wait(0.2))
+      .andThen(SeekingNone())
       .andThen(RobotContainer.algae.stopToroC());
     }
     private Command Transit() {
       return RobotContainer.elevator.ElevatorPositionC(ElevatorSubsystem.Position.HP)
         .andThen(RobotContainer.coral.CoralPositionC(CoralSubsystem.Position.SCORE))
         .andThen(RobotContainer.algae.setAlgaePositionC(AlgaeSubsystem.Position.UP));
-
+    }
+    private Command SeekingCoral() {
+      return RobotContainer.lighting.setColorCommand(Lighting.Colors.WHITE);
+    }
+    private Command SeekingAlgae() {
+      return RobotContainer.lighting.setColorCommand(Lighting.Colors.TEAL);
+    }
+    private Command SeekingNone() {
+      return RobotContainer.lighting.setColorCommand(Lighting.Colors.OFF);
     }
     //#endregion AutoCommands
 

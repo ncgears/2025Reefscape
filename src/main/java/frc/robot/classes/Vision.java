@@ -46,7 +46,8 @@ public class Vision {
   private final PhotonPoseEstimator photonEstimatorFront, photonEstimatorBack;
   private Matrix<N3, N1> curStdDevsFront, curStdDevsBack;
   private double lastEstTimestampFront, lastEstTimestampBack = 0;
-  private Pose2d m_visPose = Pose2d.kZero;
+  private Pose2d m_visFrontPose = Pose2d.kZero;
+  private Pose2d m_visBackPose = Pose2d.kZero;
 
   // Simulator
   private VisionSystemSim visionSim;
@@ -141,7 +142,7 @@ public class Vision {
 		if(VisionConstants.debugDashboard) {
       ShuffleboardTab debugTab = Shuffleboard.getTab("Debug");
       ShuffleboardLayout dbgVisionList = debugTab.getLayout("Vision", BuiltInLayouts.kList)
-        .withSize(4, 6)
+        .withSize(4, 8)
         .withPosition(0, 0)
         .withProperties(Map.of("Label position", "LEFT"));
       dbgVisionList.addBoolean("Front Targets", () -> getLatestResult(front_camera).hasTargets())
@@ -150,19 +151,29 @@ public class Vision {
         .withWidget("Boolean Box");
       dbgVisionList.addBoolean("Suppressed", () -> RobotContainer.drivetrain.isVisionSuppressed())
         .withWidget("Boolean Box");
-      dbgVisionList.addNumber("Vision Pose X", () -> NCDebug.General.roundDouble(getVisionPose().getX(),3));
-      dbgVisionList.addNumber("Vision Pose Y", () -> NCDebug.General.roundDouble(getVisionPose().getY(),3));
+      dbgVisionList.addNumber("Front Vision Pose X", () -> NCDebug.General.roundDouble(getVisionPose("front").getX(),3));
+      dbgVisionList.addNumber("Front Vision Pose Y", () -> NCDebug.General.roundDouble(getVisionPose("front").getY(),3));
+      dbgVisionList.addNumber("Back Vision Pose X", () -> NCDebug.General.roundDouble(getVisionPose("back").getX(),3));
+      dbgVisionList.addNumber("Back Vision Pose Y", () -> NCDebug.General.roundDouble(getVisionPose("back").getY(),3));
       dbgVisionList.addNumber("Robot Pose X", () -> NCDebug.General.roundDouble(RobotContainer.drivetrain.getBotPose().getX(),3));
       dbgVisionList.addNumber("Robot Pose Y", () -> NCDebug.General.roundDouble(RobotContainer.drivetrain.getBotPose().getY(),3));
     }
   }
 
-  public Pose2d getVisionPose() {
-    Optional<EstimatedRobotPose> estimatedPose = getFrontEstimatedGlobalPose();
-    if (!estimatedPose.isEmpty()) {
-      m_visPose = estimatedPose.get().estimatedPose.toPose2d();
+  public Pose2d getVisionPose(String cam) {
+    Optional<EstimatedRobotPose> estimatedPose;
+    if(cam == "front") {
+      estimatedPose = getFrontEstimatedGlobalPose();
+      if (!estimatedPose.isEmpty()) {
+        m_visFrontPose = estimatedPose.get().estimatedPose.toPose2d();
+      }
+      return m_visFrontPose;
     }
-    return m_visPose;
+    estimatedPose = getBackEstimatedGlobalPose();
+    if (!estimatedPose.isEmpty()) {
+      m_visBackPose = estimatedPose.get().estimatedPose.toPose2d();
+    }
+    return m_visBackPose;
   }
 
   public PhotonPipelineResult getLatestResult(PhotonCamera camera) {

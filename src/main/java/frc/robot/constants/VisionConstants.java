@@ -48,8 +48,8 @@ public class VisionConstants {
         public static final String kCameraName = "rearcam";
         public static final boolean kUseForPose = false;
         public static final Transform3d kRobotToCam = new Transform3d(
-            new Translation3d(-0.223,0.285,0.286), //x,y,z location of camera on robot in meters
-            new Rotation3d(0,Math.toRadians(70.82),Math.toRadians(180)) //yaw,pitch/roll of camera on robot in radians
+            new Translation3d(-0.23,0.231,0.280), //x,y,z location of camera on robot in meters
+            new Rotation3d(0,0,Math.toRadians(180)) //yaw,pitch/roll of camera on robot in radians
         );
     }
 

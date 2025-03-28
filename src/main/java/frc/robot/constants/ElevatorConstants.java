@@ -18,7 +18,7 @@ public class ElevatorConstants {
     public static final int kCANcoderID = ID.CANcoder.elevator;
     public static final boolean kUseCANcoder = true;
     public static final boolean kSensorInverted = true;
-    public static final double kMagnetOffset = -0.308105; //Adjust magnet to sensor offset for CANcoder
+    public static final double kMagnetOffset = -0.282959; //Adjust magnet to sensor offset for CANcoder
     public static final int kMotorID = ID.TalonFX.elevator;
     public static final boolean kIsInverted = true;
     public static final NeutralModeValue kNeutralMode = NeutralModeValue.Brake;

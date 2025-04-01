@@ -62,7 +62,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 	
     private double target_heading = 0.0;
     private boolean heading_locked = false;
-    private boolean m_suppressVision = false;
+    private boolean m_suppressFrontVision = false;
+    private boolean m_suppressBackVision = false;
 
     /* Blue alliance sees forward as 0 degrees (toward red alliance wall) */
     private static final Rotation2d kBlueAlliancePerspectiveRotation = Rotation2d.kZero;
@@ -332,28 +333,39 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     return getBotHeading().minus(RobotContainer.m_targetDirection);
   }
 
-	public void setSuppressVision(boolean suppress) { 
-		m_suppressVision = suppress; 
-		NCDebug.Debug.debug((m_suppressVision) ? "Drive: Vision Suppressed" : "Drive: Vision Unsuppressed");
+	public void setSuppressFrontVision(boolean suppress) { 
+		m_suppressFrontVision = suppress; 
+		NCDebug.Debug.debug((m_suppressFrontVision) ? "Drive: Front Vision Suppressed" : "Drive: Front Vision Unsuppressed");
 	}
-	public Command suppressVisionC() {
-		return runOnce(() -> setSuppressVision(true));
+	public Command suppressFrontVisionC() {
+		return runOnce(() -> setSuppressFrontVision(true));
 	}
-	public Command unsuppressVisionC() {
-		return runOnce(() -> setSuppressVision(false));
+	public Command unsuppressFrontVisionC() {
+		return runOnce(() -> setSuppressFrontVision(false));
+	}
+	public void setSuppressBackVision(boolean suppress) { 
+		m_suppressBackVision = suppress; 
+		NCDebug.Debug.debug((m_suppressBackVision) ? "Drive: Back Vision Suppressed" : "Drive: Back Vision Unsuppressed");
+	}
+	public Command suppressBackVisionC() {
+		return runOnce(() -> setSuppressBackVision(true));
+	}
+	public Command unsuppressBackVisionC() {
+		return runOnce(() -> setSuppressBackVision(false));
 	}
 	public void autoSuppressVision() {
 		if(VisionConstants.kUseAutoSuppress) {
 			// ChassisSpeeds speeds = getState().ChassisSpeeds;
 			// //if the speed is over threshold, suppress vision measurements from being added to pose
-			// m_suppressVision = (
+			// m_suppressFrontVision = (
 			// 	Math.sqrt(
 			// 		Math.pow(speeds.vxMetersPerSecond,2) + 
 			// 		Math.pow(speeds.vyMetersPerSecond,2)
 			// 	) >= VisionConstants.kAutosuppressSpeedMetersPerSecond);
 		}
 	}
-	public boolean isVisionSuppressed() { return m_suppressVision; }
+	public boolean isFrontVisionSuppressed() { return m_suppressFrontVision; }
+	public boolean isBackVisionSuppressed() { return m_suppressBackVision; }
 
   public boolean getHeadingLocked() { return RobotContainer.m_targetLock; }
 	public String getHeadingLockedColor() {
@@ -497,9 +509,12 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 m_hasAppliedOperatorPerspective = true;
             });
         }
-        if(!m_suppressVision) {
+        if(!m_suppressFrontVision) {
           RobotContainer.vision.correctPoseWithVision();
         }
+        // if(!m_suppressBackVision) {
+        //   RobotContainer.vision.correctPoseWithVision();
+        // }
         field.setRobotPose(this.getState().Pose);
     }
 

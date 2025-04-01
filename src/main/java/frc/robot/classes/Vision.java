@@ -149,7 +149,9 @@ public class Vision {
         .withWidget("Boolean Box");
       dbgVisionList.addBoolean("Back Targets", () -> getLatestResult(back_camera).hasTargets())
         .withWidget("Boolean Box");
-      dbgVisionList.addBoolean("Suppressed", () -> RobotContainer.drivetrain.isVisionSuppressed())
+      dbgVisionList.addBoolean("Front Suppressed", () -> RobotContainer.drivetrain.isFrontVisionSuppressed())
+        .withWidget("Boolean Box");
+      dbgVisionList.addBoolean("Back Suppressed", () -> RobotContainer.drivetrain.isFrontVisionSuppressed())
         .withWidget("Boolean Box");
       dbgVisionList.addNumber("Front Vision Pose X", () -> NCDebug.General.roundDouble(getVisionPose("front").getX(),3));
       dbgVisionList.addNumber("Front Vision Pose Y", () -> NCDebug.General.roundDouble(getVisionPose("front").getY(),3));

@@ -229,6 +229,7 @@ public class RobotContainer {
             new InstantCommand(this::resetRobot).ignoringDisable(true)
             .alongWith(lighting.danceParty()).until(RobotModeTriggers.disabled().negate()).ignoringDisable(true)
             .alongWith(elevator.ElevatorStopC().ignoringDisable(true)).ignoringDisable(true)
+            .alongWith(new InstantCommand(() -> {m_targetLock = false;})).ignoringDisable(true)
         );
         // bind to the autonomous() and teleop() trigger which happens any time the robot is enabled in either of those modes
         RobotModeTriggers.autonomous().or(RobotModeTriggers.teleop()).onTrue(
@@ -405,7 +406,7 @@ public class RobotContainer {
         oj.ellipses().and(oj.rightBumper()).onTrue(
           noop()
         ).onFalse(
-          elevator.ElevatorZeroC()
+          elevator.ElevatorZeroC().ignoringDisable(true)
         );
 
         // CLIMBER STUFF
@@ -542,7 +543,7 @@ public class RobotContainer {
                 autoChooser.addRoutine("202: sC-L4 Coral Left 2 Algae",autoRoutines::sCL4Coral2Algae);
                 autoChooser.addRoutine("203: sRC-Right 4C", autoRoutines::right4Coral);
                 autoChooser.addRoutine("204: sLC-Left 3C", autoRoutines::left3Coral);
-                autoChooser.addRoutine("205: sLC Straight-Left 3C", autoRoutines::left3Coral);
+                autoChooser.addRoutine("205: sLL Straight-Left 3C", autoRoutines::left3Coral);
                 autoChooser.addRoutine("901: Left Algae Double", autoRoutines::leftAlgaeDouble);
                 autoChooser.addRoutine("999: Test Run", autoRoutines::testRun);
                 // SmartDashboard.putData("Autonomous Chooser", autoChooser);

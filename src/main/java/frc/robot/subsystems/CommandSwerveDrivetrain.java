@@ -60,8 +60,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     private double m_lastSimTime;
     public Field2d field = new Field2d();
 	
-    private double target_heading = 0.0;
-    private boolean heading_locked = false;
     private boolean m_suppressFrontVision = false;
     private boolean m_suppressBackVision = false;
 

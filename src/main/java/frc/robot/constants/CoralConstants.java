@@ -24,16 +24,17 @@ public class CoralConstants {
     public static final double kCurrentSpikeLimit = 15;
     public static final double kSpeed = 0.75;
     public static final double kWaitDelay = 0.8;
+    public static final double kZeroPower = 0.50; //power for duty cycle zeroing
 
     public static final double kGearRatio = 2.0; // 20:1 gearbox (0.05), 18t:42t -- this is between rotor and sensor
     public static final double kSensorGearRatio = 1.0; // no gearing between sensor and spool -- this is between sensor and spool
 
     //PID Control
     public class in { //slot0 (reverse)
-      public static final double kS = 0.12; // add kS to overcome static friction: adjust first to start moving
+      public static final double kS = 0.20; // add kS to overcome static friction: adjust first to start moving
       public static final double kV = 0.12; // add kV for velocity target: voltage(12) / velocity target.. 1 rps results in 0.12v output
       public static final double kA = 0.0; // add kA for acceleration: 0.01 = 1 rps/s requires 0.01v output
-      public static final double kP = 0.21; // add kP per rotation of error: error of 1 rotation results in 12v output (this might be low for aimer)
+      public static final double kP = 0.25; // add kP per rotation of error: error of 1 rotation results in 12v output (this might be low for aimer)
       public static final double kI = 0.0; // no integral
       public static final double kD = 0.065; //0.0; // 0.1 = velocity error of 1rps results in 0.1v output
     }

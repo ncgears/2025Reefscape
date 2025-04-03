@@ -10,6 +10,7 @@ import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
+import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.StaticBrake;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.CANcoder;
@@ -87,6 +88,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
 
   private final MotionMagicVoltage m_mmVoltage = new MotionMagicVoltage(0);
+  private final PositionVoltage m_posVoltage = new PositionVoltage(0);
   private final DutyCycleOut m_DutyCycle = new DutyCycleOut(0);
   private final NeutralOut m_neutral = new NeutralOut();
   private final StaticBrake m_brake = new StaticBrake();
@@ -363,7 +365,8 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
 
   public void gotoTargetPosition() {
-    m_motor1.setControl(m_mmVoltage.withPosition(m_targetPosition.getRotations()));
+    // m_motor1.setControl(m_mmVoltage.withPosition(m_targetPosition.getRotations()));
+    m_motor1.setControl(m_posVoltage.withPosition(m_targetPosition.getRotations()));
   }
 
   public void ElevatorUp() {

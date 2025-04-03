@@ -289,7 +289,7 @@ public class CoralSubsystem extends SubsystemBase {
 
   public Command CoralHomeC() {
     return runOnce(() -> {
-      m_motor1.setControl(m_DutyCycle.withOutput(-0.18));
+      m_motor1.setControl(m_DutyCycle.withOutput(-CoralConstants.kZeroPower));
     });
   }
   

@@ -541,9 +541,11 @@ public class RobotContainer {
                 autoChooser.addRoutine("100: sC Score Coral Get Low Algae", autoRoutines::sCScoreAlgae);
                 autoChooser.addRoutine("201: sLC-Left 2.5C 1A", autoRoutines::left4Coral);
                 autoChooser.addRoutine("202: sC-L4 Coral Left 2 Algae",autoRoutines::sCL4Coral2Algae);
-                autoChooser.addRoutine("203: sRC-Right 4C", autoRoutines::right4Coral);
                 autoChooser.addRoutine("204: sLC-Left 3C", autoRoutines::left3Coral);
-                autoChooser.addRoutine("205: sLL Straight-Left 3C", autoRoutines::left3Coral);
+                autoChooser.addRoutine("205: sLL Straight-Left 3C", autoRoutines::left3CoralStraight);
+                autoChooser.addRoutine("301: sRC-Right 4C", autoRoutines::right4Coral);
+                autoChooser.addRoutine("304: sRC-Right 3C", autoRoutines::right3Coral);
+                autoChooser.addRoutine("305: sRR Straight-Right 3C", autoRoutines::right3CoralStraight);
                 autoChooser.addRoutine("901: Left Algae Double", autoRoutines::leftAlgaeDouble);
                 autoChooser.addRoutine("999: Test Run", autoRoutines::testRun);
                 // SmartDashboard.putData("Autonomous Chooser", autoChooser);

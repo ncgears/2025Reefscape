@@ -267,6 +267,7 @@ public class AutoRoutines {
         .andThen(runPath(path3))
       );
       path3.recentlyDone().onTrue(
+        
         ScoreCoral()
         .andThen(runPath(path4))
       );

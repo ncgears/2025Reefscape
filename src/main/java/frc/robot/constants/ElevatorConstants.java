@@ -52,7 +52,7 @@ public class ElevatorConstants {
     public static final double kCurrentLimitThresholdAmps = 60.0;
     public static final double kCurrentLimitThresholdSecs = 0.3;
     public class Positions {
-        private static final double kScoreDelta = 0.75;
+        private static final double kScoreDelta = 1.0; //0.75;
         public static final double kFwdLimit = 5.85; //Forward imit
         public static final double kRevLimit = -0.01; //Reverse Limit
         public static final double kStow = 0.0; //all the way down

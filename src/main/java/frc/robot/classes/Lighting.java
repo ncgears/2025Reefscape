@@ -136,29 +136,16 @@ public class Lighting {
   }
 
   public Command climbStartColor() {
-    if(RobotContainer.isAllianceRed()) {
-      return setColorCommand(Colors.RED);
-    } else {
-      return setColorCommand(Colors.BLUE);
-    }
+    return setColorCommand(Colors.GOLD);
   }
 
   public Command climbDoneColor() {
-    if(RobotContainer.isAllianceRed()) {
-      return new RepeatCommand(  //blinking
-        setColorCommand(Colors.RED)
-        .andThen(wait(0.2))
-        .andThen(setColorCommand(Colors.OFF))
-        .andThen(wait(0.2))
-      );
-    } else {
-      return new RepeatCommand(  //blinking
-        setColorCommand(Colors.BLUE)
-        .andThen(wait(0.2))
-        .andThen(setColorCommand(Colors.OFF))
-        .andThen(wait(0.2))
-      );
-    }
+    return new RepeatCommand(  //blinking
+      setColorCommand(Colors.OFF)
+      .andThen(wait(0.2))
+      .andThen(setColorCommand(Colors.GOLD))
+      .andThen(wait(0.2))
+    );
   }
 
   private Command wait(double seconds) {

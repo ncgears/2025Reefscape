@@ -56,7 +56,7 @@ public class ElevatorConstants {
         public static final double kFwdLimit = 5.85; //Forward imit
         public static final double kRevLimit = -0.01; //Reverse Limit
         public static final double kStow = 0.0; //all the way down
-        public static final double kFloor = 0.04;
+        public static final double kFloor = 0.0;
         public static final double kBarge = 5.68; //all the way up
         public static final double kProcessor = kStow; //all the way down
         public static final double kL4 = 4.87; //Elevator up to L4

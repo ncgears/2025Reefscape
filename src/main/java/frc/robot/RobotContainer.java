@@ -246,10 +246,14 @@ public class RobotContainer {
              * This monitors the hasCage trigger and immediately starts climbing until the climbComplete trigger, then goes to holding mode
              * Once the climbComplete trigger fires, the climber stops after 2 seconds
              */
-            climber.hasCage.and(climber.climbComplete.negate()).onTrue(climber.climberMoveC(() -> ClimberConstants.kClimbPower));
-            // .onFalse(climber.climberMoveC(() -> 0).andThen(new WaitCommand(2).andThen(climber.climberStopC())));
-            // climber.climbComplete.onTrue(climber.climberHoldC().andThen(new WaitCommand(2)).andThen(climber.climberStopC()));
-            climber.climbComplete.onTrue(climber.climberStopC());
+            climber.hasCage.and(climber.climbComplete.negate()).onTrue(
+              climber.climberMoveC(() -> ClimberConstants.kClimbPower)
+              .alongWith(lighting.climbStartColor())
+            );
+            climber.climbComplete.onTrue(
+              climber.climberStopC()
+              .alongWith(lighting.climbDoneColor())
+            );
         }
         //#endregion Trigger Actions
 

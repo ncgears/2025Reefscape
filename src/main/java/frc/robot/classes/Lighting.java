@@ -3,6 +3,7 @@ package frc.robot.classes;
 
 import com.ctre.phoenix.led.CANdle;
 
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.util.Color;
@@ -10,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.RobotContainer;
 import frc.robot.constants.*; 
 import frc.robot.utils.NCDebug;
 
@@ -131,6 +133,32 @@ public class Lighting {
       .andThen(setColorCommand(Colors.NCGREEN))
       .andThen(wait(0.25))
     );
+  }
+
+  public Command climbStartColor() {
+    if(RobotContainer.isAllianceRed()) {
+      return setColorCommand(Colors.RED);
+    } else {
+      return setColorCommand(Colors.BLUE);
+    }
+  }
+
+  public Command climbDoneColor() {
+    if(RobotContainer.isAllianceRed()) {
+      return new RepeatCommand(  //blinking
+        setColorCommand(Colors.RED)
+        .andThen(wait(0.2))
+        .andThen(setColorCommand(Colors.OFF))
+        .andThen(wait(0.2))
+      );
+    } else {
+      return new RepeatCommand(  //blinking
+        setColorCommand(Colors.BLUE)
+        .andThen(wait(0.2))
+        .andThen(setColorCommand(Colors.OFF))
+        .andThen(wait(0.2))
+      );
+    }
   }
 
   private Command wait(double seconds) {

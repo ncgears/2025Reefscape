@@ -31,6 +31,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.constants.*;
 import frc.robot.utils.NCDebug;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 
 /**
@@ -198,7 +199,9 @@ public class ClimberSubsystem extends SubsystemBase {
   }
 
   private boolean getClimbSwitch() {
-    // return !m_climbSwitch.get();
+    if(Robot.isSimulation()) {
+      return !m_climbSwitch.get();
+    }
     return (m_motor1.getForwardLimit().getValue() == ForwardLimitValue.Open);
   }
 

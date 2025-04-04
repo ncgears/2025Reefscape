@@ -547,6 +547,7 @@ public class RobotContainer {
                 autoChooser.addRoutine("202: sC-L4 Coral Left 2 Algae",autoRoutines::sCL4Coral2Algae);
                 autoChooser.addRoutine("204: sLC-Left 3C", autoRoutines::left3Coral);
                 autoChooser.addRoutine("205: sLL Straight-Left 3C", autoRoutines::left3CoralStraight);
+                autoChooser.addRoutine("206: sLL Straight-Left 3C Left", autoRoutines::left3CoralStraightLeft);
                 autoChooser.addRoutine("301: sRC-Right 4C", autoRoutines::right4Coral);
                 autoChooser.addRoutine("304: sRC-Right 3C", autoRoutines::right3Coral);
                 autoChooser.addRoutine("305: sRR Straight-Right 3C", autoRoutines::right3CoralStraight);

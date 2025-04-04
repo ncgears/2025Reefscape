@@ -291,6 +291,50 @@ public class AutoRoutines {
       return routine;
     }
 
+    public AutoRoutine left3CoralStraightLeft() { //206
+      final AutoRoutine routine = m_factory.newRoutine("Left3CoralStraightLeft");
+      final AutoTrajectory path1 = routine.trajectory("sLLb-rBL_l_str");
+      final AutoTrajectory path2 = routine.trajectory("rBL_l-hL");
+      final AutoTrajectory path3 = routine.trajectory("hL-rFL_l");
+      final AutoTrajectory path4 = routine.trajectory("rFL_l-hL");
+      final AutoTrajectory path5 = routine.trajectory("hL-rFL_r");
+      final AutoTrajectory path6 = routine.trajectory("rFL_r-hL");
+      // final AutoTrajectory path7 = routine.trajectory("hL-rFC_l");
+    
+      path1.recentlyDone().onTrue(
+        ScoreCoral()
+        .andThen(runPath(path2))
+      );
+      path2.recentlyDone().onTrue(
+        wait(0.7)
+        .andThen(SeekingCoral())
+        .andThen(runPath(path3))
+      );
+      path3.recentlyDone().onTrue(
+        
+        ScoreCoral()
+        .andThen(runPath(path4))
+      );
+      path4.recentlyDone().onTrue(
+        wait(0.7)
+        .andThen(SeekingCoral())
+        .andThen(runPath(path5))
+      );
+      path5.recentlyDone().onTrue(
+        ScoreCoral()
+        .andThen(runPath(path6))
+      );
+
+      seedPose(path1);
+      routine.active().onTrue(
+          path1.resetOdometry()
+          .andThen(SeekingCoral())
+          .andThen(runPath(path1))
+      );
+
+      return routine;
+    }
+
     public AutoRoutine right4Coral() { //301
       final AutoRoutine routine = m_factory.newRoutine("Right4Coral");
       final AutoTrajectory path1 = routine.trajectory("sRCb-rBR_l"); //sLCb-rBL_r

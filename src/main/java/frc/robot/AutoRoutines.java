@@ -192,7 +192,7 @@ public class AutoRoutines {
         wait(0.7)
         .andThen(SeekingNone())
         .andThen(RobotContainer.algae.setAlgaePositionC(AlgaeSubsystem.Position.UP))
-        .andThen(runPath(path5))
+        // .andThen(runPath(path5))
       );
 
       seedPose(path1);

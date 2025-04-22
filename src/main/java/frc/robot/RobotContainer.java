@@ -242,7 +242,7 @@ public class RobotContainer {
         if(!ClimberConstants.isDisabled) {
             /**
              * This monitors the hasCage trigger and immediately starts climbing until the climbComplete trigger, then goes to holding mode
-             * Once the climbComplete trigger fires, the climber stops after 2 seconds
+             * Once the climbComplete trigger fires, the climber stops
              */
             climber.hasCage.and(climber.climbComplete.negate()).onTrue(
               climber.climberMoveC(() -> ClimberConstants.kClimbPower)
@@ -514,20 +514,20 @@ public class RobotContainer {
       autoFactory = drivetrain.createAutoFactory();
       autoRoutines = new AutoRoutines(autoFactory);
       autoChooser.addRoutine("000: None (Do Nothing)", autoRoutines::doNothingAuto);
-      // autoChooser.addRoutine("001: sLL-Move Off Line", autoRoutines::sLLmoveOffLine);
-      // autoChooser.addRoutine("002: sRR-Move Off Line", autoRoutines::sRRmoveOffLine);
-      // autoChooser.addRoutine("003: sC-Move Off Line", autoRoutines::sCmoveOffLine);
-      // autoChooser.addRoutine("100: sC Score Coral Get Low Algae", autoRoutines::sCScoreAlgae);
-      // autoChooser.addRoutine("201: sLC-Left 2.5C 1A", autoRoutines::left4Coral);
-      // autoChooser.addRoutine("202: sC-L4 Coral Left 2 Algae",autoRoutines::sCL4Coral2Algae);
-      // autoChooser.addRoutine("204: sLC-Left 3C", autoRoutines::left3Coral);
-      // autoChooser.addRoutine("205: sLL Straight-Left 3C", autoRoutines::left3CoralStraight);
-      // autoChooser.addRoutine("206: sLL Straight-Left 3C Left", autoRoutines::left3CoralStraightLeft);
-      // autoChooser.addRoutine("301: sRC-Right 4C", autoRoutines::right4Coral);
-      // autoChooser.addRoutine("304: sRC-Right 3C", autoRoutines::right3Coral);
-      // autoChooser.addRoutine("305: sRR Straight-Right 3C", autoRoutines::right3CoralStraight);
-      // autoChooser.addRoutine("901: Left Algae Double", autoRoutines::leftAlgaeDouble);
-      // autoChooser.addRoutine("999: Test Run", autoRoutines::testRun);
+      autoChooser.addRoutine("001: sLL-Move Off Line", autoRoutines::sLLmoveOffLine);
+      autoChooser.addRoutine("002: sRR-Move Off Line", autoRoutines::sRRmoveOffLine);
+      autoChooser.addRoutine("003: sC-Move Off Line", autoRoutines::sCmoveOffLine);
+      autoChooser.addRoutine("100: sC Score Coral Get Low Algae", autoRoutines::sCScoreAlgae);
+      autoChooser.addRoutine("201: sLC-Left 2.5C 1A", autoRoutines::left4Coral);
+      autoChooser.addRoutine("202: sC-L4 Coral Left 2 Algae",autoRoutines::sCL4Coral2Algae);
+      autoChooser.addRoutine("204: sLC-Left 3C", autoRoutines::left3Coral);
+      autoChooser.addRoutine("205: sLL Straight-Left 3C", autoRoutines::left3CoralStraight);
+      autoChooser.addRoutine("206: sLL Straight-Left 3C Left", autoRoutines::left3CoralStraightLeft);
+      autoChooser.addRoutine("301: sRC-Right 4C", autoRoutines::right4Coral);
+      autoChooser.addRoutine("304: sRC-Right 3C", autoRoutines::right3Coral);
+      autoChooser.addRoutine("305: sRR Straight-Right 3C", autoRoutines::right3CoralStraight);
+      autoChooser.addRoutine("901: Left Algae Double", autoRoutines::leftAlgaeDouble);
+      autoChooser.addRoutine("999: Test Run", autoRoutines::testRun);
       SmartDashboard.putData("Autonomous Chooser", autoChooser);
     }
     //#endregion Dashboard

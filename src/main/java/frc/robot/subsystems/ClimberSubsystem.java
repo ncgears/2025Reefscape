@@ -18,11 +18,10 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -103,7 +102,7 @@ public class ClimberSubsystem extends SubsystemBase {
       .retryConfigApply(() -> m_motor1.getConfigurator().apply(RobotContainer.ctreConfigs.climberFXConfig));
 
     init();
-    createDashboards();
+    publishData();
   }
 
   /**
@@ -118,53 +117,22 @@ public class ClimberSubsystem extends SubsystemBase {
   public void periodic() {
   }
 
-  public void createDashboards() {
-    ShuffleboardTab driverTab = Shuffleboard.getTab("Driver");
-    driverTab.addString("Climber", this::getStateColor)
-      .withSize(2, 2)
-      .withWidget("Single Color View")
-      .withPosition(6, 7);
-
-    ShuffleboardTab systemTab = Shuffleboard.getTab("System");
-    ShuffleboardLayout climberList = systemTab.getLayout("Climber", BuiltInLayouts.kList)
-      .withSize(4, 6)
-      .withPosition(16, 0)
-      .withProperties(Map.of("Label position", "LEFT"));
-    climberList.addString("Status", this::getStateColor)
-      .withWidget("Single Color View");
-    climberList.addBoolean("Has Cage", this::getHasCage);
-    climberList.addBoolean("Complete", this::getClimbComplete);
-    climberList.addString("State", this::getStateName);
-    climberList.addNumber("Position", () -> NCDebug.General.roundDouble(getPosition().in(Units.Rotations), 7));
-    climberList.addBoolean("CageSw1", this::getCageSwitch1);
-    climberList.addBoolean("CageSw2", this::getCageSwitch2);
-
-    if (ClimberConstants.debugDashboard) {
-      ShuffleboardTab debugTab = Shuffleboard.getTab("Debug");
-      ShuffleboardLayout dbgClimberList = debugTab.getLayout("Climber", BuiltInLayouts.kList)
-        .withSize(4, 11)
-        .withPosition(4, 0)
-        .withProperties(Map.of("Label position", "LEFT"));
-      dbgClimberList.addString("Status", this::getStateColor)
-        .withWidget("Single Color View");
-      dbgClimberList.addBoolean("Has Cage", this::getHasCage);
-      dbgClimberList.addBoolean("Complete", this::getClimbComplete);
-      dbgClimberList.addString("State", this::getStateName);
-      dbgClimberList.addNumber("Position", () -> {
-        return NCDebug.General.roundDouble(getPosition().in(Units.Rotations), 6);
-      });
-      dbgClimberList.addBoolean("CageSw1", this::getCageSwitch1);
-      dbgClimberList.addBoolean("CageSw2", this::getCageSwitch2);
-      dbgClimberList.add("Climber Up", new InstantCommand(this::climberUp))
-        .withProperties(Map.of("show_type", false));
-      dbgClimberList.add("Climber Down", new InstantCommand(this::climberDown))
-        .withProperties(Map.of("show_type", false));
-      dbgClimberList.add("Climber Hold", new InstantCommand(this::climberHold))
-        .withProperties(Map.of("show_type", false));
-      dbgClimberList.add("Climber Stop", new InstantCommand(this::climberStop))
-        .withProperties(Map.of("show_type", false));
-    }
+  // #region Dashboard
+  public void publishData() {
+    SmartDashboard.putData("Climber Subsystem", new Sendable() {
+      @Override
+      public void initSendable(SendableBuilder builder) {
+        builder.addStringProperty("Status", () -> getStateColor(), null);
+        builder.addStringProperty("State", () -> getStateName(), null);
+        builder.addBooleanProperty("Has Cage", () -> getHasCage(), null);
+        builder.addBooleanProperty("Complete", () -> getClimbComplete(), null);
+        builder.addDoubleProperty("Motor Pos", () -> NCDebug.General.roundDouble(getPosition().in(Units.Rotations),6), null);
+        builder.addBooleanProperty("Cage Switch 1", () -> getCageSwitch1(), null);
+        builder.addBooleanProperty("Cage Switch 2", () -> getCageSwitch2(), null);
+      }      
+    });
   }
+  // #endregion Dashboard
 
   public State getState() {
     return m_curState;

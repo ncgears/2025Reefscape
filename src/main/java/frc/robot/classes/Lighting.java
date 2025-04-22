@@ -3,9 +3,11 @@ package frc.robot.classes;
 
 import com.ctre.phoenix.led.CANdle;
 
+import edu.wpi.first.units.Units;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -69,7 +71,7 @@ public class Lighting {
   public Lighting() {
     //initialize values for private and public variables, etc.
     init();
-    createDashboards();
+    publishData();
   }
   
     
@@ -81,25 +83,16 @@ public class Lighting {
     NCDebug.Debug.debug("Lighting: Initialized");
   }
   
-
-  public void createDashboards() {
-    ShuffleboardTab driverTab = Shuffleboard.getTab("Driver");
-    driverTab.addString("LED Color", this::getColor)
-      .withSize(8, 2)
-      .withWidget("Single Color View")
-      .withPosition(0, 5);  
-		if(LightingConstants.debugDashboard) {
-      ShuffleboardTab debugTab = Shuffleboard.getTab("DBG:Lighting");
-      debugTab.addString("LED Color", this::getColor)
-        .withSize(6, 4)
-        .withWidget("Single Color View")
-        .withPosition(0, 0);  
-      // debugTab.addString("LED Hex", this::getColor)
-      //   .withSize(6, 2)
-      //   .withWidget("Text String")
-      //   .withPosition(0, 4);  
-    }
+  // #region Dashboard
+  public void publishData() {
+    SmartDashboard.putData("Lighting", new Sendable() {
+      @Override
+      public void initSendable(SendableBuilder builder) {
+        builder.addStringProperty("LED Color", () -> getColor(), null);
+      }      
+    });
   }
+  // #endregion Dashboard
 
   public String getColor() {
     if(m_currentColor == null) m_currentColor = Colors.OFF;

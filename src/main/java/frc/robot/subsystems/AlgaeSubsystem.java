@@ -18,10 +18,9 @@ import com.ctre.phoenix6.hardware.TalonFXS;
 
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Angle;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -144,7 +143,7 @@ public class AlgaeSubsystem extends SubsystemBase {
       .retryConfigApply(() -> m_toro_right.getConfigurator().apply(RobotContainer.ctreConfigs.algaerightFXSConfig));
 
     init();
-    createDashboards();
+    publishData();
   }
 
   /**
@@ -165,52 +164,21 @@ public class AlgaeSubsystem extends SubsystemBase {
   // #endregion Setup
 
   // #region Dashboard
-  public void createDashboards() {
-    ShuffleboardTab driverTab = Shuffleboard.getTab("Driver");
-    driverTab.addString("Algae", this::getDirectionColor)
-      .withSize(2, 2)
-      .withWidget("Single Color View")
-      .withPosition(2, 7);
-    ShuffleboardTab systemTab = Shuffleboard.getTab("System");
-    ShuffleboardLayout AlgaeList = systemTab.getLayout("Algae", BuiltInLayouts.kList)
-      .withSize(4, 4)
-      .withPosition(8, 0)
-      .withProperties(Map.of("Label position", "LEFT"));
-    AlgaeList.addString("Status", this::getDirectionColor)
-      .withWidget("Single Color View");
-    AlgaeList.addString("Direction", this::getDirectionName);
-    AlgaeList.addString("Position", this::getPositionName);
-    AlgaeList.addNumber("Target Pos", this::getTargetPosition);
-    AlgaeList.addNumber("Motor Pos", () -> {
-      return NCDebug.General.roundDouble(getMotorPosition().in(Units.Rotations), 6);
+  public void publishData() {
+    SmartDashboard.putData("Algae Subsystem", new Sendable() {
+      @Override
+      public void initSendable(SendableBuilder builder) {
+        builder.addStringProperty("Status", () -> getDirectionColor(), null);
+        builder.addStringProperty("State", () -> getDirectionName(), null);
+        builder.addStringProperty("Position", () -> getPositionName(), null);
+        builder.addDoubleProperty("Target Pos", () -> NCDebug.General.roundDouble(getTargetPosition(),6), null);
+        builder.addDoubleProperty("Motor Pos", () -> NCDebug.General.roundDouble(getMotorPosition().in(Units.Rotations),6), null);
+        builder.addDoubleProperty("Encoder Pos", () -> NCDebug.General.roundDouble(getPositionAbsolute().in(Units.Rotations),6), null);
+        builder.addDoubleProperty("Error", () -> NCDebug.General.roundDouble(getPositionError(),6), null);
+        builder.addDoubleProperty("Toro L Speed", () -> getToroLeftSpeed(), null);
+        builder.addDoubleProperty("Toro R Speed", () -> getToroRightSpeed(), null);
+      }      
     });
-
-    if (AlgaeConstants.debugDashboard) {
-      ShuffleboardTab debugTab = Shuffleboard.getTab("Debug");
-      ShuffleboardLayout dbgAlgaeList = debugTab.getLayout("Algae", BuiltInLayouts.kList)
-        .withSize(4, 11)
-        .withPosition(12, 0)
-        .withProperties(Map.of("Label position", "LEFT"));
-      dbgAlgaeList.addString("Status", this::getDirectionColor)
-        .withWidget("Single Color View");
-      dbgAlgaeList.addString("Direction", this::getDirectionName);
-      dbgAlgaeList.addString("Target", this::getTargetPositionName);
-      dbgAlgaeList.addNumber("Target Pos", this::getTargetPosition);
-      dbgAlgaeList.addNumber("Motor Pos", () -> {
-        return NCDebug.General.roundDouble(getMotorPosition().in(Units.Rotations), 6);
-      });
-      dbgAlgaeList.addNumber("Absolute", () -> {
-        return NCDebug.General.roundDouble(getPositionAbsolute().in(Units.Rotations), 6);
-      });
-      dbgAlgaeList.addNumber("L Toro Spd", this::getToroLeftSpeed);
-      dbgAlgaeList.addNumber("R Toro Spd", this::getToroRightSpeed);
-      // dbgAlgaeList.add("Algae In", new InstantCommand(this::AlgaeIn))
-      // .withProperties(Map.of("show_type",false));
-      // dbgAlgaeList.add("Algae Out", new InstantCommand(this::AlgaeOut))
-      // .withProperties(Map.of("show_type",false));
-      // dbgAlgaeList.add("Algae Stop", new InstantCommand(this::AlgaeStop))
-      // .withProperties(Map.of("show_type",false));
-    }
   }
   // #endregion Dashboard
 

@@ -8,87 +8,6 @@
         "layouts": [],
         "containers": [
           {
-            "title": "LED Color",
-            "x": 0.0,
-            "y": 320.0,
-            "width": 512.0,
-            "height": 128.0,
-            "type": "Single Color View",
-            "properties": {
-              "topic": "/Shuffleboard/Driver/LED Color",
-              "period": 0.06,
-              "data_type": "string"
-            }
-          },
-          {
-            "title": "Elevator",
-            "x": 256.0,
-            "y": 448.0,
-            "width": 128.0,
-            "height": 128.0,
-            "type": "Single Color View",
-            "properties": {
-              "topic": "/Shuffleboard/Driver/Elevator",
-              "period": 0.06,
-              "data_type": "string"
-            }
-          },
-          {
-            "title": "Climber",
-            "x": 384.0,
-            "y": 448.0,
-            "width": 128.0,
-            "height": 128.0,
-            "type": "Single Color View",
-            "properties": {
-              "topic": "/Shuffleboard/Driver/Climber",
-              "period": 0.06,
-              "data_type": "string"
-            }
-          },
-          {
-            "title": "Coral",
-            "x": 0.0,
-            "y": 448.0,
-            "width": 128.0,
-            "height": 128.0,
-            "type": "Single Color View",
-            "properties": {
-              "topic": "/Shuffleboard/Driver/Coral",
-              "period": 0.06,
-              "data_type": "string"
-            }
-          },
-          {
-            "title": "Algae",
-            "x": 128.0,
-            "y": 448.0,
-            "width": 128.0,
-            "height": 128.0,
-            "type": "Single Color View",
-            "properties": {
-              "topic": "/Shuffleboard/Driver/Algae",
-              "period": 0.06,
-              "data_type": "string"
-            }
-          },
-          {
-            "title": "Match Time",
-            "x": 0.0,
-            "y": 128.0,
-            "width": 512.0,
-            "height": 192.0,
-            "type": "Match Time",
-            "properties": {
-              "topic": "/Shuffleboard/Driver/Match Time",
-              "period": 0.06,
-              "data_type": "string",
-              "time_display_mode": "Minutes and Seconds",
-              "red_start_time": 15,
-              "yellow_start_time": 30
-            }
-          },
-          {
             "title": "FMSInfo",
             "x": 0.0,
             "y": 0.0,
@@ -115,14 +34,66 @@
             }
           },
           {
+            "title": "LED Color",
+            "x": 0.0,
+            "y": 320.0,
+            "width": 512.0,
+            "height": 128.0,
+            "type": "Single Color View",
+            "properties": {
+              "topic": "/SmartDashboard/Lighting/LED Color",
+              "period": 0.06,
+              "data_type": "string"
+            }
+          },
+          {
+            "title": "Climber",
+            "x": 384.0,
+            "y": 448.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Single Color View",
+            "properties": {
+              "topic": "/SmartDashboard/Climber Subsystem/Status",
+              "period": 0.06,
+              "data_type": "string"
+            }
+          },
+          {
+            "title": "Coral",
+            "x": 0.0,
+            "y": 448.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Single Color View",
+            "properties": {
+              "topic": "/SmartDashboard/Coral Subsystem/Status",
+              "period": 0.06,
+              "data_type": "string"
+            }
+          },
+          {
+            "title": "Algae",
+            "x": 128.0,
+            "y": 448.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Single Color View",
+            "properties": {
+              "topic": "/SmartDashboard/Algae Subsystem/Status",
+              "period": 0.06,
+              "data_type": "string"
+            }
+          },
+          {
             "title": "Field",
             "x": 512.0,
             "y": 0.0,
-            "width": 896.0,
-            "height": 512.0,
+            "width": 960.0,
+            "height": 448.0,
             "type": "Field",
             "properties": {
-              "topic": "/Shuffleboard/System/Field",
+              "topic": "/SmartDashboard/Field",
               "period": 0.06,
               "field_game": "Reefscape",
               "robot_width": 0.85,
@@ -133,6 +104,19 @@
               "robot_color": 4294198070,
               "trajectory_color": 4294967295
             }
+          },
+          {
+            "title": "Elevator",
+            "x": 256.0,
+            "y": 448.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Single Color View",
+            "properties": {
+              "topic": "/SmartDashboard/Elevator Subsystem/Status",
+              "period": 0.06,
+              "data_type": "string"
+            }
           }
         ]
       }
@@ -141,74 +125,6 @@
       "name": "System",
       "grid_layout": {
         "layouts": [
-          {
-            "title": "theta Controller",
-            "x": 0.0,
-            "y": 256.0,
-            "width": 256.0,
-            "height": 384.0,
-            "type": "List Layout",
-            "properties": {
-              "label_position": "LEFT"
-            },
-            "children": [
-              {
-                "title": "Heading Lock",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Single Color View",
-                "properties": {
-                  "topic": "/Shuffleboard/System/theta Controller/Heading Lock",
-                  "period": 0.06,
-                  "data_type": "string"
-                }
-              },
-              {
-                "title": "Target Heading",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/Shuffleboard/System/theta Controller/Target Heading",
-                  "period": 0.06,
-                  "data_type": "double",
-                  "show_submit_button": false
-                }
-              },
-              {
-                "title": "Current Heading",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/Shuffleboard/System/theta Controller/Current Heading",
-                  "period": 0.06,
-                  "data_type": "double",
-                  "show_submit_button": false
-                }
-              },
-              {
-                "title": "Heading Error",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/Shuffleboard/System/theta Controller/Heading Error",
-                  "period": 0.06,
-                  "data_type": "double",
-                  "show_submit_button": false
-                }
-              }
-            ]
-          },
           {
             "title": "Climber",
             "x": 1024.0,
@@ -228,7 +144,7 @@
                 "height": 128.0,
                 "type": "Single Color View",
                 "properties": {
-                  "topic": "/Shuffleboard/System/Climber/Status",
+                  "topic": "/SmartDashboard/Climber Subsystem/Status",
                   "period": 0.06,
                   "data_type": "string"
                 }
@@ -241,7 +157,7 @@
                 "height": 128.0,
                 "type": "Boolean Box",
                 "properties": {
-                  "topic": "/Shuffleboard/System/Climber/Has Cage",
+                  "topic": "/SmartDashboard/Climber Subsystem/Has Cage",
                   "period": 0.06,
                   "data_type": "boolean",
                   "true_color": 4283215696,
@@ -258,7 +174,7 @@
                 "height": 128.0,
                 "type": "Boolean Box",
                 "properties": {
-                  "topic": "/Shuffleboard/System/Climber/Complete",
+                  "topic": "/SmartDashboard/Climber Subsystem/Complete",
                   "period": 0.06,
                   "data_type": "boolean",
                   "true_color": 4283215696,
@@ -275,7 +191,7 @@
                 "height": 128.0,
                 "type": "Text Display",
                 "properties": {
-                  "topic": "/Shuffleboard/System/Climber/State",
+                  "topic": "/SmartDashboard/Climber Subsystem/State",
                   "period": 0.06,
                   "data_type": "string",
                   "show_submit_button": false
@@ -289,9 +205,8 @@
                 "height": 128.0,
                 "type": "Text Display",
                 "properties": {
-                  "topic": "/Shuffleboard/System/Climber/Position",
+                  "topic": "/SmartDashboard/Climber Subsystem/Position",
                   "period": 0.06,
-                  "data_type": "double",
                   "show_submit_button": false
                 }
               },
@@ -303,7 +218,7 @@
                 "height": 128.0,
                 "type": "Boolean Box",
                 "properties": {
-                  "topic": "/Shuffleboard/System/Climber/CageSw1",
+                  "topic": "/SmartDashboard/Climber Subsystem/Cage Switch 1",
                   "period": 0.06,
                   "data_type": "boolean",
                   "true_color": 4283215696,
@@ -320,7 +235,7 @@
                 "height": 128.0,
                 "type": "Boolean Box",
                 "properties": {
-                  "topic": "/Shuffleboard/System/Climber/CageSw2",
+                  "topic": "/SmartDashboard/Climber Subsystem/Cage Switch 2",
                   "period": 0.06,
                   "data_type": "boolean",
                   "true_color": 4283215696,
@@ -350,7 +265,7 @@
                 "height": 128.0,
                 "type": "Single Color View",
                 "properties": {
-                  "topic": "/Shuffleboard/System/Elevator/Status",
+                  "topic": "/SmartDashboard/Elevator Subsystem/Status",
                   "period": 0.06,
                   "data_type": "string"
                 }
@@ -363,7 +278,7 @@
                 "height": 128.0,
                 "type": "Text Display",
                 "properties": {
-                  "topic": "/Shuffleboard/System/Elevator/State",
+                  "topic": "/SmartDashboard/Elevator Subsystem/State",
                   "period": 0.06,
                   "data_type": "string",
                   "show_submit_button": false
@@ -377,7 +292,7 @@
                 "height": 128.0,
                 "type": "Text Display",
                 "properties": {
-                  "topic": "/Shuffleboard/System/Elevator/Target",
+                  "topic": "/SmartDashboard/Elevator Subsystem/Target",
                   "period": 0.06,
                   "data_type": "string",
                   "show_submit_button": false
@@ -391,7 +306,7 @@
                 "height": 128.0,
                 "type": "Text Display",
                 "properties": {
-                  "topic": "/Shuffleboard/System/Elevator/Target Pos",
+                  "topic": "/SmartDashboard/Elevator Subsystem/Target Pos",
                   "period": 0.06,
                   "data_type": "double",
                   "show_submit_button": false
@@ -405,89 +320,7 @@
                 "height": 128.0,
                 "type": "Text Display",
                 "properties": {
-                  "topic": "/Shuffleboard/System/Elevator/Motor Pos",
-                  "period": 0.06,
-                  "data_type": "double",
-                  "show_submit_button": false
-                }
-              }
-            ]
-          },
-          {
-            "title": "Coral",
-            "x": 512.0,
-            "y": 256.0,
-            "width": 256.0,
-            "height": 256.0,
-            "type": "List Layout",
-            "properties": {
-              "label_position": "LEFT"
-            },
-            "children": [
-              {
-                "title": "Status",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Single Color View",
-                "properties": {
-                  "topic": "/Shuffleboard/System/Coral/Status",
-                  "period": 0.06,
-                  "data_type": "string"
-                }
-              },
-              {
-                "title": "Direction",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/Shuffleboard/System/Coral/Direction",
-                  "period": 0.06,
-                  "data_type": "string",
-                  "show_submit_button": false
-                }
-              },
-              {
-                "title": "Target",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/Shuffleboard/System/Coral/Target",
-                  "period": 0.06,
-                  "data_type": "string",
-                  "show_submit_button": false
-                }
-              },
-              {
-                "title": "Target Pos",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/Shuffleboard/System/Coral/Target Pos",
-                  "period": 0.06,
-                  "data_type": "double",
-                  "show_submit_button": false
-                }
-              },
-              {
-                "title": "Motor Pos",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/Shuffleboard/System/Coral/Motor Pos",
+                  "topic": "/SmartDashboard/Elevator Subsystem/Motor Pos",
                   "period": 0.06,
                   "data_type": "double",
                   "show_submit_button": false
@@ -500,7 +333,7 @@
             "x": 512.0,
             "y": 0.0,
             "width": 256.0,
-            "height": 256.0,
+            "height": 320.0,
             "type": "List Layout",
             "properties": {
               "label_position": "LEFT"
@@ -514,7 +347,7 @@
                 "height": 128.0,
                 "type": "Single Color View",
                 "properties": {
-                  "topic": "/Shuffleboard/System/Algae/Status",
+                  "topic": "/SmartDashboard/Algae Subsystem/Status",
                   "period": 0.06,
                   "data_type": "string"
                 }
@@ -527,7 +360,7 @@
                 "height": 128.0,
                 "type": "Text Display",
                 "properties": {
-                  "topic": "/Shuffleboard/System/Algae/Direction",
+                  "topic": "/SmartDashboard/Algae Subsystem/State",
                   "period": 0.06,
                   "data_type": "string",
                   "show_submit_button": false
@@ -541,7 +374,7 @@
                 "height": 128.0,
                 "type": "Text Display",
                 "properties": {
-                  "topic": "/Shuffleboard/System/Algae/Position",
+                  "topic": "/SmartDashboard/Algae Subsystem/Position",
                   "period": 0.06,
                   "data_type": "string",
                   "show_submit_button": false
@@ -555,7 +388,7 @@
                 "height": 128.0,
                 "type": "Text Display",
                 "properties": {
-                  "topic": "/Shuffleboard/System/Algae/Target Pos",
+                  "topic": "/SmartDashboard/Algae Subsystem/Target Pos",
                   "period": 0.06,
                   "data_type": "double",
                   "show_submit_button": false
@@ -569,7 +402,157 @@
                 "height": 128.0,
                 "type": "Text Display",
                 "properties": {
-                  "topic": "/Shuffleboard/System/Algae/Motor Pos",
+                  "topic": "/SmartDashboard/Algae Subsystem/Motor Pos",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              }
+            ]
+          },
+          {
+            "title": "theta Controller",
+            "x": 0.0,
+            "y": 256.0,
+            "width": 256.0,
+            "height": 320.0,
+            "type": "List Layout",
+            "properties": {
+              "label_position": "LEFT"
+            },
+            "children": [
+              {
+                "title": "Heading Lock",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Single Color View",
+                "properties": {
+                  "topic": "/SmartDashboard/theta Controller/Heading Lock",
+                  "period": 0.06,
+                  "data_type": "string"
+                }
+              },
+              {
+                "title": "Target Heading",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/theta Controller/Target Heading",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Current Heading",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/theta Controller/Current Heading",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Heading Error",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/theta Controller/Heading Error",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              }
+            ]
+          },
+          {
+            "title": "Coral",
+            "x": 512.0,
+            "y": 320.0,
+            "width": 256.0,
+            "height": 256.0,
+            "type": "List Layout",
+            "properties": {
+              "label_position": "LEFT"
+            },
+            "children": [
+              {
+                "title": "Status",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Single Color View",
+                "properties": {
+                  "topic": "/SmartDashboard/Coral Subsystem/Status",
+                  "period": 0.06,
+                  "data_type": "string"
+                }
+              },
+              {
+                "title": "Direction",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/Coral Subsystem/State",
+                  "period": 0.06,
+                  "data_type": "string",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Target",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/Coral Subsystem/Target",
+                  "period": 0.06,
+                  "data_type": "string",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Target Pos",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/Coral Subsystem/Target Pos",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Motor Pos",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/Coral Subsystem/Motor Pos",
                   "period": 0.06,
                   "data_type": "double",
                   "show_submit_button": false
@@ -587,7 +570,7 @@
             "height": 256.0,
             "type": "Gyro",
             "properties": {
-              "topic": "/Shuffleboard/System/Gyro",
+              "topic": "/SmartDashboard/Gyro",
               "period": 0.06,
               "counter_clockwise_positive": true
             }
@@ -597,10 +580,10 @@
             "x": 256.0,
             "y": 0.0,
             "width": 256.0,
-            "height": 640.0,
+            "height": 576.0,
             "type": "Field",
             "properties": {
-              "topic": "/Shuffleboard/System/Field",
+              "topic": "/SmartDashboard/Field",
               "period": 0.06,
               "field_game": "Reefscape",
               "robot_width": 0.889,
@@ -615,145 +598,58 @@
           {
             "title": "Autonomous Chooser",
             "x": 768.0,
-            "y": 384.0,
-            "width": 512.0,
+            "y": 448.0,
+            "width": 832.0,
             "height": 128.0,
             "type": "ComboBox Chooser",
             "properties": {
-              "topic": "/Shuffleboard/System/Autonomous Chooser",
+              "topic": "/SmartDashboard/Autonomous Chooser",
               "period": 0.06,
               "sort_options": true
             }
+          },
+          {
+            "title": "Swerve Drive",
+            "x": 1280.0,
+            "y": 128.0,
+            "width": 320.0,
+            "height": 320.0,
+            "type": "SwerveDrive",
+            "properties": {
+              "topic": "/SmartDashboard/Swerve Drive",
+              "period": 0.06,
+              "show_robot_rotation": true,
+              "rotation_unit": "Radians"
+            }
+          },
+          {
+            "title": "LED Color",
+            "x": 1280.0,
+            "y": 0.0,
+            "width": 320.0,
+            "height": 128.0,
+            "type": "Single Color View",
+            "properties": {
+              "topic": "/SmartDashboard/Lighting/LED Color",
+              "period": 0.06,
+              "data_type": "string"
+            }
+          },
+          {
+            "title": "selected",
+            "x": 192.0,
+            "y": 640.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Autonomous Chooser/selected",
+              "period": 0.06,
+              "data_type": "string",
+              "show_submit_button": false
+            }
           }
         ]
-      }
-    },
-    {
-      "name": "Debug",
-      "grid_layout": {
-        "layouts": [
-          {
-            "title": "Vision",
-            "x": 0.0,
-            "y": 0.0,
-            "width": 256.0,
-            "height": 384.0,
-            "type": "List Layout",
-            "properties": {
-              "label_position": "LEFT"
-            },
-            "children": [
-              {
-                "title": "Front Targets",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Boolean Box",
-                "properties": {
-                  "topic": "/Shuffleboard/Debug/Vision/Front Targets",
-                  "period": 0.06,
-                  "data_type": "boolean",
-                  "true_color": 4283215696,
-                  "false_color": 4294198070,
-                  "true_icon": "None",
-                  "false_icon": "None"
-                }
-              },
-              {
-                "title": "Back Targets",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Boolean Box",
-                "properties": {
-                  "topic": "/Shuffleboard/Debug/Vision/Back Targets",
-                  "period": 0.06,
-                  "data_type": "boolean",
-                  "true_color": 4283215696,
-                  "false_color": 4294198070,
-                  "true_icon": "None",
-                  "false_icon": "None"
-                }
-              },
-              {
-                "title": "Suppressed",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Boolean Box",
-                "properties": {
-                  "topic": "/Shuffleboard/Debug/Vision/Suppressed",
-                  "period": 0.06,
-                  "data_type": "boolean",
-                  "true_color": 4283215696,
-                  "false_color": 4294198070,
-                  "true_icon": "None",
-                  "false_icon": "None"
-                }
-              },
-              {
-                "title": "Vision Pose X",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/Shuffleboard/Debug/Vision/Vision Pose X",
-                  "period": 0.06,
-                  "data_type": "double",
-                  "show_submit_button": false
-                }
-              },
-              {
-                "title": "Vision Pose Y",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/Shuffleboard/Debug/Vision/Vision Pose Y",
-                  "period": 0.06,
-                  "data_type": "double",
-                  "show_submit_button": false
-                }
-              },
-              {
-                "title": "Robot Pose X",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/Shuffleboard/Debug/Vision/Robot Pose X",
-                  "period": 0.06,
-                  "data_type": "double",
-                  "show_submit_button": false
-                }
-              },
-              {
-                "title": "Robot Pose Y",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/Shuffleboard/Debug/Vision/Robot Pose Y",
-                  "period": 0.06,
-                  "data_type": "double",
-                  "show_submit_button": false
-                }
-              }
-            ]
-          }
-        ],
-        "containers": []
       }
     }
   ]

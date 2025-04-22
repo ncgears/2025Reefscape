@@ -28,15 +28,14 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -169,7 +168,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             startSimThread();
         }
         init();
-        createDashboards();
+        publishData();
     }
 
     /**
@@ -195,7 +194,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             startSimThread();
         }
         init();
-        createDashboards();
+        publishData();
     }
 
     /**
@@ -229,96 +228,42 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             startSimThread();
         }
         init();
-        createDashboards();
+        publishData();
     }
 
     public void init() {
+        m_suppressFrontVision = false;
+        m_suppressBackVision = false;
         NCDebug.Debug.debug("Drivetrain: Initialized");
     }
 
-   	public void createDashboards() {
-		ShuffleboardTab driverTab = Shuffleboard.getTab("Driver");
-		// driverTab.add("Swerve Drive", this)
-		// 	.withSize(4, 4)
-		// 	.withPosition(20, 5)
-		// 	.withProperties(Map.of("show_robot_rotation","true"));
-		// driverTab.add("Field", getField())
-		// 	.withSize(17,9)
-		// 	.withPosition(8,0)
-		// 	.withWidget("Field")
-		// 	.withProperties(Map.of("field_game","Crescendo","robot_width",Units.inchesToMeters(Global.kBumperWidth),"robot_length",Units.inchesToMeters(Global.kBumperLength)));
-
-		// ShuffleboardTab swerveTab = Shuffleboard.getTab("Swerve");
-		// // swerveTab.add("Swerve Drive", null)
-		// // 	.withSize(6, 6)
-		// // 	.withPosition(0, 0)
-		// // 	.withProperties(Map.of("show_robot_rotation","true"));
-		// swerveTab.addNumber("FL Angle", () -> NCDebug.General.roundDouble(getState().ModuleStates[0].angle.getDegrees(),2))
-		// 	.withSize(2, 2)
-		// 	.withPosition(6, 0);
-		// swerveTab.addNumber("FR Angle", () -> NCDebug.General.roundDouble(getState().ModuleStates[1].angle.getDegrees(),2))
-		// 	.withSize(2, 2)
-		// 	.withPosition(12, 0);
-		// swerveTab.addNumber("BL Angle", () -> NCDebug.General.roundDouble(getState().ModuleStates[2].angle.getDegrees(),2))
-		// 	.withSize(2, 2)
-		// 	.withPosition(6, 4);
-		// swerveTab.addNumber("BR Angle", () -> NCDebug.General.roundDouble(getState().ModuleStates[3].angle.getDegrees(),2))
-		// 	.withSize(2, 2)
-		// 	.withPosition(12, 4);
-		// swerveTab.addNumber("FL Speed", () -> NCDebug.General.roundDouble(getState().ModuleStates[0].speedMetersPerSecond,3))
-		// 	.withSize(2, 2)
-		// 	.withPosition(8, 1);
-		// swerveTab.addNumber("FR Speed", () -> NCDebug.General.roundDouble(getState().ModuleStates[1].speedMetersPerSecond,3))
-		// 	.withSize(2, 2)
-		// 	.withPosition(10, 1);
-		// swerveTab.addNumber("BL Speed", () -> NCDebug.General.roundDouble(getState().ModuleStates[2].speedMetersPerSecond,3))
-		// 	.withSize(2, 2)
-		// 	.withPosition(8, 3);
-		// swerveTab.addNumber("BR Speed", () -> NCDebug.General.roundDouble(getState().ModuleStates[3].speedMetersPerSecond,3))
-		// 	.withSize(2, 2)
-		// 	.withPosition(10, 3);
-		// // swerveTab.add("Field", getField())
-		// // 	.withSize(6,4)
-		// // 	.withPosition(0,6)
-		// // 	.withWidget("Field")
-		// // 	.withProperties(Map.of("field_game","Crescendo","robot_width",Units.inchesToMeters(Global.kBumperWidth),"robot_length",Units.inchesToMeters(Global.kBumperLength)));
-
-		// // ShuffleboardLayout thetaList = swerveTab.getLayout("theta Controller", BuiltInLayouts.kList)
-		// // 	.withSize(4,4)
-		// // 	.withPosition(6,6)
-		// // 	.withProperties(Map.of("Label position","LEFT"));
-		// // thetaList.addString("Heading Lock", this::getHeadingLockedColor)
-		// // 	.withWidget("Single Color View");
-		// // thetaList.addNumber("Target Heading", () -> NCDebug.General.roundDouble(getTargetHeading(),4));
-		// // thetaList.addNumber("Current Heading", () -> NCDebug.General.roundDouble(getHeading().getDegrees(),4));
-		// // thetaList.addNumber("Heading Error", () -> NCDebug.General.roundDouble(getHeadingError(),4));
-
-		ShuffleboardTab systemTab = Shuffleboard.getTab("System");
-		systemTab.add("Field", getField())
-			.withSize(4,10)
-			.withPosition(4,0)
-			.withWidget("Field")
-			.withProperties(Map.of(
-                "field_game","Reefscape",
-                "robot_width",Units.inchesToMeters(GlobalConstants.kBumperWidth),
-                "robot_length",Units.inchesToMeters(GlobalConstants.kBumperLength),
-                "robot_color","0xff0000ff",
-                "field_rotation",RobotContainer.isAllianceRed()?90.0:270.0
-            ));
-		ShuffleboardLayout systemThetaList = systemTab.getLayout("theta Controller", BuiltInLayouts.kList)
-			.withSize(4,5)
-			.withPosition(0,4)
-			.withProperties(Map.of("Label position","LEFT"));
-		systemThetaList.addString("Heading Lock", this::getHeadingLockedColor)
-			.withWidget("Single Color View");
-		systemThetaList.addNumber("Target Heading", () -> NCDebug.General.roundDouble(getTargetHeading(),4));
-		systemThetaList.addNumber("Current Heading", () -> NCDebug.General.roundDouble(getBotHeading().getDegrees(),4));
-		systemThetaList.addNumber("Heading Error", () -> NCDebug.General.roundDouble(getHeadingError().getDegrees(),4));
-
-		if(SwerveConstants.debugDashboard) {
-		}
-
-	}
+    public void publishData() {
+      SmartDashboard.putData("Swerve Drive", new Sendable() {
+        @Override
+        public void initSendable(SendableBuilder builder) {
+          builder.setSmartDashboardType("SwerveDrive");
+          builder.addDoubleProperty("Front Left Angle", () -> getState().ModuleStates[0].angle.getRadians(), null);
+          builder.addDoubleProperty("Front Left Velocity", () -> getState().ModuleStates[0].speedMetersPerSecond, null);
+          builder.addDoubleProperty("Front Right Angle", () -> getState().ModuleStates[1].angle.getRadians(), null);
+          builder.addDoubleProperty("Front Right Velocity", () -> getState().ModuleStates[1].speedMetersPerSecond, null);
+          builder.addDoubleProperty("Back Left Angle", () -> getState().ModuleStates[2].angle.getRadians(), null);
+          builder.addDoubleProperty("Back Left Velocity", () -> getState().ModuleStates[2].speedMetersPerSecond, null);
+          builder.addDoubleProperty("Back Right Angle", () -> getState().ModuleStates[3].angle.getRadians(), null);
+          builder.addDoubleProperty("Back Right Velocity", () -> getState().ModuleStates[3].speedMetersPerSecond, null);
+          builder.addDoubleProperty("Robot Angle", () -> getBotHeading().getRadians(), null);
+        }      
+      });
+      SmartDashboard.putData("theta Controller", new Sendable() {
+        @Override
+        public void initSendable(SendableBuilder builder) {
+          builder.addStringProperty("Heading Lock", () -> getHeadingLockedColor(), null);
+          builder.addDoubleProperty("Target Heading", () -> NCDebug.General.roundDouble(getTargetHeading(),4), null);
+          builder.addDoubleProperty("Current Heading", () -> NCDebug.General.roundDouble(getBotHeading().getDegrees(),4), null);
+          builder.addDoubleProperty("Heading Error", () -> NCDebug.General.roundDouble(getHeadingError().getDegrees(),4), null);
+        }      
+      });
+      SmartDashboard.putData("Field", field);
+    }
 
   public Pose2d getBotPose() {
     return getState().Pose;
@@ -365,11 +310,11 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 	public boolean isFrontVisionSuppressed() { return m_suppressFrontVision; }
 	public boolean isBackVisionSuppressed() { return m_suppressBackVision; }
 
-  public boolean getHeadingLocked() { return RobotContainer.m_targetLock; }
+  public boolean getHeadingLocked() { return (RobotContainer.m_targetLock != null) ? RobotContainer.m_targetLock : false; }
 	public String getHeadingLockedColor() {
 		return (getHeadingLocked()) ?	DashboardConstants.Colors.GREEN	: DashboardConstants.Colors.RED;
 	}
-	public double getTargetHeading() { return RobotContainer.m_targetDirection.getDegrees(); }
+	public double getTargetHeading() { return (RobotContainer.m_targetDirection != null) ? RobotContainer.m_targetDirection.getDegrees() : 0; }
 	public boolean isTrackingTarget() { return RobotContainer.targeting.getTracking(); }
 	public double getTrackingTargetHeading() { 
 		return Rotation2d.fromDegrees(RobotContainer.targeting.getTrackingTargetBearing()).getDegrees(); 

@@ -5,10 +5,10 @@ import java.util.Map;
 import com.ctre.phoenix6.hardware.Pigeon2;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.units.Units;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.constants.*; 
 import frc.robot.utils.NCDebug;
 import frc.robot.RobotContainer;
@@ -34,28 +34,14 @@ public class Gyro implements Sendable {
 	 * Initializes the GyroSubsystem class, performs setup steps, etc.
 	 */
     public Gyro() {
+      publishData();
     }
 
-	public void buildDashboards() {
-    if(true) { //false to disable gyro on system dashboard
-			ShuffleboardTab systemTab = Shuffleboard.getTab("System");
-			systemTab.add("Gyro", this)
-				.withSize(4, 4)
-				.withPosition(0, 0)  
-				.withProperties(Map.of("counter_clockwise_positive",true));
-    }
-	  if(GyroConstants.debugDashboard) {
-			ShuffleboardTab debugTab = Shuffleboard.getTab("DBG:Gyro");
-			debugTab.add("Value", this)
-				.withSize(5, 4)
-				.withPosition(0, 0)  
-				.withProperties(Map.of("counter_clockwise_positive",true));
-			debugTab.addNumber("Pitch", this::getPitch)
-				.withSize(5, 2)
-				.withPosition(0, 4)
-				.withWidget("Text Display");
-		}
-	}
+  // #region Dashboard
+  public void publishData() {
+    SmartDashboard.putData("Gyro", this);
+  }
+  // #endregion Dashboard
 
 	@Override
 	public void initSendable(SendableBuilder builder) {

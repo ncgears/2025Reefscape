@@ -20,10 +20,9 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Angle;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -139,7 +138,7 @@ public class CoralSubsystem extends SubsystemBase {
       .retryConfigApply(() -> m_motor1.getConfigurator().apply(RobotContainer.ctreConfigs.coralFXConfig));
 
     init();
-    createDashboards();
+    publishData();
   }
 
   /**
@@ -158,48 +157,19 @@ public class CoralSubsystem extends SubsystemBase {
   // #endregion Setup
 
   // #region Dashboard
-  public void createDashboards() {
-    ShuffleboardTab driverTab = Shuffleboard.getTab("Driver");
-    driverTab.addString("Coral", this::getColor)
-      .withSize(2, 2)
-      .withWidget("Single Color View")
-      .withPosition(0, 7);
-    ShuffleboardTab systemTab = Shuffleboard.getTab("System");
-    ShuffleboardLayout CoralList = systemTab.getLayout("Coral", BuiltInLayouts.kList)
-      .withSize(4, 4)
-      .withPosition(8, 4)
-      .withProperties(Map.of("Label position", "LEFT"));
-    CoralList.addString("Status", this::getColor)
-      .withWidget("Single Color View");
-    CoralList.addString("Direction", this::getDirectionName);
-    CoralList.addString("Target", this::getTargetPositionName);
-    CoralList.addNumber("Target Pos", this::getTargetPosition);
-    CoralList.addNumber("Motor Pos", () -> { return NCDebug.General.roundDouble(getMotorPosition().in(Units.Rotations),6); });
-
-    if (CoralConstants.debugDashboard) {
-      ShuffleboardTab debugTab = Shuffleboard.getTab("Debug");
-      ShuffleboardLayout dbgCoralList = debugTab.getLayout("Coral", BuiltInLayouts.kList)
-        .withSize(4, 11)
-        .withPosition(8, 0)
-        .withProperties(Map.of("Label position", "LEFT"));
-      dbgCoralList.addString("Status", this::getColor)
-        .withWidget("Single Color View");
-      dbgCoralList.addString("Direction", this::getDirectionName);
-      dbgCoralList.addString("Target", this::getTargetPositionName);
-      dbgCoralList.addNumber("Target Pos", this::getTargetPosition);
-      dbgCoralList.addNumber("Motor Pos", () -> { return NCDebug.General.roundDouble(getMotorPosition().in(Units.Rotations),6); });
-      dbgCoralList.addNumber("Absolute", () -> { return NCDebug.General.roundDouble(getPositionAbsolute().in(Units.Rotations),6); });
-      dbgCoralList.add("Coral In", CoralPositionC(Position.IN))
-        .withProperties(Map.of("show_type", false));
-      dbgCoralList.add("Coral Out", CoralPositionC(Position.OUT))
-        .withProperties(Map.of("show_type", false));
-      dbgCoralList.add("Coral Score", CoralPositionC(Position.SCORE))
-        .withProperties(Map.of("show_type", false));
-      dbgCoralList.add("Coral Stop", CoralStopC())
-        .withProperties(Map.of("show_type", false));
-      dbgCoralList.add("Pos Reset", resetMotorPosC())
-        .withProperties(Map.of("show_type", false));
-    }
+  public void publishData() {
+    SmartDashboard.putData("Coral Subsystem", new Sendable() {
+      @Override
+      public void initSendable(SendableBuilder builder) {
+        builder.addStringProperty("Status", () -> getColor(), null);
+        builder.addStringProperty("State", () -> getDirectionName(), null);
+        builder.addStringProperty("Target", () -> getTargetPositionName(), null);
+        builder.addDoubleProperty("Target Pos", () -> NCDebug.General.roundDouble(getTargetPosition(),6), null);
+        builder.addDoubleProperty("Motor Pos", () -> NCDebug.General.roundDouble(getMotorPosition().in(Units.Rotations),6), null);
+        builder.addDoubleProperty("Encoder Pos", () -> NCDebug.General.roundDouble(getPositionAbsolute().in(Units.Rotations),6), null);
+        builder.addDoubleProperty("Error", () -> NCDebug.General.roundDouble(getPositionError(),6), null);
+      }      
+    });
   }
   // #endregion Dashboard
 

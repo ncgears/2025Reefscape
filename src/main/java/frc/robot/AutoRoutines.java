@@ -519,11 +519,10 @@ public class AutoRoutines {
     }
     private Command ScoreCoral() {
       return 
-        // Commands.waitUntil(RobotContainer.elevator.atTarget)
-        wait(0.3)
-        .andThen(RobotContainer.elevator.ElevatorPositionC(ElevatorSubsystem.Position.L4SCORE))
-          // .until(RobotContainer.elevator.atTarget)
-        .andThen(wait(0.4))
+        Commands.waitUntil(RobotContainer.elevator::isAtTarget)
+        // wait(0.3)
+        .andThen(RobotContainer.elevator.ElevatorPositionC(ElevatorSubsystem.Position.L4SCORE).until(RobotContainer.elevator::isAtTarget))
+        // .andThen(wait(0.4))
         .andThen(SeekingNone())
         .andThen(RobotContainer.coral.CoralPositionC(CoralSubsystem.Position.SCORE));
     }

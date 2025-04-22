@@ -16,7 +16,6 @@ import choreo.auto.AutoFactory;
 import static edu.wpi.first.units.Units.*;
 
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Optional;
 
 import edu.wpi.first.math.MathUtil;
@@ -27,9 +26,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -80,7 +77,7 @@ public class RobotContainer {
         
     private final AutoChooser autoChooser = new AutoChooser();
     //Sendables definitions
-    private SendableChooser<Command> m_auto_chooser = new SendableChooser<>();
+    // private SendableChooser<Command> m_auto_chooser = new SendableChooser<>();
 
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(SwerveConstants.kMaxAngularRate).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
@@ -142,7 +139,7 @@ public class RobotContainer {
         
         initOrchestra();
         configureBindings();
-        buildDashboards();
+        buildAutonChooser();
 
         //#region Default Commands
         drivetrain.setDefaultCommand(
@@ -232,6 +229,7 @@ public class RobotContainer {
             .alongWith(new InstantCommand(() -> {m_targetLock = false;})).ignoringDisable(true)
         );
         // bind to the autonomous() and teleop() trigger which happens any time the robot is enabled in either of those modes
+        RobotModeTriggers.autonomous().whileTrue(autoChooser.selectedCommandScheduler());
         RobotModeTriggers.autonomous().or(RobotModeTriggers.teleop()).onTrue(
             new InstantCommand(orchestra::stop).ignoringDisable(true)
             .andThen(lighting.setColorCommand(Colors.OFF)).ignoringDisable(true)
@@ -507,125 +505,30 @@ public class RobotContainer {
      * @return command
      */
     public Command getAutonomousCommand() {
-        if(AutonConstants.isDisabled) {
-            NCDebug.Debug.debug("Robot: Selected auton routine is "+m_auto_chooser.getSelected().getName());
-            return m_auto_chooser.getSelected();
-        } else {
-            NCDebug.Debug.debug("Robot: Selected auton routine is "+autoChooser.selectedCommand().getName());
-            return autoChooser.selectedCommand();
-        }
+      NCDebug.Debug.debug("Robot: Selected auton routine is "+autoChooser.selectedCommand().getName());
+      return autoChooser.selectedCommand();
     }
 
     //#region Dashboard
-    //From here down is all used for building the shuffleboard
-    public void buildDashboards(){
-        //List of Widgets: https://github.com/Gold872/elastic-dashboard/wiki/Widgets-List-&-Properties-Reference
-        buildAutonChooser();
-        buildDriverTab();
-        buildSystemTab();
-        // buildTab("Swerve"); //placeholder
-        // buildPowerTab();
-        // buildDebugTab();
-        gyro.buildDashboards();
-    }    
-    
     public void buildAutonChooser() {
-        //This builds the auton chooser, giving driver friendly names to the commands from above
-        if(AutonConstants.isDisabled) {
-            m_auto_chooser.setDefaultOption("00: None (Auto Disabled)", Commands.none());
-        } else {
-            // m_auto_chooser.setDefaultOption("Do Nothing", new cg_autonDoNothing(drive));
-            if(AutonConstants.kUseChoreo) {
-                autoFactory = drivetrain.createAutoFactory();
-                autoRoutines = new AutoRoutines(autoFactory);
-                autoChooser.addRoutine("000: None (Do Nothing)", autoRoutines::doNothingAuto);
-                autoChooser.addRoutine("001: sLL-Move Off Line", autoRoutines::sLLmoveOffLine);
-                autoChooser.addRoutine("002: sRR-Move Off Line", autoRoutines::sRRmoveOffLine);
-                autoChooser.addRoutine("003: sC-Move Off Line", autoRoutines::sCmoveOffLine);
-                autoChooser.addRoutine("100: sC Score Coral Get Low Algae", autoRoutines::sCScoreAlgae);
-                autoChooser.addRoutine("201: sLC-Left 2.5C 1A", autoRoutines::left4Coral);
-                autoChooser.addRoutine("202: sC-L4 Coral Left 2 Algae",autoRoutines::sCL4Coral2Algae);
-                autoChooser.addRoutine("204: sLC-Left 3C", autoRoutines::left3Coral);
-                autoChooser.addRoutine("205: sLL Straight-Left 3C", autoRoutines::left3CoralStraight);
-                autoChooser.addRoutine("206: sLL Straight-Left 3C Left", autoRoutines::left3CoralStraightLeft);
-                autoChooser.addRoutine("301: sRC-Right 4C", autoRoutines::right4Coral);
-                autoChooser.addRoutine("304: sRC-Right 3C", autoRoutines::right3Coral);
-                autoChooser.addRoutine("305: sRR Straight-Right 3C", autoRoutines::right3CoralStraight);
-                autoChooser.addRoutine("901: Left Algae Double", autoRoutines::leftAlgaeDouble);
-                autoChooser.addRoutine("999: Test Run", autoRoutines::testRun);
-                // SmartDashboard.putData("Autonomous Chooser", autoChooser);
-            // m_auto_chooser = autoChooser;
-            }
-        }
-    }
-
-    private void buildDriverTab(){
-        ShuffleboardTab driverTab = buildTab("Driver");
-        // Match Time - Cannot be programmatically placed, but we put it here for informative reasons
-        driverTab.add("Match Time", "")
-            .withPosition(0,2)
-            .withSize(8,3)
-            .withProperties(Map.of("time_display_mode","Minutes and Seconds","red_start_time",15,"yellow_start_time",30)) //mode: "Seconds Only" or "Minutes and Seconds"
-            .withWidget("Match Time");
-        // Auton Chooser
-        // if(AutonConstants.isDisabled) {
-        //     driverTab.add("Autonomous Chooser", m_auto_chooser)
-        //         .withPosition(0, 5)
-        //         .withSize(8, 2)
-        //         .withProperties(Map.of("sort_options",true))
-        //         .withWidget("ComboBox Chooser");
-        // } else {
-        //     // SmartDashboard.putData("Autonomous Chooser", autoChooser);
-        //     driverTab.add("Autonomous Chooser", autoChooser)
-        //         .withPosition(0, 5)
-        //         .withSize(8, 2)
-        //         .withProperties(Map.of("sort_options",true))
-        //         .withWidget("ComboBox Chooser");
-        // }
-            // FMS Info - Cannot be programmatically placed, but we put it here for informative reasons
-            // driverTab.add("FMS Info", "")
-            //   .withPosition(0,5)
-            //   .withSize(8,2)
-            //   .withWidget("FMSInfo");
-            // Alerts
-            // driverTab.add("Alerts", "")
-            //   .withPosition(8,0)
-            //   .withSize(11,7)
-            //   .withWidget("Alerts");
-        // Camera
-        // driverTab.add("Camera", Robot.camera)
-        //     .withPosition(18,0)
-        //     .withSize(6,5)
-        //     // .withProperties(Map.of("Glyph","CAMERA_RETRO","Show Glyph",true,"Show crosshair",true,"Crosshair color","#CCCCCC","Show controls",false))
-        //     .withWidget("Camera Stream");
-    }
-
-    @SuppressWarnings({"unused"})
-    private void buildSystemTab(){
-        ShuffleboardTab systemTab = buildTab("System");
-        var chooser = (AutonConstants.isDisabled) ? m_auto_chooser : autoChooser;
-        systemTab.add("Autonomous Chooser", chooser)
-          .withPosition(12, 6)
-          .withSize(8, 2)
-          .withProperties(Map.of("sort_options",true))
-          .withWidget("ComboBox Chooser");
-    }
-
-    @SuppressWarnings({"unused"})
-    private void buildDebugTab(){
-        ShuffleboardTab debugTab = buildTab("Debug");
-    }
-
-    @SuppressWarnings({"unused"})
-    private void buildPowerTab(){
-        ShuffleboardTab powerTab = buildTab("Power");
-        powerTab.add("Power", power)
-            .withPosition(0, 0);
-            // .withSize(1, 1);
-    }
-
-    private ShuffleboardTab buildTab(String tabname) {
-        return Shuffleboard.getTab(tabname);
+      autoFactory = drivetrain.createAutoFactory();
+      autoRoutines = new AutoRoutines(autoFactory);
+      autoChooser.addRoutine("000: None (Do Nothing)", autoRoutines::doNothingAuto);
+      // autoChooser.addRoutine("001: sLL-Move Off Line", autoRoutines::sLLmoveOffLine);
+      // autoChooser.addRoutine("002: sRR-Move Off Line", autoRoutines::sRRmoveOffLine);
+      // autoChooser.addRoutine("003: sC-Move Off Line", autoRoutines::sCmoveOffLine);
+      // autoChooser.addRoutine("100: sC Score Coral Get Low Algae", autoRoutines::sCScoreAlgae);
+      // autoChooser.addRoutine("201: sLC-Left 2.5C 1A", autoRoutines::left4Coral);
+      // autoChooser.addRoutine("202: sC-L4 Coral Left 2 Algae",autoRoutines::sCL4Coral2Algae);
+      // autoChooser.addRoutine("204: sLC-Left 3C", autoRoutines::left3Coral);
+      // autoChooser.addRoutine("205: sLL Straight-Left 3C", autoRoutines::left3CoralStraight);
+      // autoChooser.addRoutine("206: sLL Straight-Left 3C Left", autoRoutines::left3CoralStraightLeft);
+      // autoChooser.addRoutine("301: sRC-Right 4C", autoRoutines::right4Coral);
+      // autoChooser.addRoutine("304: sRC-Right 3C", autoRoutines::right3Coral);
+      // autoChooser.addRoutine("305: sRR Straight-Right 3C", autoRoutines::right3CoralStraight);
+      // autoChooser.addRoutine("901: Left Algae Double", autoRoutines::leftAlgaeDouble);
+      // autoChooser.addRoutine("999: Test Run", autoRoutines::testRun);
+      SmartDashboard.putData("Autonomous Chooser", autoChooser);
     }
     //#endregion Dashboard
 

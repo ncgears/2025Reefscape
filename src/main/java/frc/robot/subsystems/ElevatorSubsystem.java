@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.function.DoubleSupplier;
 
 import com.ctre.phoenix6.SignalLogger;
+import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
@@ -19,10 +20,9 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Angle;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -101,10 +101,9 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   // #region Triggers
   /**
-   * Returns true when the elevator has reached its limit
+   * Returns true when the elevator has reached its target
    */
   public final Trigger atTarget = new Trigger(this::isAtTarget);
-
   // #endregion Triggers
 
   // #region Setup
@@ -132,7 +131,7 @@ public class ElevatorSubsystem extends SubsystemBase {
       .retryConfigApply(() -> m_motor1.getConfigurator().apply(RobotContainer.ctreConfigs.elevatorFXConfig));
 
     init();
-    createDashboards();
+    publishData();
   }
 
   /**
@@ -151,52 +150,20 @@ public class ElevatorSubsystem extends SubsystemBase {
   // #endregion Setup
 
   // #region Dashboard
-  public void createDashboards() {
-    ShuffleboardTab driverTab = Shuffleboard.getTab("Driver");
-    driverTab.addString("Elevator", this::getStateColor)
-      .withSize(2, 2)
-      .withWidget("Single Color View")
-      .withPosition(4, 7);
-
-    ShuffleboardTab systemTab = Shuffleboard.getTab("System");
-    ShuffleboardLayout ElevatorList = systemTab.getLayout("Elevator", BuiltInLayouts.kList)
-      .withSize(4, 6)
-      .withPosition(12, 0)
-      .withProperties(Map.of("Label position", "LEFT"));
-    ElevatorList.addString("Status", this::getStateColor)
-      .withWidget("Single Color View");
-    ElevatorList.addString("State", this::getStateName);
-    ElevatorList.addString("Target", this::getTargetPositionName);
-    ElevatorList.addNumber("Target Pos", () -> NCDebug.General.roundDouble(getTargetPosition(),6));
-    ElevatorList.addNumber("Motor Pos", () -> NCDebug.General.roundDouble(getPosition().in(Units.Rotations), 6));
-
-    if (ElevatorConstants.debugDashboard) {
-      ShuffleboardTab debugTab = Shuffleboard.getTab("Debug");
-      ShuffleboardLayout dbgElevatorList = debugTab.getLayout("Elevator", BuiltInLayouts.kList)
-        .withSize(4, 11)
-        .withPosition(16, 0)
-        .withProperties(Map.of("Label position", "LEFT"));
-      dbgElevatorList.addString("Status", this::getStateColor)
-        .withWidget("Single Color View");
-      dbgElevatorList.addString("State", this::getStateName);
-      dbgElevatorList.addString("Target", this::getTargetPositionName);
-      dbgElevatorList.addNumber("Target Pos", this::getTargetPosition);
-      dbgElevatorList.addNumber("Position", () -> {
-        return NCDebug.General.roundDouble(getPosition().in(Units.Rotations), 6);
-      });
-      dbgElevatorList.addNumber("Absolute", () -> {
-        return NCDebug.General.roundDouble(getPositionAbsolute().in(Units.Rotations), 6);
-      });
-      dbgElevatorList.addNumber("Error", this::getPositionError);
-      dbgElevatorList.add("Elevator Up", new InstantCommand(this::ElevatorUp))
-        .withProperties(Map.of("show_type", false));
-      dbgElevatorList.add("Elevator Down", new InstantCommand(this::ElevatorDown))
-        .withProperties(Map.of("show_type", false));
-      dbgElevatorList.add("Elevator Hold", new InstantCommand(this::ElevatorHold))
-        .withProperties(Map.of("show_type", false));
-      dbgElevatorList.add("Elevator Stop", new InstantCommand(this::ElevatorStop))
-        .withProperties(Map.of("show_type", false));
-    }
+  public void publishData() {
+    SmartDashboard.putData("Elevator Subsystem", new Sendable() {
+      @Override
+      public void initSendable(SendableBuilder builder) {
+        builder.setSmartDashboardType("Single Color View");
+        builder.addStringProperty("Status", () -> getStateColor(), null);
+        builder.addStringProperty("State", () -> getStateName(), null);
+        builder.addStringProperty("Target", () -> getTargetPositionName(), null);
+        builder.addDoubleProperty("Target Pos", () -> NCDebug.General.roundDouble(getTargetPosition(),6), null);
+        builder.addDoubleProperty("Motor Pos", () -> NCDebug.General.roundDouble(getPosition().in(Units.Rotations),6), null);
+        builder.addDoubleProperty("Encoder Pos", () -> NCDebug.General.roundDouble(getPositionAbsolute().in(Units.Rotations),6), null);
+        builder.addDoubleProperty("Error", () -> NCDebug.General.roundDouble(getPositionError(),6), null);
+      }      
+    });
   }
   // #endregion Dashboard
 
@@ -236,6 +203,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
 
   public boolean isAtTarget() {
+    if(Utils.isSimulation()) return true;
     return (Math.abs(getPositionError()) <= ElevatorConstants.kPositionTolerance);
   }
   // #endregion Getters
@@ -316,15 +284,15 @@ public class ElevatorSubsystem extends SubsystemBase {
     return run(() -> ElevatorMove(power.getAsDouble()));
   }
 
-  public Command ElevatorPositionC(Position position) {
-    return runOnce(
-        () -> setPosition(position));
-  }
-  // effectively, this is runOnce().andThen(idle()), allowing us to interrupt using .until(::atTarget) trigger
   // public Command ElevatorPositionC(Position position) {
-  //   return runAndWait(
+  //   return runOnce(
   //       () -> setPosition(position));
   // }
+  // effectively, this is runOnce().andThen(idle()), allowing us to interrupt using .until(::atTarget) trigger
+  public Command ElevatorPositionC(Position position) {
+    return runOnce(
+        () -> setPosition(position)).andThen(Commands.idle());
+  }
 
   public Command ScoreC() {
     return runOnce(() -> {

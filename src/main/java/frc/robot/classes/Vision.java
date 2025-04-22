@@ -26,15 +26,15 @@ import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.units.Units;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import frc.robot.constants.*; 
 import frc.robot.utils.NCDebug;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The Vision class handles getting and managing data from the PhotoVision system.
@@ -130,37 +130,29 @@ public class Vision {
         // front_cameraSim.enableDrawWireframe(true);
         // back_cameraSim.enableDrawWireframe(true);
     // }
-    createDashboards();
+    publishData();
   }
 
-    public void createDashboards() {
-    // ShuffleboardTab driverTab = Shuffleboard.getTab("Driver");
-    // driverTab.addString("LED Color", this::getColor)
-    //   .withSize(5, 4)
-    //   .withWidget("Single Color View")
-    //   .withPosition(19, 0);  
-		if(VisionConstants.debugDashboard) {
-      ShuffleboardTab debugTab = Shuffleboard.getTab("Debug");
-      ShuffleboardLayout dbgVisionList = debugTab.getLayout("Vision", BuiltInLayouts.kList)
-        .withSize(4, 8)
-        .withPosition(0, 0)
-        .withProperties(Map.of("Label position", "LEFT"));
-      dbgVisionList.addBoolean("Front Targets", () -> getLatestResult(front_camera).hasTargets())
-        .withWidget("Boolean Box");
-      dbgVisionList.addBoolean("Back Targets", () -> getLatestResult(back_camera).hasTargets())
-        .withWidget("Boolean Box");
-      dbgVisionList.addBoolean("Front Suppressed", () -> RobotContainer.drivetrain.isFrontVisionSuppressed())
-        .withWidget("Boolean Box");
-      dbgVisionList.addBoolean("Back Suppressed", () -> RobotContainer.drivetrain.isFrontVisionSuppressed())
-        .withWidget("Boolean Box");
-      dbgVisionList.addNumber("Front Vision Pose X", () -> NCDebug.General.roundDouble(getVisionPose("front").getX(),3));
-      dbgVisionList.addNumber("Front Vision Pose Y", () -> NCDebug.General.roundDouble(getVisionPose("front").getY(),3));
-      dbgVisionList.addNumber("Back Vision Pose X", () -> NCDebug.General.roundDouble(getVisionPose("back").getX(),3));
-      dbgVisionList.addNumber("Back Vision Pose Y", () -> NCDebug.General.roundDouble(getVisionPose("back").getY(),3));
-      dbgVisionList.addNumber("Robot Pose X", () -> NCDebug.General.roundDouble(RobotContainer.drivetrain.getBotPose().getX(),3));
-      dbgVisionList.addNumber("Robot Pose Y", () -> NCDebug.General.roundDouble(RobotContainer.drivetrain.getBotPose().getY(),3));
-    }
+  // #region Dashboard
+  public void publishData() {
+    SmartDashboard.putData("Vision Subsystem", new Sendable() {
+      @Override
+      public void initSendable(SendableBuilder builder) {
+        builder.addBooleanProperty("Targets/Front", () -> getLatestResult(front_camera).hasTargets(), null);
+        builder.addBooleanProperty("Targets/Back", () -> getLatestResult(back_camera).hasTargets(), null);
+        // builder.addBooleanProperty("Suppress/Front", () -> isFrontVisionSuppressed(), null);
+        // builder.addBooleanProperty("Suppress/Back", () -> isBackVisionSuppressed(), null);
+        builder.addDoubleProperty("Pose/Front/X", () -> NCDebug.General.roundDouble(getVisionPose("front").getX(),3), null);
+        builder.addDoubleProperty("Pose/Front/Y", () -> NCDebug.General.roundDouble(getVisionPose("front").getY(),3), null);
+        builder.addDoubleProperty("Pose/Back/X", () -> NCDebug.General.roundDouble(getVisionPose("back").getX(),3), null);
+        builder.addDoubleProperty("Pose/Back/Y", () -> NCDebug.General.roundDouble(getVisionPose("back").getY(),3), null);
+      }      
+    });
   }
+  // #endregion Dashboard
+
+  public boolean isFrontVisionSuppressed() { return RobotContainer.drivetrain.isFrontVisionSuppressed(); }
+	public boolean isBackVisionSuppressed() { return RobotContainer.drivetrain.isFrontVisionSuppressed(); }
 
   public Pose2d getVisionPose(String cam) {
     Optional<EstimatedRobotPose> estimatedPose;

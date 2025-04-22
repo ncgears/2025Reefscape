@@ -92,7 +92,6 @@ public class Targeting {
   
     public Targeting() {
 		init();
-		createDashboards();
     }
 
 	public void init() {
@@ -166,31 +165,6 @@ public class Targeting {
 	}
 
 	////#region "Tracking"
-	/** Creates the dashboard for the tracking system */
-	public void createDashboards() {
-		// if(true) { //false to disable tracking dashboard
-		// 	ShuffleboardTab systemTab = Shuffleboard.getTab("System");
-		// 	systemTab.addNumber("Bot Pose Hdg", () -> NCDebug.General.roundDouble(getPose().get().getRotation().getDegrees(),2))
-		// 		.withSize(4,2)
-		// 		.withPosition(0,4);
-		// 	// systemTab.addNumber("Shooter Hdg", () -> NCDebug.General.roundDouble(getPose().get().rotateBy(new Rotation2d(Math.PI)).getRotation().getDegrees(),2))
-		// 	// 	.withSize(4,2)
-		// 	// 	.withPosition(4,2);
-		// 	ShuffleboardLayout trackingList = systemTab.getLayout("Target Tracking", BuiltInLayouts.kList)
-		// 		.withSize(4,5)
-		// 		.withPosition(12,5)
-		// 		.withProperties(Map.of("Label position","LEFT"));
-		// 	trackingList.addString("Tracking", this::getTrackingStateColor)
-		// 		.withWidget("Single Color View");
-		// 	trackingList.addString("State", this::getTrackingStateName)
-		// 		.withWidget("Text Display");
-		// 	trackingList.addString("Target", this::getTrackingTargetName)
-		// 		.withWidget("Text Display");
-		// 	trackingList.addNumber("Bearing", this::getTrackingTargetBearing);
-		// 	trackingList.addNumber("Distance", this::getTrackingTargetDistance);
-		// 	trackingList.addNumber("Angle", this::getTrackingTargetAngle);
-		// }
-	}
 	/** Determines if the robot should be tracking a target
 	 * @return boolean indicating if robot is tracking
 	 */

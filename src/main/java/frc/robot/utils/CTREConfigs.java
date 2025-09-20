@@ -209,7 +209,7 @@ public final class CTREConfigs {
 
         //Elevator
         //CANcoder
-        elevatorCCConfig.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 0.7;
+        elevatorCCConfig.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 0.5;
         elevatorCCConfig.MagnetSensor.SensorDirection = (ElevatorConstants.kSensorInverted) ? SensorDirectionValue.Clockwise_Positive : SensorDirectionValue.CounterClockwise_Positive;
         elevatorCCConfig.MagnetSensor.MagnetOffset = ElevatorConstants.kMagnetOffset;
 
